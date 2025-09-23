@@ -1,2 +1,12 @@
 # ART936190f.github.io
 My random thingy for a school project
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Голяницький Артем</title>
+</head>
+<body>
+<h1>Моя не перша сторінка</h1>
+</body>
+</html>

@@ -44,6 +44,22 @@
             margin-left: 240px; /* Зсуваємо контент на ширину сайдбару */
             padding: 20px;
         }
+        table {
+            border-collapse: collapse; /* З'єднання меж комірок */
+            width: 50%; /* Займає половину ширини контейнера */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        tr:nth-child(odd) {
+            background-color: #f2f2f2; /* Легке затінення для рядків, як на зразку */
+        }
+        /* Стиль для жирного тексту у таблиці */
+        td:first-child {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>

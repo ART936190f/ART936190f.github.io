@@ -1,10 +1,113 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="uk">
 <head>
-<meta charset="utf-8">
-<title>Голяницький Артем</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №3 - Розширена</title>
+    <link href="header-styles.css" rel="stylesheet">
+    <link href="typography-styles.css" rel="stylesheet">
+
+    <style>
+        /* Зміна кольору та вирівнювання h1 */
+        h1 {
+            color: #004d40; /* Темно-зелений */
+            text-align: center;
+            font-size: 2.2em;
+        }
+
+        /* Стилі для навігації */
+        .main-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #e0e0e0; /* Світло-сірий фон */
+            overflow: hidden;
+        }
+
+        .main-nav li {
+            float: left;
+            border-right: 1px solid #bbb;
+        }
+        
+        /* Стилі для бічної панелі */
+        .sidebar {
+            width: 200px;
+            padding: 15px;
+            background-color: #f7f7f7; /* Дуже світлий сірий */
+            border-right: 1px solid #ddd;
+            float: left;
+            margin-right: 20px;
+        }
+
+        /* Стилі для основної частини (щоб контент був поруч з бічною панеллю) */
+        .main-content {
+            margin-left: 240px; /* Зсуваємо контент на ширину сайдбару */
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>Моя не перша сторінка</h1>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#" style="padding: 14px 16px; display: block; text-decoration: none; color: black;">Головна</a></li>
+            <li><a href="#" style="padding: 14px 16px; display: block; text-decoration: none; color: black;">Про породу</a></li>
+            <li><a href="#" style="padding: 14px 16px; display: block; text-decoration: none; color: black;">Галерея</a></li>
+            <li><a href="#" style="background-color: #ff5722; color: white; padding: 14px 16px; display: block; text-decoration: none;">Контакти</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Лабораторна робота №3</h1>
+    </header>
+
+    <div class="page-container">
+        
+        <aside class="sidebar">
+            <h3 style="color: #6a1b9a;">Популярні породи</h3> <ul class="sidebar-list">
+                <li><a href="#">Сіамська</a></li>
+                <li><a href="#">Перська</a></li>
+                <li><a href="#">Мейн-кун</a></li>
+                <li><a href="#">Сфінкс</a></li>
+            </ul>
+
+            <h3 style="margin-top: 30px; font-style: italic;">Додаткова інформація</h3>
+            <p>Цікаві факти про походження котів і їхню історію.</p>
+        </aside>
+
+        <main class="main-content">
+            <h2 style="color: #d32f2f; font-weight: 300;">Створення простої сторінки</h2> <div class="content-body">
+                <div class="cat-info">
+                    <img src="path/to/your/cat_image.jpg" alt="Бенгальський кіт" class="cat-image" style="width: 250px; height: auto;">
+                    
+                    <div class="text-block">
+                        <p style="font-size: 1.1em; color: #333333;"><strong>Бенгальській породі котів</strong> вдалося поєднувати в собі ніжність домашніх вихованців і грайливість і мисливські темпераменти диких звірів.</p>
+                        <p>Найулюбленіша їхня гра – це гонитва за м'ячиком, іграшками або комахами, які залетили до квартири. До таких тварин потрібно ставитися з особливою любов'ю, інакше вони можуть вирости дуже дикими. Однак, якщо кіт бенгальської породи полюбить вас, він буде відданий вам до кінця життя.</p>
+                    </div>
+                </div>
+
+                <table class="data-table" style="width: 65%; margin-top: 30px;">
+                    <tr>
+                        <td>Країна і рік походження</td>
+                        <td>США, 1961 рік</td>
+                    </tr>
+                    <tr>
+                        <td>Тип хутра</td>
+                        <td>короткошерста</td>
+                    </tr>
+                    <tr>
+                        <td>Розмір</td>
+                        <td>середній</td>
+                    </tr>
+                    <tr>
+                        <td>Середня тривалість життя</td>
+                        <td>12-15 років</td>
+                    </tr>
+                </table>
+
+            </div>
+        </main>
+    </div>
+
 </body>
 </html>

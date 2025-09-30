@@ -1,0 +1,69 @@
+/* Стилі для всього тіла сторінки */
+body {
+    font-family: 'Verdana', sans-serif; /* Випадкова зміна шрифту */
+    background-color: #f4f4f9; /* Випадковий світло-сірий фон */
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* Макет для зображення та тексту поруч */
+.cat-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px; /* Збільшена відстань */
+    padding: 10px;
+    border: 2px dashed #a0aec0; /* Випадковий стиль рамки */
+}
+
+.text-block {
+    flex: 1;
+}
+
+/* Стилі для зображення */
+.cat-image {
+    border-radius: 10px; /* Закруглені кути */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* Тінь */
+    transition: transform 0.3s; /* Додаємо ефект при наведенні */
+}
+
+.cat-image:hover {
+    transform: scale(1.05); /* Збільшення при наведенні */
+}
+
+/* Стилі для абзаців */
+p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #444444; /* Темно-сірий колір тексту */
+}
+
+/* Стилі для списків в бічній панелі */
+.sidebar-list {
+    padding-left: 20px;
+    list-style-type: square; /* Випадкова зміна маркера */
+}
+
+.sidebar-list a {
+    color: #00796b; /* Бірюзовий колір посилань */
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+/* Стилі для таблиці */
+.data-table {
+    border-collapse: collapse;
+    width: 60%;
+    /* Випадковий колір рамки */
+    border: 3px solid #f9a825; 
+}
+
+.data-table td {
+    border: 1px solid #f9a825;
+    padding: 10px; /* Збільшений відступ */
+    background-color: #fffde7; /* Дуже світлий жовтий фон комірок */
+    font-family: 'Courier New', monospace; /* Випадковий шрифт для даних */
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #ffcc80; /* Випадковий колір для парних рядків */
+}

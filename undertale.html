@@ -5,6 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undertale funny page</title>
     <style>
+
+           /* 1. ВИЗНАЧЕННЯ АНІМАЦІЇ ХИТАННЯ */
+        @keyframes wobble {
+            0%, 100% {
+                transform: translateX(0) rotate(0); /* Початковий і кінцевий стан */
+            }
+            15% {
+                transform: translateX(-5px) rotate(-2deg); /* Зсув вліво */
+            }
+            30% {
+                transform: translateX(5px) rotate(2deg); /* Зсув вправо */
+            }
+            45% {
+                transform: translateX(-3px) rotate(-1.5deg); /* Менший зсув вліво */
+            }
+            60% {
+                transform: translateX(3px) rotate(1.5deg); /* Менший зсув вправо */
+            }
+        }
+        
+        /* 2. СТИЛІ АВАТАРА */
+        .avatar {
+            width: 150px; /* Приклад розміру зображення */
+            height: 150px;
+            border-radius: 50%; /* Якщо ви хочете круглий аватар */
+            transition: transform 0.1s ease-out; /* Плавний перехід, якщо анімація зупиняється */
+        }
+
+        /* 3. АКТИВАЦІЯ АНІМАЦІЇ ПРИ НАВЕДЕННІ (:hover) */
+        .avatar:hover {
+            /* Застосовуємо анімацію 'wobble' */
+            /* Назва | Тривалість | Функція часу | Кількість повторів */
+            animation: wobble 0.8s ease-in-out infinite; 
+            cursor: pointer; /* Зміна курсору, щоб показати інтерактивність */
+        }
+
+        
             /* 1. БАЗОВІ СТИЛІ КОНТЕЙНЕРА */
         .love-ll {
             position: relative; 

@@ -5,6 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undertale funny page</title>
     <style>
+        /* Стилі для контейнера love-ll */
+        .love-ll {
+            position: relative; /* Встановлює точку відліку для абсолютно позиціонованих елементів */
+            display: inline-block; /* Обмежує ширину контейнера до вмісту */
+        }
+
+        /* Стилі для зображення */
+        .love-ll .link {
+            display: block;
+            width: 250px; /* Приклад ширини */
+            height: auto;
+        }
+
+        /* Стилі для контейнера сердечок */
+        .love-mt {
+            position: absolute; /* Позиціонування відносно .love-ll */
+            top: 50%; /* Початкова позиція (можна змінити) */
+            left: 50%;
+            transform: translate(-50%, -50%); /* Центрування контейнера сердечок */
+            pointer-events: none; /* Дозволяє клікам "проходити" крізь сердечка до зображення */
+            z-index: 10; /* Гарантує, що сердечка будуть ПОВЕРХ зображення */
+            /* Для прикладу, сердечка будуть з'являтися одразу після завантаження */
+            /* Якщо ви хочете, щоб вони з'являлися по кліку/наведенню, потрібен JavaScript */
+        }
+
+        /* Стилі для кожного сердечка */
+        .love-mt span {
+            color: #ff0000; /* Червоний колір */
+            font-size: 2em; /* Збільшений розмір сердечок */
+            display: inline-block;
+            margin: 0 5px;
+            
+            /* Застосування анімації */
+            animation: floatAndFade 3s ease-out forwards; /* Назва, тривалість, функція часу, залишати в кінцевому стані */
+            opacity: 0; /* Початкова прозорість для ефекту появи */
+        }
+
+        /* Затримка для створення ефекту "розлітання" */
+        .love-mt span:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .love-mt span:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        /* Визначення ключових кадрів анімації */
+        @keyframes floatAndFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.5);
+            }
+            10% {
+                opacity: 1; /* З'явитися швидко */
+                transform: translateY(0px) scale(1);
+            }
+            60% {
+                opacity: 1; /* Залишатися видимими */
+                transform: translateY(-20px) scale(1); /* Почати підйом */
+            }
+            100% {
+                opacity: 0; /* Повністю зникнути */
+                transform: translateY(-80px) scale(1.2); /* Продовжити підйом */
+            }
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -98,13 +163,15 @@
         <h3>Characters:</h3>
         <img class="favicon" src="" alt="Character Favicon"></p> <link rel="icon" type="image/png" href="mett.png">
 
-        <h4>Characters:</h4>
-<div class="love-ll">
+         <h4> Characters:</h4>
     <p>The world of Undertale is rich with memorable characters. </p>
-    <img class="link" src="mett.png" alt="Lovely mettaton"> 
-    <div class="love-mt">
+    
+    <div class="love-ll">
+        <img class="link" src="mett.png" alt="Lovely mettaton">
+        <div class="love-mt">
+            <span>♥</span><span>♥</span><span>♥</span>
         </div>
-</div>
+    </div>
 
         <h5>All-beloved Undertale</h5>
         <img class="postcard" src="letter.png" alt="Undertale Postcard">

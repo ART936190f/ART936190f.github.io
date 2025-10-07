@@ -98,32 +98,73 @@
             cursor: pointer; 
         }
 
-        /* ... всі інші ваші існуючі стилі (love-ll, love-mt, banner-swap, floatAndFade, etc.) залишаються тут ... */
-
-        /* 1. БАЗОВІ СТИЛІ КОНТЕЙНЕРА */
+            /* 1. БАЗОВІ СТИЛІ КОНТЕЙНЕРА */
         .love-ll {
             position: relative; 
             display: inline-block;
-            cursor: pointer;
-            /* background-color: #43A5F0; -- СКОПІЙОВАНО ВГОРУ */
-        }
-        
-        /* Додаткові стилі для банера (як ми обговорювали раніше) */
-        .banner-swap {
-            position: relative; 
-            display: block; 
-            margin: 20px auto 0;
-            width: 40%; 
+            cursor: pointer; /* Додаємо курсор-руку, щоб показати, що на зображення можна натиснути */
         }
 
-        .banner {
-            width: 100%;
+        .love-ll .link {
+            display: block;
+            width: 250px; /* Приклад ширини */
             height: auto;
-            transition: opacity 0.5s ease-in-out; 
         }
-        
-        /* ... і так далі. Переконайтеся, що всі старі стилі також присутні. */
 
+        /* 2. СТИЛІ СЕРДЕЧОК (ПОЗИЦІОНУВАННЯ ТА КОЛІР) */
+        .love-mt {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+            /* ПРИХОВУЄМО сердечка за замовчуванням */
+            opacity: 0; 
+        }
+
+        .love-mt span {
+            color: #ff0000; /* Червоний колір */
+            font-size: 2em; 
+            display: inline-block;
+            margin: 0 5px;
+            opacity: 0; /* Приховуємо окремі сердечка */
+        }
+
+        /* 3. КЛАС АКТИВАЦІЇ АНІМАЦІЇ (ДОДАЄТЬСЯ JavaScript'ом) */
+        .love-mt.animate span {
+            /* Застосування анімації */
+            animation: floatAndFade 3s ease-out forwards; 
+        }
+
+        /* 4. ВИЗНАЧЕННЯ КЛЮЧОВИХ КАДРІВ АНІМАЦІЇ */
+        @keyframes floatAndFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.5);
+            }
+            10% {
+                opacity: 1; /* З'явитися швидко */
+                transform: translateY(0px) scale(1);
+            }
+            60% {
+                opacity: 1; /* Залишатися видимими */
+                transform: translateY(-20px) scale(1);
+            }
+            100% {
+                opacity: 0; /* Повністю зникнути */
+                transform: translateY(-80px) scale(1.2);
+            }
+        }
+
+        /* 5. АНІМАЦІЙНІ ЗАТРИМКИ */
+        .love-mt.animate span:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .love-mt.animate span:nth-child(3) {
+            animation-delay: 0.2s;
+        }
     </style>
     <link rel="icon" type="image/png" href="mett.png">
 </head>

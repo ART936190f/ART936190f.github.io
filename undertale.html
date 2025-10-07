@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="banner.css"> 
-    <link rel="stylesheet" href="im3.js"> 
     <title>Undertale funny page</title>
     <style>
         /* ==================================== */
@@ -90,6 +89,8 @@
             transition: transform 0.1s ease-out; 
             margin-bottom: 10px; /* Додав невеликий відступ, щоб він не прилипав до банера */
         }
+
+        /* ... всі інші ваші існуючі стилі (love-ll, love-mt, banner-swap, etc.) залишаються тут ... */
 
         /* 3. АКТИВАЦІЯ АНІМАЦІЇ ПРИ НАВЕДЕННІ (:hover) */
         .avatar:hover {
@@ -184,12 +185,7 @@
         <p>Undertale is a role-playing video game created by American indie developer Toby Fox. The player controls a child who has fallen into the Underground, a vast, secluded region under the surface of the Earth, separated by a magic barrier. The player meets various monsters during the journey, and the core mechanic revolves around choosing whether to kill, flee, or befriend them. The game was released on September 15, 2015.</p>
 
         <h3>Game Details:</h3>
-<div id="logo-animation-container">
-    <svg id="logo-svg" width="100" height="100" viewBox="0 0 100 100">
-        <circle id="pulsing-circle" cx="50" cy="50" r="40" fill="#4AF05B" stroke="#02F06D" stroke-width="3" />
-        <text x="50" y="55" font-size="12" text-anchor="middle" fill="#333">LOGO</text>
-    </svg>
-</div>
+        <img class="logo" src="logo.png" alt="Undertale Logo">
         <p>The game's unique combat system and compelling narrative, where player choices significantly impact the storyline, have garnered widespread critical acclaim and a dedicated fanbase.</p>
 
     <h4> Characters:</h4>
@@ -203,18 +199,8 @@
     </div>
 
         <h5>All-beloved Undertale</h5>
-<div id="postcard-animation-container">
-    <svg id="postcard-svg" width="200" height="100" viewBox="0 0 200 100">
-        <rect x="10" y="30" width="180" height="60" fill="#25F5C8" stroke="#333" stroke-width="2"/>
-        <polyline points="10,30 100,60 190,30" fill="#24D8F0"/>
-        <text x="100" y="65" font-size="12" text-anchor="middle" fill="#333">LETTER</text>
-    </svg>
-</div>
-</div> ```
-}
-
-// *** Примітка: Для SVG-анімації 'x' та 'y' іноді потрібно обернути SVG у <g> ***
-// *** Якщо це не спрацює, ви можете використовувати чистий JS, як у прикладі 1 ***
+        <img class="postcard" src="letter.png" alt="Undertale Postcard">
+    </div>
 
  <script>
         // Знаходимо елементи за їх ID

@@ -166,16 +166,6 @@
         .love-mt.animate span:nth-child(3) {
             animation-delay: 0.2s;
         }
-
-         /* Стилі для позиціонування */
-        .logo {
-            position: absolute; /* Встановлюємо абсолютне позиціонування для руху */
-            top: 100px; /* Початкова позиція зверху (можна змінити) */
-            left: 0; /* Початкова позиція зліва */
-            width: 150px; /* Встановіть потрібну ширину картинки */
-            transition: left 0.05s linear; /* Плавніший рух, якщо браузер підтримує */
-        }
-        
     </style>
     <link rel="icon" type="image/png" href="mett.png">
 </head>
@@ -187,12 +177,7 @@
         <img class="banner bottom-img" src="inv_tittle.png" alt="Undertale Hover Banner">
     </div>
     </header>
-
     
-    <h3>Game Details:</h3>
-    <img id="movingImage" class="logo" src="logo.png" alt="Undertale Logo">
-    <p>The game's unique combat system and compelling narrative, where player choices significantly impact the storyline, have garnered widespread critical acclaim and a dedicated fanbase.</p>
-
          <img class="avatar" src="av.png" alt="Character Avatar">
         <h1>Welcome to the Undertale Fan Page!</h1>
 
@@ -219,48 +204,6 @@
     </div>
 
  <script>
-
-         // 1. Отримуємо елемент картинки
-        const image = document.getElementById('movingImage');
-
-        // 2. Встановлюємо початкові параметри
-        let position = 0; // Поточна позиція зліва
-        let direction = 1; // 1 = рух вправо, -1 = рух вліво
-        const speed = 2; // Швидкість руху (пікселів за кадр)
-
-        // 3. Функція, що відповідає за рух
-        function moveImage() {
-            // Отримуємо ширину екрану та картинки для коректного відбиття
-            const screenWidth = window.innerWidth;
-            const imageWidth = image.clientWidth;
-            
-            // Оновлюємо позицію
-            position += direction * speed;
-
-            // Перевіряємо, чи потрібно змінити напрямок
-            // Якщо досягли правого краю
-            if (position + imageWidth >= screenWidth) {
-                direction = -1; // Рухаємося вліво
-                // Коригуємо позицію, щоб картинка не виходила за межі
-                position = screenWidth - imageWidth; 
-            } 
-            // Якщо досягли лівого краю
-            else if (position <= 0) {
-                direction = 1; // Рухаємося вправо
-                // Коригуємо позицію
-                position = 0;
-            }
-
-            // Застосовуємо нову позицію до CSS властивості 'left'
-            image.style.left = position + 'px';
-
-            // Рекурсивно викликаємо функцію для наступного кадру.
-            // requestAnimationFrame забезпечує більш плавний та ефективний рух.
-            requestAnimationFrame(moveImage);
-        }
-
-        // 4. Запускаємо анімацію
-        moveImage();
         // Знаходимо елементи за їх ID
         const image = document.getElementById('mettaton-img');
         const hearts = document.getElementById('heart-container');

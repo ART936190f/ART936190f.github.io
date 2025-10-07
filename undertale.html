@@ -166,6 +166,30 @@
         .love-mt.animate span:nth-child(3) {
             animation-delay: 0.2s;
         }
+
+        /* ==================================== */
+        /* === СТИЛІ ДЛЯ РУХОМОГО КОНТЕЙНЕРА === */
+        /* ==================================== */
+        .moving-section {
+            /* Обов'язково для позиціонування 'left' */
+            position: relative; 
+            /* Для плавності руху */
+            transition: left 2s ease-in-out; 
+            /* Початкове положення */
+            left: 0;
+            /* Збільшуємо ширину, щоб елементи могли рухатись убік */
+            width: 100%; 
+        }
+
+        .moving-section h3 {
+            text-align: center; /* Вирівнюємо заголовок по центру в його поточній позиції */
+        }
+
+        .moving-section .logo {
+             display: block; /* Робимо картинку блоковою, щоб центрованою */
+             margin: 10px auto; /* Центруємо картинку */
+        }
+
     </style>
     <link rel="icon" type="image/png" href="mett.png">
 </head>
@@ -185,11 +209,12 @@
         <h2>About Undertale</h2>
         <p>Undertale is a role-playing video game created by American indie developer Toby Fox. The player controls a child who has fallen into the Underground, a vast, secluded region under the surface of the Earth, separated by a magic barrier. The player meets various monsters during the journey, and the core mechanic revolves around choosing whether to kill, flee, or befriend them. The game was released on September 15, 2015.</p>
 
-        <h3>Game Details:</h3>
-        <img class="logo" src="logo.png" alt="Undertale Logo">
-        <p>The game's unique combat system and compelling narrative, where player choices significantly impact the storyline, have garnered widespread critical acclaim and a dedicated fanbase.</p>
-
-    <h4> Characters:</h4>
+        <div id="movingSection" class="moving-section">
+            <h3>Game Details:</h3>
+            <img class="logo" src="logo.png" alt="Undertale Logo">
+            <p>The game's unique combat system and compelling narrative, where player choices significantly impact the storyline, have garnered widespread critical acclaim and a dedicated fanbase.</p>
+        </div>
+        <h4> Characters:</h4>
     <p>The world of Undertale is rich with memorable characters. </p>
     
     <div class="love-ll">
@@ -204,31 +229,54 @@
     </div>
 
  <script>
-        // Знаходимо елементи за їх ID
+        // JS для анімації сердечок (ваш існуючий код)
         const image = document.getElementById('mettaton-img');
         const hearts = document.getElementById('heart-container');
 
-        // Функція, яка запускає анімацію
         function startHeartAnimation() {
-            // 1. Скидаємо контейнер сердечок, щоб можна було повторно запустити анімацію
-            hearts.style.opacity = 0; // На випадок, якщо потрібен миттєвий сброс видимості
+            hearts.style.opacity = 0; 
             hearts.classList.remove('animate'); 
             
-            // Миттєвий таймаут, щоб браузер зафіксував видалення класу перед його додаванням
             setTimeout(() => {
-                // 2. Додаємо клас 'animate', який запускає CSS-анімацію
                 hearts.classList.add('animate');
-                hearts.style.opacity = 1; // Робимо контейнер видимим
+                hearts.style.opacity = 1; 
             }, 50);
 
-            // Оскільки анімація триває 3 секунди, ми можемо зробити контейнер невидимим знову
             setTimeout(() => {
                 hearts.style.opacity = 0;
-            }, 3000); // 3000 мс = 3 секунди (тривалість анімації)
+            }, 3000); 
         }
 
-        // Додаємо обробник події кліку до зображення
         image.addEventListener('click', startHeartAnimation);
+        
+        // ===============================================
+        // === JS ДЛЯ РУХУ ЕЛЕМЕНТІВ ЗІ СТОРОНИ В СТОРОНУ ===
+        // ===============================================
+        
+        const movingSection = document.getElementById('movingSection');
+        let isMovingRight = true; // Флаг для визначення напрямку
+        const moveDistance = 150; // Дистанція руху в пікселях
+
+        function moveSection() {
+            if (isMovingRight) {
+                // Рух вправо (зсув на 150px відносно початкової позиції)
+                movingSection.style.left = `${moveDistance}px`;
+            } else {
+                // Рух вліво (повернення до початкової позиції 0)
+                movingSection.style.left = '0px';
+            }
+            
+            // Зміна напрямку для наступного виклику
+            isMovingRight = !isMovingRight; 
+        }
+
+        // Запуск функції moveSection кожні 2 секунди
+        // Інтервал повинен бути рівний або більший за transition в CSS (2s),
+        // щоб анімація мала час завершитися перед наступним стартом.
+        setInterval(moveSection, 2000); 
+        
+        // Викликаємо функцію один раз, щоб почати рух одразу
+        moveSection(); 
     </script>
     
 </body>

@@ -29,3 +29,26 @@ if (pulsingCircle) {
     pulsingCircle.setAttribute('transform-origin', '50 50');
     pulseAnimation();
 }
+
+
+// ===============================================
+// === АНІМАЦІЯ ЛИСТІВКИ (КАРТИНКА 5) ===
+// ===============================================
+const postcardSvg = document.getElementById('postcard-svg');
+
+if (postcardSvg) {
+    // Створюємо елемент <animate> для анімації руху X
+    const animateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    
+    animateElement.setAttribute('attributeName', 'x'); // Анімуємо позицію X SVG-елемента
+    animateElement.setAttribute('from', '0');         // Починаємо з 0
+    animateElement.setAttribute('to', '20');          // Рухаємо вправо на 20px
+    animateElement.setAttribute('dur', '3s');         // Тривалість 3 секунди
+    animateElement.setAttribute('repeatCount', 'indefinite'); // Повторюємо нескінченно
+    animateElement.setAttribute('fill', 'freeze');
+    animateElement.setAttribute('calcMode', 'alternate'); // Рухаємо туди-сюди
+
+    // Додаємо анімацію до SVG
+    postcardSvg.appendChild(animateElement);
+}
+

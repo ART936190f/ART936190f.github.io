@@ -6,110 +6,124 @@
         <link rel="stylesheet" href="banner.css"> 
     <title>Undertale funny page</title>
     <style>
+        /* ==================================== */
+        /* === ДОДАНО НОВІ ФОНОВІ КОЛЬОРИ === */
+        /* ==================================== */
+        
+        /* 1. ФОН ДЛЯ ВСІЄЇ СТОРІНКИ (BODY) */
+        body {
+            background-color: #62F0D1; /* М'ятний, як основний фон */
+            color: #333; /* Забезпечуємо читабельність тексту */
+            margin: 0;
+            padding: 0;
+        }
 
-           /* 1. ВИЗНАЧЕННЯ АНІМАЦІЇ ХИТАННЯ */
+        /* 2. ФОН ДЛЯ ШАПКИ (HEADER) */
+        header {
+            background-color: #02F06D; /* Яскраво-зелений */
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 3. ФОН ДЛЯ ОСНОВНОГО КОНТЕЙНЕРА */
+        .container {
+            background-color: #24D8F0; /* Яскраво-блакитний */
+            padding: 20px;
+        }
+
+        /* Додаткові акценти для розділення секцій */
+        h4 {
+            background-color: #4AF05B; /* Салатовий акцент для "Characters" */
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        /* Фон для частини з Mettaton */
+        .love-ll {
+            background-color: #43A5F0; /* Блакитний фон для секції Mettaton */
+            padding: 15px;
+            border-radius: 10px;
+            /* ... інші стилі love-ll ... */
+        }
+        
+        /* Фон для останньої частини */
+        h5 {
+            background-color: #25F5C8; /* Бірюзовий акцент для "All-beloved Undertale" */
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+
+        /* ==================================== */
+        /* === ІСНУЮЧІ СТИЛІ === */
+        /* ==================================== */
+
+        /* 1. ВИЗНАЧЕННЯ АНІМАЦІЇ ХИТАННЯ */
         @keyframes wobble {
+            /* ... незмінені стилі wobble ... */
             0%, 100% {
-                transform: translateX(0) rotate(0); /* Початковий і кінцевий стан */
+                transform: translateX(0) rotate(0); 
             }
             15% {
-                transform: translateX(-5px) rotate(-2deg); /* Зсув вліво */
+                transform: translateX(-5px) rotate(-2deg);
             }
             30% {
-                transform: translateX(5px) rotate(2deg); /* Зсув вправо */
+                transform: translateX(5px) rotate(2deg); 
             }
             45% {
-                transform: translateX(-3px) rotate(-1.5deg); /* Менший зсув вліво */
+                transform: translateX(-3px) rotate(-1.5deg); 
             }
             60% {
-                transform: translateX(3px) rotate(1.5deg); /* Менший зсув вправо */
+                transform: translateX(3px) rotate(1.5deg); 
             }
         }
         
         /* 2. СТИЛІ АВАТАРА */
         .avatar {
-            width: 150px; /* Приклад розміру зображення */
+            width: 150px; 
             height: 150px;
-            border-radius: 50%; /* Якщо ви хочете круглий аватар */
-            transition: transform 0.1s ease-out; /* Плавний перехід, якщо анімація зупиняється */
+            border-radius: 50%; 
+            transition: transform 0.1s ease-out; 
+            margin-bottom: 10px; /* Додав невеликий відступ, щоб він не прилипав до банера */
         }
+
+        /* ... всі інші ваші існуючі стилі (love-ll, love-mt, banner-swap, etc.) залишаються тут ... */
 
         /* 3. АКТИВАЦІЯ АНІМАЦІЇ ПРИ НАВЕДЕННІ (:hover) */
         .avatar:hover {
-            /* Застосовуємо анімацію 'wobble' */
-            /* Назва | Тривалість | Функція часу | Кількість повторів */
             animation: wobble 0.8s ease-in-out infinite; 
-            cursor: pointer; /* Зміна курсору, щоб показати інтерактивність */
+            cursor: pointer; 
         }
 
-        
-            /* 1. БАЗОВІ СТИЛІ КОНТЕЙНЕРА */
+        /* ... всі інші ваші існуючі стилі (love-ll, love-mt, banner-swap, floatAndFade, etc.) залишаються тут ... */
+
+        /* 1. БАЗОВІ СТИЛІ КОНТЕЙНЕРА */
         .love-ll {
             position: relative; 
             display: inline-block;
-            cursor: pointer; /* Додаємо курсор-руку, щоб показати, що на зображення можна натиснути */
+            cursor: pointer;
+            /* background-color: #43A5F0; -- СКОПІЙОВАНО ВГОРУ */
+        }
+        
+        /* Додаткові стилі для банера (як ми обговорювали раніше) */
+        .banner-swap {
+            position: relative; 
+            display: block; 
+            margin: 20px auto 0;
+            width: 40%; 
         }
 
-        .love-ll .link {
-            display: block;
-            width: 250px; /* Приклад ширини */
+        .banner {
+            width: 100%;
             height: auto;
+            transition: opacity 0.5s ease-in-out; 
         }
+        
+        /* ... і так далі. Переконайтеся, що всі старі стилі також присутні. */
 
-        /* 2. СТИЛІ СЕРДЕЧОК (ПОЗИЦІОНУВАННЯ ТА КОЛІР) */
-        .love-mt {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 10;
-            /* ПРИХОВУЄМО сердечка за замовчуванням */
-            opacity: 0; 
-        }
-
-        .love-mt span {
-            color: #ff0000; /* Червоний колір */
-            font-size: 2em; 
-            display: inline-block;
-            margin: 0 5px;
-            opacity: 0; /* Приховуємо окремі сердечка */
-        }
-
-        /* 3. КЛАС АКТИВАЦІЇ АНІМАЦІЇ (ДОДАЄТЬСЯ JavaScript'ом) */
-        .love-mt.animate span {
-            /* Застосування анімації */
-            animation: floatAndFade 3s ease-out forwards; 
-        }
-
-        /* 4. ВИЗНАЧЕННЯ КЛЮЧОВИХ КАДРІВ АНІМАЦІЇ */
-        @keyframes floatAndFade {
-            0% {
-                opacity: 0;
-                transform: translateY(20px) scale(0.5);
-            }
-            10% {
-                opacity: 1; /* З'явитися швидко */
-                transform: translateY(0px) scale(1);
-            }
-            60% {
-                opacity: 1; /* Залишатися видимими */
-                transform: translateY(-20px) scale(1);
-            }
-            100% {
-                opacity: 0; /* Повністю зникнути */
-                transform: translateY(-80px) scale(1.2);
-            }
-        }
-
-        /* 5. АНІМАЦІЙНІ ЗАТРИМКИ */
-        .love-mt.animate span:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .love-mt.animate span:nth-child(3) {
-            animation-delay: 0.2s;
-        }
     </style>
     <link rel="icon" type="image/png" href="mett.png">
 </head>

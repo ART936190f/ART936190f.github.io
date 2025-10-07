@@ -34,4 +34,27 @@
     .banner-swap:hover .top-img {
         opacity: 0; /* Зробити верхнє зображення повністю прозорим */
     }
+/* ==================================== */
+        /* === СТИЛІ ДЛЯ SVG СЕРДЕЧКА (ПУЛЬСАЦІЯ) === */
+        /* ==================================== */
+        #heart-soul {
+            cursor: pointer;
+            position: absolute; /* Позиціонуємо, щоб воно не заважало банеру */
+            top: 25px;
+            right: 25px;
+            transition: transform 0.2s ease-out; /* Плавний рух */
+            /* Запускаємо анімацію биття */
+            animation: heartbeat 1s infinite alternate; 
+        }
+
+        /* Визначаємо анімацію биття серця */
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.15); /* Збільшуємо на 15% */
+            }
+        }
+
 </style>

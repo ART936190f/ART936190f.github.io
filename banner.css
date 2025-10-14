@@ -130,4 +130,52 @@ h3 {
     font-family: 'Montserrat', sans-serif; 
     font-weight: 700; /* Встановлюємо жирний стиль */
 }
+
+.icon-menu-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 30px 20px;
+    background-color: #43A5F0; 
+    margin-top: 20px;
+}
+
+.icon-item {
+    text-align: center;
+    width: 120px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.icon-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+/* СТИЛІ ДЛЯ ПІКСЕЛЬНИХ ІКОНОК */
+.game-icon.pixel-icon { /* Використовуємо цей клас для піксельних картинок */
+    width: 80px;  /* Задаємо бажаний розмір */
+    height: 80px; /* Важливо: однакова ширина та висота для квадратних іконок */
+    display: block;
+    margin: 0 auto 5px;
+    
+    /* Важливо для піксельних зображень: збереження чіткості */
+    image-rendering: pixelated; /* або crisp-edges */
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -webkit-crisp-edges; /* Chrome/Safari */
+
+    transition: transform 0.3s; /* Анімація при наведенні */
+}
+
+.game-icon.pixel-icon:hover {
+    transform: scale(1.1); /* Збільшення при наведенні */
+}
+
+.icon-label {
+    font-family: 'SourceCodePro', monospace; 
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
 </style>

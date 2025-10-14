@@ -105,10 +105,18 @@
         }
 
 @font-face {
-    font-family: 'SourceCodePro'; /* Це ім'я, яке ви будете використовувати для застосування шрифту */
-    src: url('fonts/source-code-pro.ttf') format('truetype'); /* Вкажіть правильний шлях та формат */
+    font-family: 'SourceCodePro'; 
+    src: url('fonts/source-code-pro.ttf') format('truetype');
     font-weight: normal; /* Або 400 */
     font-style: normal;
-    /* Якщо ви маєте кілька файлів (наприклад, bold, italic), додайте їх окремими @font-face */
+
+} 
+
+@font-face {
+    font-family: 'Montserrat'; 
+    src: url('fonts/Montserrat.ttf') format('truetype');
+    font-weight: normal; /* Або 400 */
+    font-style: normal;
+
 } 
 </style>

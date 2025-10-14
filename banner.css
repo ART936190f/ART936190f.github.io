@@ -133,9 +133,9 @@ h3 {
 
 /* Стилі для посилання, яке обертає іконку */
 .icon-link {
-    text-decoration: none; /* Видаляємо стандартне підкреслення посилання */
-    color: inherit; /* Успадковуємо колір тексту (це особливо важливо, якщо ви додасте текст) */
-    display: block; /* Важливо для flexbox, щоб посилання працювало коректно */
+    text-decoration: none; 
+    color: inherit; 
+    display: block; 
 }
 
 .icon-menu-section {

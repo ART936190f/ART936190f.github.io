@@ -120,7 +120,7 @@
 
 } 
 
-h3 {
+body {
     /* Montserrat - це назва, а sans-serif - резервний шрифт */
     font-family: 'Montserrat', sans-serif; 
 }

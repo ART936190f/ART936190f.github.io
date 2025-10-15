@@ -120,11 +120,6 @@
 
 } 
 
-body {
-    /* Montserrat - це назва, а sans-serif - резервний шрифт */
-    font-family: 'Montserrat', sans-serif; 
-}
-
 /* Приклад використання жирного накреслення */
 h3 {
     font-family: 'Montserrat', sans-serif; 

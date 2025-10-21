@@ -45,7 +45,109 @@
     <script src="https://unpkg.com/mapillary-js@4.0.0/dist/mapillary.min.js"></script>
     
     <script>
-        // Тут буде JavaScript-код
+        function initOSMMap() {
+    // 1. Координати Стоунхенджа та околиць
+    const stonehengeCoords = [51.1789, -1.8262];
+    const amesburyCoords = [51.176, -1.789];
+
+    // 2. Створення карти
+    const map = L.map('map').setView(stonehengeCoords, 14);
+
+    // 3. Зміна фону / схеми відображення (Tiles)
+    // Використання Dark Tile Layer замість стандартного OSM
+    const darkTileLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20,
+        attribution: '© <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, © <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    // Альтернативний стандартний OSM шар (для порівняння)
+    const standardOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    
+    // Додавання контролю шарів для перемикання стилів
+    const baseLayers = {
+        "Темний фон (Stadia)": darkTileLayer,
+        "Стандартний OSM": standardOSM
+    };
+    L.control.layers(baseLayers).addTo(map);
+
+
+    // 4. Додавання міток (Markers)
+
+    // Мітка 1: Стоунхендж
+    L.marker(stonehengeCoords)
+        .addTo(map)
+        .bindPopup("<b>Стоунхендж</b><br>Історична пам'ятка.").openPopup();
+
+    // Мітка 2: Еймсбері (з кастомною іконкою)
+    const customIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
+
+    L.marker(amesburyCoords, { icon: customIcon })
+        .addTo(map)
+        .bindPopup("<b>Еймсбері</b><br>Найближче місто.");
+
+
+    // 5. Прокладання маршруту (використання Leaflet Routing Machine з OSRM)
+
+    L.Routing.control({
+        waypoints: [
+            L.latLng(amesburyCoords),
+            L.latLng(stonehengeCoords)
+        ],
+        // Використання сервісу OSRM для розрахунку маршруту
+        router: L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org/route/v1'
+        }),
+        routeWhileDragging: true,
+        show: false, // Приховати детальні інструкції
+        lineOptions: {
+            styles: [{ color: '#00cc66', weight: 6, opacity: 0.8 }] // Зміна кольору лінії (зелений)
+        },
+        altLineOptions: {
+            styles: [{ color: '#ff7373', weight: 6, opacity: 0.8 }] // Альтернативний маршрут (червоний)
+        },
+        language: 'uk'
+    }).addTo(map);
+
+
+    // 6. Додатково: Панорамний перегляд (Mapillary)
+
+    // Mapillary використовує ідентифікатор зображення або розташування для відображення
+    // Потрібно знайти координати з доступними зображеннями Mapillary
+    // Відобразимо панораму біля Стоунхенджа, якщо є дані
+    
+    // Ідентифікатор клієнта Mapillary - потрібен для використання API
+    // (для простого перегляду це часто не потрібно, але для повноцінної інтеграції - обов'язково)
+    const MAPILLARY_CLIENT_ID = 'YOUR_MAPILLARY_CLIENT_ID'; // Замініть на ваш ID
+
+    try {
+        const viewer = new mapillary.Viewer({
+            container: 'mapillary-viewer',
+            // Спробуємо знайти зображення поблизу Стоунхенджа
+            component: {
+                cover: false // Приховати початкове вікно
+            },
+            
+            // Якщо є зображення з цим ключем, воно завантажиться
+            // Приклад ключа (може застаріти)
+            imageKey: '2647614459524021', // Це має бути дійсний ключ зображення
+        });
+        
+    } catch (e) {
+        document.getElementById('mapillary-viewer').innerHTML = 'Помилка завантаження Mapillary Viewer. Спробуйте оновити бібліотеку або перевірте Ваш Client ID.';
+        console.error('Mapillary Error:', e);
+    }
+}
+
+// Ініціалізація карти після завантаження сторінки
+window.onload = initOSMMap;
     </script>
 </body>
 </html>

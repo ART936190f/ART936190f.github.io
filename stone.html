@@ -1,85 +1,109 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Карта Стоунхенджа на Google Maps та Панорама</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Карта Стоунхенджа на Google Maps та Панорама</title>
 
-    <style>
-        /* Стилі для повноекранної карти */
-        html, body {
-            margin: 0;
-            padding: 0;
+    <style>
+        /* Стилі для повноекранної карти */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: auto; /* Дозволити прокрутку, якщо вміст перевищує висоту */
+        }
+        #mapContainer {
+            width: 100%;
+            height: 60vh; /* Карта займатиме 60% висоти вікна */
+            margin-bottom: 0;
+        }
+        #mapContainer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        #panoContainer {
+            width: 100%;
+            height: 40vh; /* Панорама займатиме 40% висоти вікна */
+            border-top: 2px solid #ccc;
+            box-sizing: border-box;
+        }
+        #panoContainer iframe {
+            width: 100%;
+            height: calc(100% - 30px); /* Врахування висоти заголовка h2 */
+            border: 0;
+            display: block;
+        }
+        #videoContainer {
             width: 100%;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            overflow: auto; /* Дозволити прокрутку, якщо вміст перевищує висоту */
-        }
-        #mapContainer {
-            width: 100%;
-            height: 60vh; /* Карта займатиме 60% висоти вікна */
-            margin-bottom: 0;
-        }
-        #mapContainer iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-        #panoContainer {
-            width: 100%;
-            height: 40vh; /* Панорама займатиме 40% висоти вікна */
+            padding-bottom: 20px; /* Відступ внизу */
             border-top: 2px solid #ccc;
-            box-sizing: border-box;
         }
-        #panoContainer iframe {
-            width: 100%;
-            height: calc(100% - 30px); /* Врахування висоти заголовка h2 */
-            border: 0;
+        #videoContainer iframe {
             display: block;
+            margin: 0 auto; /* Центрування */
+            width: 100%; /* Ширина на весь контейнер */
+            height: 350px; /* Фіксована висота для відео */
+            max-width: 800px; /* Обмеження максимальної ширини відео */
+            border: 0;
         }
-        h1 {
-            padding: 10px;
-            margin: 0;
+        h1 {
+            padding: 10px;
+            margin: 0;
+        }
+        h2 {
+            padding: 10px 10px 0 10px; /* Збільшив верхній відступ для відокремлення */
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .audio-section {
+            padding: 10px; 
+            border-bottom: 1px solid #ccc; 
+            background-color: #f9f9f9;
         }
-        h2 {
-            padding: 0 10px;
-            margin: 0;
-            font-size: 1.2em;
-        }
-    </style>
+    </style>
 </head>
 <body>
-    <h1>Стоунхендж та околиці</h1>
+    <h1>Стоунхендж та околиці</h1>
+    
+        <div class="audio-section">
+        <p style="margin: 0 0 5px 0;">Для повнішого занурення в атмосферу Стоунхенджа, ви можете **запустити фонову музику**:</p>
+        <audio controls loop style="width: 100%;">
+                        <source src="ваш_файл.mp3" type="audio/mpeg">
+            Ваш браузер не підтримує елемент audio.
+        </audio>
+    </div>
+        <div id="mapContainer">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2377.4259305073597!2d-1.8264315270593585!3d51.17886194878213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1suk!2sua!4v1761079322234!5m2!1suk!2sua"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+    <div id="panoContainer">
+        <h2>Панорамний перегляд (Google Street View)</h2>
+        <iframe
+            width="100%"
+            height="100%"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469" 
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
     
-    <div id="mapContainer">
+    <div id="videoContainer">
+        <h2>Відео про Стоунхендж (YouTube)</h2>
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2377.4259305073597!2d-1.8264315270593585!3d51.17886194878213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1suk!2sua!4v1761079322234!5m2!1suk!2sua"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
+            src="https://www.youtube.com/embed/OTBDC83l6cU" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
         </iframe>
     </div>
-    <div id="panoContainer">
-        <h2>Панорамний перегляд (Google Street View)</h2>
-        <iframe
-            width="100%"
-            height="100%"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469" 
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
-
-    <div style="padding: 10px; border-bottom: 1px solid #ccc; background-color: #f9f9f9;">
-        <p style="margin: 0 0 5px 0;">Музика для кращого занурення в природну атмосферу:</p>
-        <audio controls loop style="width: 100%;">
-            <source src="music-for-relax.mp3" type="audio/mpeg">
-            Ваш браузер не підтримує елемент audio.
-        </audio>
-    </div>
-    
-
-    </body>
+        </body>
 </html>

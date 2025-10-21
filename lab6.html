@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Карта Стоунхенджа з OpenStreetMap та Leaflet</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* CSS для відображення карти та панорами */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        h1 {
+            margin: 10px;
+        }
+        #map {
+            height: 60vh; /* Висота карти */
+            width: 100%;
+        }
+        #mapillary-viewer {
+            height: 40vh; /* Висота Mapillary-переглядача */
+            width: 100%;
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Стоунхендж на OpenStreetMap</h1>
+    <div id="map"></div>
+
+    <h2>Панорамний перегляд (Mapillary)</h2>
+    <div id="mapillary-viewer">Mapillary-переглядач не завантажено.</div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+    <script src="https://unpkg.com/mapillary-js@4.0.0/dist/mapillary.min.js"></script>
+    
+    <script>
+        // Тут буде JavaScript-код
+    </script>
+</body>
+</html>

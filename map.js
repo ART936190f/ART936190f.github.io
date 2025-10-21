@@ -79,3 +79,42 @@ function initOSMMap() {
 
 // Ініціалізація карти після завантаження всіх зовнішніх ресурсів
 window.onload = initOSMMap;
+
+delete L.Icon.Default.prototype._get  IconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+// ========================================================
+
+
+const MAPILLARY_CLIENT_ID = 'YOUR_MAPILLARY_CLIENT_ID'; 
+
+function initOSMMap() {
+    // 1. Координати Стоунхенджа та околиць
+    const stonehengeCoords = [51.1789, -1.8262];
+    const amesburyCoords = [51.176, -1.789];
+
+    // ... (решта коду залишається тією ж) ...
+    // ... (L.map, L.tileLayer, L.marker, L.Routing.control) ...
+
+    // Примітка: Оскільки ви використовуєте customIcon для Еймсбері,
+    // він не потребує виправлення, але стандартний маркер Стоунхенджа (якщо ви не вказали customIcon)
+    // тепер завантажуватиметься правильно завдяки блоку вище.
+
+    // 6. Додатково: Панорамний перегляд (Mapillary)
+    try {
+        const viewer = new mapillary.Viewer({
+            container: 'mapillary-viewer',
+            component: { cover: false },
+            imageKey: '2647614459524021', 
+        });
+        
+    } catch (e) {
+        document.getElementById('mapillary-viewer').innerHTML = 'Помилка завантаження Mapillary Viewer. Спробуйте оновити бібліотеку або перевірте Ваш Client ID.';
+        console.error('Mapillary Error:', e);
+    }
+}
+
+window.onload = initOSMMap;

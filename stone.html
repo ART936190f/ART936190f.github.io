@@ -32,10 +32,11 @@
             box-sizing: border-box;
         }
 
+        /* ПАНЕЛЬ ІНФОРМАЦІЇ ПРО МАРШРУТИ */
         #infoPanel {
             position: absolute;
             left: 10px;
-            top: 70px;
+            top: 70px; /* Зсуваємо вниз, щоб не закривати кнопки керування */
             z-index: 2000;
             background: rgba(255,255,255,0.95);
             padding: 10px;
@@ -45,6 +46,25 @@
             font-size: 14px;
         }
 
+        /* ПАНЕЛЬ МУЗИКИ */
+        #audioControl {
+            position: absolute;
+            right: 10px; /* Розміщуємо справа */
+            top: 70px;
+            z-index: 2000;
+            background: rgba(255,255,255,0.95);
+            padding: 5px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        #audioControl audio {
+            width: 250px; /* Фіксована ширина для плеєра */
+            height: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ЕЛЕМЕНТИ КЕРУВАННЯ (Кнопки) */
         #controls {
             position: absolute;
             left: 10px;
@@ -67,9 +87,17 @@
 
 <body onload="InitMap()">
     <h1>Стоунхендж та околиці (Azure Maps)</h1>
+    
     <div id="controls">
         <button id="toggleAmesbury">Приховати маршрут до Еймсбері</button>
         <button id="toggleLondon">Приховати маршрут до Лондона</button>
+    </div>
+
+    <div id="audioControl">
+        <audio controls autoplay loop>
+            <source src="music-for-relax.mp3" type="audio/mpeg">
+            Ваш браузер не підтримує аудіо.
+        </audio>
     </div>
 
     <div id="myMap"></div>
@@ -85,11 +113,12 @@
             width="100%"
             height="100%"
             frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469"
+            src="https://developers.google.com/maps/documentation/javascript/examples/map-simple2"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
     </div>
+
 
     <script>
         // УВАГА: Замініть цей ключ на ваш дійсний ключ Azure Maps.
@@ -112,6 +141,9 @@
             toAmesbury: true,
             toLondon: true
         };
+        
+        // Зберігаємо результати маршрутів тут
+        const routeResults = {};
 
         function InitMap() {
             // 1. Ініціалізація карти та зміна стилю
@@ -148,19 +180,77 @@
 
                 // Єдине спливаюче вікно (яке ми будемо оновлювати)
                 popup = new atlas.Popup({
-                    content: '',
-                    position: stonehengeCoords
+                    content: '<div style="padding:10px;"><b>Стоунхендж</b><br>Стародавній пам\'ятник</div>',
+                    position: stonehengeCoords,
+                    pixelOffset: [0, -30]
                 });
+
 
                 // 2. Додавання міток (маркерів)
                 addMarkers();
 
                 // 3. Прокладання маршрутів
-                // Ми зберігатимемо об'єкти маршрутів, щоб потім можна було показувати/ховати
-                calculateAndDisplayRoute(stonehengeCoords, amesburyCoords, 'toAmesbury', 'Еймсбері (Найближче місто)');
-                calculateAndDisplayRoute(stonehengeCoords, londonCoords, 'toLondon', 'Лондон');
+                const routeAmesburyPromise = calculateRoute(stonehengeCoords, amesburyCoords, 'toAmesbury', 'Еймсбері (Найближче місто)');
+                const routeLondonPromise = calculateRoute(stonehengeCoords, londonCoords, 'toLondon', 'Лондон');
 
-                // 4. Додаткові елементи керування
+                // Чекаємо завершення обох
+                Promise.allSettled([routeAmesburyPromise, routeLondonPromise])
+                    .then(results => {
+                        let finalPopupContent = '<div style="padding:10px;"><b>Стоунхендж</b><br>Стародавній пам\'ятник</div>';
+                        let allRouteBounds = [];
+                        
+                        results.forEach(result => {
+                            if (result.status === 'fulfilled' && result.value) {
+                                // Додаємо дані маршруту на карту
+                                routeDataSource.add(result.value.data);
+                                
+                                // Додаємо межі маршруту
+                                const bounds = atlas.data.BoundingBox.fromData(result.value.data);
+                                allRouteBounds.push(bounds);
+                                
+                                // Зберігаємо результат
+                                routeResults[result.value.routeId] = {
+                                    name: result.value.destinationName,
+                                    travelTimeMinutes: result.value.travelTimeMinutes,
+                                    lengthMeters: result.value.lengthMeters,
+                                    geojson: result.value.data
+                                };
+
+                                // Формуємо контент для попапу
+                                finalPopupContent += `
+                                    <div style="padding: 5px 0; font-size: 14px; border-top: 1px dashed #ccc;">
+                                        <b>Маршрут до ${result.value.destinationName}:</b>
+                                        <br> 
+                                        Приблизний час на машині: 
+                                        <span style="font-weight: bold; color: ${result.value.routeId === 'toLondon' ? 'red' : 'darkgreen'};">
+                                            ${result.value.travelTimeMinutes} хв.
+                                        </span>
+                                        ${result.value.lengthMeters ? '<br>Відстань: ' + (Math.round(result.value.lengthMeters/1000*10)/10) + ' км.' : ''}
+                                    </div>
+                                `;
+                            } else {
+                                const destinationName = result.reason && result.reason.destinationName ? result.reason.destinationName : 'Невідомий пункт';
+                                finalPopupContent += `<div style="padding: 5px 0; font-size: 14px; color: red;">Помилка розрахунку до ${destinationName}.</div>`;
+                            }
+                        });
+
+                        // Оновлюємо вміст попапу
+                        popup.setContent(finalPopupContent);
+                        popup.open(map); 
+                        
+                        // Оновлюємо панель інформації
+                        updateInfoPanel();
+                        // Встановлюємо видимість маршрутів
+                        updateRoutesVisibility();
+
+                        // Масштабування карти до всіх прокладених маршрутів
+                        if (allRouteBounds.length > 0) {
+                            const combinedBounds = atlas.data.BoundingBox.getCombined(allRouteBounds);
+                            map.setCamera({ bounds: combinedBounds, padding: 50 });
+                        }
+                    });
+
+                // 4. Додаткові елементи керування Azure Maps
                 map.controls.add(new atlas.control.ZoomControl(), { position: 'top-right' });
                 map.controls.add(new atlas.control.StyleControl({
                     mapStyles: ['road', 'grayscale_dark', 'satellite', 'satellite_road_labels', 'night']
@@ -177,7 +267,6 @@
                     updateRoutesVisibility();
                     this.textContent = (visibleRoutes.toLondon ? 'Приховати маршрут до Лондона' : 'Показати маршрут до Лондона');
                 });
-
             });
         }
 
@@ -186,15 +275,11 @@
             const markerStonehenge = new atlas.HtmlMarker({
                 color: 'yellow',
                 text: '🗿',
-                position: stonehengeCoords
+                position: stonehengeCoords,
+                popup: popup // Використовуємо один об'єкт попапу
             });
             map.markers.add(markerStonehenge);
-
-            // Окремий попап для Стоунхенджа (щоб показувати всі маршрути та час)
-            markerStonehenge.getPopup = function () {
-                return popup;
-            };
-
+            
             map.events.add('click', markerStonehenge, () => { popup.toggle(); });
 
             // Мітка 2: Еймсбері
@@ -216,74 +301,47 @@
             map.markers.add(markerLondon);
         }
 
-        // Зберігаємо результати маршрутів тут
-        const routeResults = {};
-
         /**
-         * Розраховує та відображає маршрут між двома точками.
+         * Розраховує маршрут і повертає проміс з даними маршруту та часом.
          */
-        function calculateAndDisplayRoute(startPoint, endPoint, routeId, destinationName) {
-            // Використовуємо клас сервісу RouteURL з SDK (як у прикладі Azure Maps)
-            const routeService = new atlas.service.RouteURL(new atlas.service.Aborter(), subscriptionKey);
+        function calculateRoute(startPoint, endPoint, routeId, destinationName) {
+            return new Promise((resolve, reject) => {
+                // Ключ передається тут
+                const routeService = new atlas.service.RouteURL(new atlas.service.Aborter(), subscriptionKey);
 
-            // Параметри запиту — передаємо масив точок у вигляді [[lon,lat], [lon,lat]]
-            routeService.calculateRouteDirections(atlas.service.Aborter.timeout(10000), [startPoint, endPoint], {
-                travelMode: 'car'
-            })
-            .then(response => {
-                // Результат у response
-                const data = response.geojson.features || [];
-                const route = response.routes && response.routes[0];
+                routeService.calculateRouteDirections(atlas.service.Aborter.timeout(10000), [startPoint, endPoint], {
+                    travelMode: 'car'  // Режим поїздки
+                })
+                .then(response => {
+                    const data = response.geojson.features || [];
+                    const route = response.routes && response.routes[0];
 
-                if (!route) {
-                    throw new Error('Маршрут не знайдено');
-                }
+                    if (!route) {
+                        return reject({ message: 'Маршрут не знайдено', destinationName });
+                    }
+                    
+                    const travelTimeSeconds = route.summary.travelTimeInSeconds;
+                    const travelTimeMinutes = Math.round(travelTimeSeconds / 60);
+                    const lengthMeters = route.summary.lengthInMeters;
 
-                // Отримання часу поїздки в секундах та довжини в метрах (summary)
-                const travelTimeSeconds = route.summary && route.summary.travelTimeInSeconds ? route.summary.travelTimeInSeconds : null;
-                const travelTimeMinutes = travelTimeSeconds ? Math.round(travelTimeSeconds / 60) : '—';
-                const lengthMeters = route.summary && route.summary.lengthInMeters ? Math.round(route.summary.lengthInMeters) : null;
-
-                // Додаємо властивість routeId до кожного feature для стилізації
-                data.forEach(feature => {
-                    feature.properties = feature.properties || {};
-                    feature.properties.routeId = routeId;
+                    // Додавання властивості routeId до GeoJSON для стилізації
+                    data.forEach(feature => {
+                        feature.properties = feature.properties || {};
+                        feature.properties.routeId = routeId;
+                    });
+                    
+                    resolve({
+                        data,
+                        travelTimeMinutes,
+                        lengthMeters,
+                        routeId,
+                        destinationName
+                    });
+                })
+                .catch(error => {
+                    console.error(`Помилка при розрахунку маршруту до ${destinationName}:`, error);
+                    reject({ message: error.message || 'API Error', destinationName });
                 });
-
-                // Додаємо маршрут до джерела даних
-                routeDataSource.add(data);
-
-                // Зберігаємо результат для панелі інфо
-                routeResults[routeId] = {
-                    name: destinationName,
-                    travelTimeSeconds: travelTimeSeconds,
-                    travelTimeMinutes: travelTimeMinutes,
-                    lengthMeters: lengthMeters,
-                    geojson: data
-                };
-
-                // Оновлюємо панель інформації
-                updateInfoPanel();
-
-                // Оновлюємо спливаюче вікно Стоунхенджа — акуратно додаємо текст
-                const newContent = `\n<div style="padding: 5px; font-size: 14px;">\n    <b>Маршрут до ${destinationName}:</b><br>\n    Приблизний час на машині: <span style="font-weight: bold; color: ${routeId === 'toLondon' ? 'red' : 'darkgreen'};">${travelTimeMinutes} хв.</span>\n    ${lengthMeters ? '<br>Відстань: ' + (Math.round(lengthMeters/1000*10)/10) + ' км.' : ''}\n</div>\n`;
-
-                const currentContent = popup.getContent() || '';
-                popup.setContent(currentContent + newContent);
-
-                // Відкриваємо попап, якщо він ще не відкритий
-                if (!popup.isOpen()) popup.open(map);
-
-                // Після додавання маршруту — приберемо/покажемо відповідно до видимості
-                updateRoutesVisibility();
-
-            })
-            .catch(error => {
-                console.error(`Помилка при розрахунку маршруту до ${destinationName}:`, error);
-                const errorContent = `<div style="padding: 5px; font-size: 14px; color: red;">Помилка розрахунку до ${destinationName}.</div>`;
-                const currentContent = popup.getContent() || '';
-                popup.setContent(currentContent + errorContent);
-                updateInfoPanel();
             });
         }
 
@@ -291,7 +349,7 @@
             const infoDiv = document.getElementById('routesInfo');
             let html = '';
 
-            if (!routeResults.toAmesbury && !routeResults.toLondon) {
+            if (Object.keys(routeResults).length === 0) {
                 html = 'Маршрути ще завантажуються...';
             } else {
                 Object.keys(routeResults).forEach(id => {
@@ -300,12 +358,13 @@
 
                     const timeText = r.travelTimeMinutes !== '—' ? `${r.travelTimeMinutes} хв.` : '—';
                     const distText = r.lengthMeters ? `${Math.round(r.lengthMeters/1000*10)/10} км` : '—';
+                    const color = id === 'toLondon' ? 'red' : 'darkgreen';
 
                     html += `<div style="margin-top:6px; padding-bottom:6px; border-bottom: 1px solid #eee;">
-                                <b style="color:${id==='toLondon'?'red':'darkgreen'}">${r.name}</b><br>
-                                Час: <strong>${timeText}</strong><br>
-                                Відстань: <strong>${distText}</strong>
-                             </div>`;
+                                 <b style="color:${color}">${r.name}</b><br>
+                                 Час: <strong>${timeText}</strong><br>
+                                 Відстань: <strong>${distText}</strong>
+                               </div>`;
                 });
             }
 
@@ -314,38 +373,26 @@
 
         // Схова/показ маршруту по routeId — фільтр у джерелі даних
         function updateRoutesVisibility() {
-            // Створимо новий масив з feature'ів, які відповідають видимим маршрутам
-            const allFeatures = routeDataSource.getShapes();
-
-            // Якщо немає фіч — просто повернемося
-            if (!allFeatures || allFeatures.length === 0) return;
-
-            // Фільтруємо за routeId
-            const visibleFeatures = [];
-            allFeatures.forEach(shape => {
-                try {
-                    const props = shape.properties || {};
-                    const id = props.routeId;
-                    if ((id === 'toAmesbury' && visibleRoutes.toAmesbury) || (id === 'toLondon' && visibleRoutes.toLondon)) {
-                        visibleFeatures.push(shape);
-                    }
-                } catch (e) {
-                    // пропускаємо
-                }
-            });
-
-            // Оновлюємо джерело: спочатку очищуємо, потім додаємо видимі фічі
             routeDataSource.clear();
-            if (visibleFeatures.length > 0) routeDataSource.add(visibleFeatures);
+            
+            // Проходимо по збережених результатах і додаємо тільки ті, що мають бути видимі
+            const featuresToAdd = [];
+            
+            if (visibleRoutes.toAmesbury && routeResults.toAmesbury) {
+                featuresToAdd.push(...routeResults.toAmesbury.geojson);
+            }
+            if (visibleRoutes.toLondon && routeResults.toLondon) {
+                featuresToAdd.push(...routeResults.toLondon.geojson);
+            }
+
+            if (featuresToAdd.length > 0) {
+                routeDataSource.add(featuresToAdd);
+            }
         }
 
     </script>
-    
-    <audio controls autoplay loop>
-<source src="music-for-relax.mp3" type="audio/mpeg">
-Ваш браузер не підтримує аудіо.
-</audio>
-    
 </body>
+
+</html>
 
 </html>

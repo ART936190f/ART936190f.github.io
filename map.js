@@ -10,22 +10,21 @@ function initOSMMap() {
     const map = L.map('map').setView(stonehengeCoords, 14);
 
     // 3. Зміна фону / схеми відображення (Tiles)
-    const darkTileLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-        maxZoom: 20,
-        attribution: '© <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, © <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    
-    const standardOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    
-    const baseLayers = {
-        "Темний фон (Stadia)": darkTileLayer,
-        "Стандартний OSM": standardOSM
-    };
-    L.control.layers(baseLayers).addTo(map);
 
+// Видаліть або закоментуйте цей рядок:
+// const darkTileLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', { ... }).addTo(map);
+
+// Зробіть стандартний OSM основним шаром, змінивши `.addTo(map)`
+const standardOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map); // <-- Зробіть цей шар активним
+    
+// Оновіть базові шари:
+const baseLayers = {
+    // Видаліть "Темний фон (Stadia)": darkTileLayer,
+    "Стандартний OSM": standardOSM // Цей шар буде єдиним або основним
+};
 
     // 4. Додавання міток (Markers)
     L.marker(stonehengeCoords)

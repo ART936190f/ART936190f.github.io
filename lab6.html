@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Карта Стоунхенджа на Azure Maps</title>
+
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.css" type="text/css" />
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.js"></script>
+
+    <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
+
+    <style>
+        /* Стилі для повноекранної карти */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        #myMap {
+            width: 100%;
+            height: 60vh; /* Карта займатиме 60% висоти вікна */
+        }
+        #panoContainer {
+            width: 100%;
+            height: 100vh; /* Панорама займатиме 40% висоти вікна */
+            border-top: 2px solid #ccc;
+            box-sizing: border-box;
+        }
+        .container {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body onload="InitMap()">
+    <h1>Стоунхендж та околиці</h1>
+    <div id="myMap"></div>
+    
+<div id="panoContainer">
+        <h2>Панорамний перегляд (Google Street View)</h2>
+        <iframe
+            width="100%"
+            height="100%"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469" 
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade">
+            
+        </iframe>
+    </div>
+
+    <script>
+        const subscriptionKey = '3pk8sSL7JavoYHPg12dqZD9501gAE1p6bCH81oCILxLLRtBERj0BJQQJ99BJACYeBjFpcYJpAAAgAZMP1mBn';
+        let map;
+        let datasource;
+        let routeDataSource;
+
+        function InitMap() {
+            // Координати Стоунхенджа: [довгота, широта]
+            const stonehengeCoords = [-1.8262, 51.1789];
+
+            // 1. Ініціалізація карти та зміна стилю
+            map = new atlas.Map('myMap', {
+                center: stonehengeCoords, 
+                zoom: 14,
+                view: 'Auto',
+                
+                // Зміна стилю відображення: 'road' (дороги), 'satellite' (супутник), 
+                // 'grayscale_dark', 'night' та ін.
+                style: 'satellite_road_labels', 
+
+                authOptions: {
+                    authType: 'subscriptionKey',
+                    subscriptionKey: subscriptionKey
+                }
+            });
+
+            // Очікування завантаження ресурсів карти
+            map.events.add('ready', function () {
+                
+                // Створення джерела даних для маркерів
+                datasource = new atlas.source.DataSource();
+                map.sources.add(datasource);
+
+                // Створення джерела даних для маршрутів
+                routeDataSource = new atlas.source.DataSource();
+                map.sources.add(routeDataSource);
+
+
+                // 2. Додавання міток (маркерів)
+                addMarkers();
+
+                // 3. Прокладання маршруту
+                calculateAndDisplayRoute();
+
+                // 4. Додаткові елементи керування (опціонально)
+                map.controls.add(new atlas.control.ZoomControl(), { position: 'top-right' });
+                map.controls.add(new atlas.control.StyleControl({
+                    mapStyles: ['road', 'grayscale_dark', 'satellite', 'satellite_road_labels']
+                }), { position: 'top-right' });
+                
+            });
+        }
+
+        function addMarkers() {
+            // Мітка 1: Стоунхендж
+            const marker1 = new atlas.HtmlMarker({
+                color: 'red',
+                text: '🗿', // Використання Emoji як тексту мітки
+                position: [-1.8262, 51.1789],
+                popup: new atlas.Popup({
+                    content: '<div style="padding:10px;"><b>Стоунхендж</b><br>Стародавній пам\'ятник</div>',
+                    pixelOffset: [0, -30]
+                })
+            });
+            map.markers.add(marker1);
+            
+            // Відкриття спливаючого вікна при натисканні
+            map.events.add('click', marker1, () => {
+                marker1.getPopup().toggle();
+            });
+
+            // Мітка 2: Туристичний центр
+            const marker2 = new atlas.HtmlMarker({
+                color: 'blue',
+                text: 'i',
+                position: [-1.8415, 51.1770],
+                popup: new atlas.Popup({
+                    content: '<div style="padding:10px;"><b>Туристичний центр</b></div>'
+                })
+            });
+            map.markers.add(marker2);
+             map.events.add('click', marker2, () => {
+                marker2.getPopup().toggle();
+            });
+        }
+
+        function calculateAndDisplayRoute() {
+            // Визначення початкової та кінцевої точок маршруту
+            // Точка А: Туристичний центр
+            const startPoint = [-1.8415, 51.1770]; 
+            // Точка Б: Стоунхендж
+            const endPoint = [-1.8262, 51.1789];
+
+            // Створення об'єкта сервісу маршрутизації
+            const routeURL = 'https://atlas.microsoft.com/route/directions/json?api-version=1.0';
+            const routeService = new atlas.service.RouteURL(new atlas.service.Aborter(), routeURL);
+
+            // Параметри маршруту
+            const coordinates = [startPoint, endPoint];
+
+            routeService.calculateRouteDirections(atlas.service.Aborter.timeout(10000), coordinates)
+                .then(response => {
+                    const data = response.geojson.features;
+                    
+                    // Додавання GeoJSON маршруту до джерела даних
+                    routeDataSource.add(data);
+
+                    // Створення шару лінії для відображення маршруту
+                    const routeLayer = new atlas.layer.LineLayer(routeDataSource, null, {
+                        strokeColor: 'darkgreen',
+                        strokeWidth: 5,
+                        lineJoin: 'round',
+                        lineCap: 'round'
+                    });
+
+                    // Додавання шару маршруту на карту
+                    map.layers.add(routeLayer);
+
+                    // Масштабування карти до маршруту (опціонально)
+                    const bounds = atlas.data.BoundingBox.fromData(data);
+                    map.setCamera({ bounds: bounds, padding: 50 });
+                })
+                .catch(error => {
+                    console.error("Помилка при розрахунку маршруту:", error);
+                });
+        }
+    </script>
+</body>
+</html>

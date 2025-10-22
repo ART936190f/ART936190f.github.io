@@ -1,248 +1,121 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Карта Стоунхенджа та Маршрути</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Карта Стоунхенджа на Google Maps та Панорама</title>
 
-    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.css" type="text/css" />
-    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.js"></script>
-
-    <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
-
-    <style>
-        /* Стилі для повноекранної карти */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: Arial, sans-serif;
-        }
-        #myMap {
-            width: 100%;
-            height: 60vh; /* Карта займатиме 60% висоти вікна */
-        }
-        #panoContainer {
-            width: 100%;
-            height: 40vh; /* Панорама займатиме 40% висоти вікна */
-            border-top: 2px solid #ccc;
-            box-sizing: border-box;
-            padding: 10px;
-            overflow: hidden; /* Забезпечення, що iframe не виходить за межі */
-        }
-        #panoContainer iframe {
-            height: calc(100% - 30px); /* Врахування заголовка */
-            display: block;
-        }
-        .route-info {
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-bottom: 1px solid #ccc;
-            font-size: 0.9em;
-        }
-    </style>
+    <style>
+        /* Стилі для повноекранної карти */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: auto; /* Дозволити прокрутку, якщо вміст перевищує висоту */
+        }
+        #mapContainer {
+            width: 100%;
+            height: 80vh; /* Карта займатиме 60% висоти вікна */
+            margin-bottom: 0;
+        }
+        #mapContainer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        #panoContainer {
+            width: 100%;
+            height: 120vh;
+            border-top: 2px solid #ccc;
+            box-sizing: border-box;
+        }
+        #panoContainer iframe {
+            width: 100%;
+            height: calc(100% - 30px); /* Врахування висоти заголовка h2 */
+            border: 0;
+            display: block;
+        }
+        #videoContainer {
+            width: 100%;
+            padding-bottom: 20px; /* Відступ внизу */
+            border-top: 2px solid #ccc;
+        }
+        #videoContainer iframe {
+            display: block;
+            margin: 0 auto; /* Центрування */
+            width: 100%; /* Ширина на весь контейнер */
+            height: 350px; /* Фіксована висота для відео */
+            max-width: 800px; /* Обмеження максимальної ширини відео */
+            border: 0;
+        }
+        h1 {
+            padding: 10px;
+            margin: 0;
+        }
+        h2 {
+            padding: 10px 10px 0 10px; /* Збільшив верхній відступ для відокремлення */
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .audio-section {
+            padding: 10px; 
+            border-bottom: 1px solid #ccc; 
+            background-color: #f9f9f9;
+        }
+        .info-section {
+            padding: 10px; 
+            border-bottom: 1px solid #ccc; 
+            background-color: #e6f7ff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body onload="InitMap()">
-    <h1>Стоунхендж та Маршрути</h1>
-    <div id="routeTimeInfo" class="route-info">
-        Зачекайте, розраховуються маршрути...
-    </div>
-    <div id="myMap"></div>
-    
-    <div id="panoContainer">
-        <h2>Панорамний перегляд (Google Street View)</h2>
-        <iframe
-            width="100%"
-            height="100%"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469" 
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
-
-    <script>
-        // *** УВАГА: Замініть цей ключ на ваш справжній ключ підписки Azure Maps ***
-        const subscriptionKey = '3pk8sSL7JavoYHPg12dqZD9501gAE1p6bCH81oCILxLLRtBERj0BJQQJ99BJACYeBjFpcYJpAAAgAZMP1mBn';
-        let map;
-        let routeDataSource;
-        const stonehengeCoords = [-1.8262, 51.1789]; // [довгота, широта]
-
-        // Координати для нових маршрутів
-        const salisburyCoords = [-1.7945, 51.0694]; // Солсбері (найближче місто)
-        const londonCoords = [-0.1278, 51.5074]; // Лондон (центр)
-
-        // Додаткове джерело даних для другого маршруту (щоб можна було їх розрізняти)
-        let routeDataSource2; 
-
-        function InitMap() {
-            // 1. Ініціалізація карти та зміна стилю
-            map = new atlas.Map('myMap', {
-                center: stonehengeCoords, 
-                zoom: 10, // Зменшили зум, щоб бачити маршрути
-                view: 'Auto',
-                style: 'satellite_road_labels', 
-
-                authOptions: {
-                    authType: 'subscriptionKey',
-                    subscriptionKey: subscriptionKey
-                }
-            });
-
-            // Очікування завантаження ресурсів карти
-            map.events.add('ready', function () {
-                
-                // Створення джерел даних для маршрутів
-                routeDataSource = new atlas.source.DataSource(); // Маршрут до Солсбері (був до Тур. центру)
-                routeDataSource2 = new atlas.source.DataSource(); // Маршрут до Лондона
-
-                map.sources.add(routeDataSource);
-                map.sources.add(routeDataSource2);
-
-                // Додавання міток (маркерів)
-                addMarkers();
-
-                // Прокладання маршрутів
-                calculateAndDisplayRoute('Salisbury', salisburyCoords, 'blue');
-                calculateAndDisplayRoute('London', londonCoords, 'red');
-                
-                // Додаткові елементи керування
-                map.controls.add(new atlas.control.ZoomControl(), { position: 'top-right' });
-                map.controls.add(new atlas.control.StyleControl({
-                    mapStyles: ['road', 'grayscale_dark', 'satellite', 'satellite_road_labels']
-                }), { position: 'top-right' });
-                
-                // Обробка випадків, коли маршрути вже розраховані
-                // Ми будемо масштабувати карту після розрахунку обох маршрутів.
-            });
-        }
-        
-        function addMarkers() {
-            // Мітка 1: Стоунхендж
-            const marker1 = new atlas.HtmlMarker({
-                color: 'red',
-                text: '🗿',
-                position: stonehengeCoords,
-                popup: new atlas.Popup({
-                    content: '<div style="padding:10px;"><b>Стоунхендж</b><br>Стародавній пам\'ятник</div>',
-                    pixelOffset: [0, -30]
-                })
-            });
-            map.markers.add(marker1);
-            map.events.add('click', marker1, () => {
-                marker1.getPopup().toggle();
-            });
-
-            // Мітка 2: Солсбері
-            const marker2 = new atlas.HtmlMarker({
-                color: 'blue',
-                text: '🏠',
-                position: salisburyCoords,
-                popup: new atlas.Popup({
-                    content: '<div style="padding:10px;"><b>Солсбері</b><br>Найближче місто</div>'
-                })
-            });
-            map.markers.add(marker2);
-            map.events.add('click', marker2, () => {
-                marker2.getPopup().toggle();
-            });
-            
-            // Мітка 3: Лондон
-            const marker3 = new atlas.HtmlMarker({
-                color: 'red',
-                text: '🏛️',
-                position: londonCoords,
-                popup: new atlas.Popup({
-                    content: '<div style="padding:10px;"><b>Лондон</b><br>Столиця</div>'
-                })
-            });
-            map.markers.add(marker3);
-            map.events.add('click', marker3, () => {
-                marker3.getPopup().toggle();
-            });
-        }
-
-        let routesCalculated = 0; // Лічильник для масштабування після розрахунку обох
-        let totalBounds = null; // Зберігатиме загальні межі для обох маршрутів
-
-        function calculateAndDisplayRoute(destinationName, destinationCoords, color) {
-            
-            const startPoint = stonehengeCoords; // Стоунхендж як початкова точка
-            const endPoint = destinationCoords;
-
-            const routeURL = 'https://atlas.microsoft.com/route/directions/json?api-version=1.0';
-            const routeService = new atlas.service.RouteURL(new atlas.service.Aborter(), routeURL);
-
-            const coordinates = [startPoint, endPoint];
-
-            // Параметри маршруту: travelMode=car (легковик), routeType=fastest (найшвидший)
-            const routeOptions = {
-                travelMode: 'car',
-                routeType: 'fastest',
-                query: coordinates.join(':')
-            };
-
-            routeService.calculateRouteDirections(atlas.service.Aborter.timeout(10000), coordinates, routeOptions)
-                .then(response => {
-                    const data = response.geojson.features;
-                    
-                    // Отримання інформації про маршрут
-                    const routeSummary = response.routes[0].summary;
-                    const travelTimeSeconds = routeSummary.travelTimeInSeconds;
-                    const travelTimeHours = Math.floor(travelTimeSeconds / 3600);
-                    const travelTimeMinutes = Math.floor((travelTimeSeconds % 3600) / 60);
-
-                    const timeString = `${travelTimeHours} год ${travelTimeMinutes} хв`;
-
-                    // Оновлення інформаційного блоку
-                    const infoDiv = document.getElementById('routeTimeInfo');
-                    
-                    if (routesCalculated === 0) {
-                        infoDiv.innerHTML = 'Час у дорозі на легковому автомобілі: ';
-                    }
-                    
-                    infoDiv.innerHTML += `<br>🚗 До **${destinationName}** (${color === 'blue' ? 'Синій' : 'Червоний' } маршрут): **${timeString}**`;
-
-                    // Додавання GeoJSON маршруту до відповідного джерела даних
-                    const currentRouteDataSource = destinationName === 'London' ? routeDataSource2 : routeDataSource;
-                    currentRouteDataSource.add(data);
-
-                    // Створення шару лінії для відображення маршруту
-                    const routeLayer = new atlas.layer.LineLayer(currentRouteDataSource, null, {
-                        strokeColor: color,
-                        strokeWidth: 5,
-                        lineJoin: 'round',
-                        lineCap: 'round'
-                    });
-
-                    // Додавання шару маршруту на карту
-                    map.layers.add(routeLayer);
-
-                    // Обчислення загальних меж для масштабування
-                    const bounds = atlas.data.BoundingBox.fromData(data);
-                    if (totalBounds) {
-                        totalBounds = atlas.data.BoundingBox.merge(totalBounds, bounds);
-                    } else {
-                        totalBounds = bounds;
-                    }
-
-                    routesCalculated++;
-
-                    // Масштабування карти до обох маршрутів, коли обидва розраховані
-                    if (routesCalculated === 2) {
-                        map.setCamera({ bounds: totalBounds, padding: 50 });
-                    }
-                })
-                .catch(error => {
-                    console.error(`Помилка при розрахунку маршруту до ${destinationName}:`, error);
-                    document.getElementById('routeTimeInfo').innerHTML += `<br>❌ Не вдалося розрахувати маршрут до **${destinationName}**.`;
-                    routesCalculated++;
-                    if (routesCalculated === 2 && totalBounds) {
-                        map.setCamera({ bounds: totalBounds, padding: 50 });
-                    }
-                });
-        }
-    </script>
-</body>
+<body>
+    <h1>Стоунхендж та околиці</h1>
+    
+    <div class="info-section">
+        <h2>Орієнтовний час добирання легковим автомобілем:</h2>
+        <ul>
+            <li>До **Солсбері (Salisbury)**: **~13–15 хвилин**</li>
+            <li>До **Бата (Bath)**: **~50 хвилин – 1 година**</li>
+        </ul>
+        <p style="font-size: 0.9em; font-weight: normal; margin: 0;">*Час може змінюватись залежно від заторів та дорожніх умов.</p>
+    </div>
+    
+        <div id="mapContainer">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d161521.8415256926!2d-1.993708456073748!3d51.17887752763294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x487396696b020001%3A0x6d9f03e2c3664d6!2z0KHRgtC10L_RgdGD0Y7RgNC-0L_QsCwgU1A0IDcwQSwg0JPRgNC10L3RgdGM!3m2!1d51.1788819!2d-1.826215!4m5!1s0x4873b22e70c50d75%3A0x4a4a58f700940560!2z0JHQvtGB0LrRgNC1LCDQkdGC0L3RgdC_0L7RgNCz0LDRjyAi0JHQsNGA0L3RgdGM0LgiINCU0LDQvdGM0YHQutC4!3m2!1d51.066485999999995!2d-1.7944062!5e0!3m2!1suk!2suk!4v1687445200000!5m2!1suk!2suk" width="600" height="450" 
+                style="border:0;" allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+    <div id="panoContainer">
+        <h2>Панорамний перегляд (Google Street View)</h2>
+                <iframe
+            width="100%"
+            height="100%"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed?pb=!4v1687445400000!6m8!1m7!1sCAoSLEFGMVFpcE5pTUVvWmZ2NTRVbW5KUE9DdkZ6eS1xNnJkR2R1b0xJc2p1XzZ4!2m2!1d51.1788819!2d-1.826215!3f0!4f0!5f0.7820865974627469"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+      <div class="audio-section">
+        <p style="margin: 0 0 5px 0;">Для кращого в атмосферу давнини, можна запустити фонову музику:</p>
+        <audio controls loop style="width: 100%;">
+                        <source src="ваш_файл.mp3" type="audio/mpeg">
+            Ваш браузер не підтримує елемент audio.
+        </audio>
+    </div>
+    <div id="videoContainer">
+        <h2>Відео про Стоунхендж (YouTube)</h2>
+        <iframe
+            src="https://www.youtube.com/embed/OTBDC83l6cU" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
+        </body>
 </html>

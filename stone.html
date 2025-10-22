@@ -1,120 +1,170 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Карта Стоунхенджа на Google Maps та Панорама</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Карта Стоунхенджа на Google Maps та Панорама</title>
 
-    <style>
-        /* Стилі для повноекранної карти */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            overflow: auto; /* Дозволити прокрутку, якщо вміст перевищує висоту */
-        }
-        #mapContainer {
-            width: 100%;
-            height: 80vh; /* Карта займатиме 60% висоти вікна */
-            margin-bottom: 0;
-        }
-        #mapContainer iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-        #panoContainer {
-            width: 100%;
-            height: 120vh;
-            border-top: 2px solid #ccc;
-            box-sizing: border-box;
-        }
-        #panoContainer iframe {
-            width: 100%;
-            height: calc(100% - 30px); /* Врахування висоти заголовка h2 */
-            border: 0;
-            display: block;
-        }
-        #videoContainer {
-            width: 100%;
-            padding-bottom: 20px; /* Відступ внизу */
-            border-top: 2px solid #ccc;
-        }
-        #videoContainer iframe {
-            display: block;
-            margin: 0 auto; /* Центрування */
-            width: 100%; /* Ширина на весь контейнер */
-            height: 350px; /* Фіксована висота для відео */
-            max-width: 800px; /* Обмеження максимальної ширини відео */
-            border: 0;
-        }
-        h1 {
-            padding: 10px;
-            margin: 0;
-        }
-        h2 {
-            padding: 10px 10px 0 10px; /* Збільшив верхній відступ для відокремлення */
-            margin: 0;
-            font-size: 1.2em;
-        }
-        .audio-section {
-            padding: 10px; 
-            border-bottom: 1px solid #ccc; 
-            background-color: #f9f9f9;
-        }
-        .info-section {
-            padding: 10px; 
-            border-bottom: 1px solid #ccc; 
-            background-color: #e6f7ff;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-    </style>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: auto;
+        }
+        #mapContainer {
+            width: 100%;
+            height: 80vh;
+            margin-bottom: 0;
+        }
+        #mapContainer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        #panoContainer {
+            width: 100%;
+            height: 120vh;
+            border-top: 2px solid #ccc;
+            box-sizing: border-box;
+        }
+        #panoContainer iframe {
+            width: 100%;
+            height: calc(100% - 30px);
+            border: 0;
+            display: block;
+        }
+        #videoContainer {
+            width: 100%;
+            padding-bottom: 20px;
+            border-top: 2px solid #ccc;
+        }
+        #videoContainer iframe {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            height: 350px;
+            max-width: 800px;
+            border: 0;
+        }
+        h1 {
+            padding: 10px;
+            margin: 0;
+        }
+        h2 {
+            padding: 10px 10px 0 10px;
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .audio-section {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        .info-section {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background-color: #e6f7ff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* 🔹 Стиль для Telegram-посилання */
+        .social-link {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #e6f7ff;
+            border-top: 2px solid #ccc;
+        }
+        .social-link img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .social-link a {
+            text-decoration: none;
+            color: #0077b6;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .social-link a:hover {
+            color: #004b73;
+        }
+
+        /* 🔹 Стиль для віджета погоди */
+        .weather-widget {
+            text-align: center;
+            background: #0d47a1;
+            color: #fff;
+            padding: 10px 0;
+            border-top: 2px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <h1>Стоунхендж та околиці</h1>
-    
-    <div class="info-section">
-        <h2>Орієнтовний час добирання легковим автомобілем:</h2>
-        <ul>
+    <h1>Стоунхендж та околиці</h1>
 
-        </ul>
-        <p style="font-size: 0.9em; font-weight: normal; margin: 0;">*Час може змінюватись залежно від заторів та дорожніх умов.</p>
-    </div>
-    
-        <div id="mapContainer">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d161521.8415256926!2d-1.993708456073748!3d51.17887752763294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x487396696b020001%3A0x6d9f03e2c3664d6!2z0KHRgtC10L_RgdGD0Y7RgNC-0L_QsCwgU1A0IDcwQSwg0JPRgNC10L3RgdGM!3m2!1d51.1788819!2d-1.826215!4m5!1s0x4873b22e70c50d75%3A0x4a4a58f700940560!2z0JHQvtGB0LrRgNC1LCDQkdGC0L3RgdC_0L7RgNCz0LDRjyAi0JHQsNGA0L3RgdGM0LgiINCU0LDQvdGM0YHQutC4!3m2!1d51.066485999999995!2d-1.7944062!5e0!3m2!1suk!2suk!4v1687445200000!5m2!1suk!2suk" width="600" height="450" 
-                style="border:0;" allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-    <div id="panoContainer">
-        <h2>Панорамний перегляд (Google Street View)</h2>
-        <iframe
-            width="100%"
-            height="100%"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469" 
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
-      <div class="audio-section">
-        <p style="margin: 0 0 5px 0;">Для кращого в атмосферу давнини, можна запустити фонову музику:</p>
-        <audio controls loop style="width: 100%;">
-                        <source src="ваш_файл.mp3" type="audio/mpeg">
-            Ваш браузер не підтримує елемент audio.
-        </audio>
-    </div>
-    <div id="videoContainer">
-        <h2>Відео про Стоунхендж (YouTube)</h2>
-        <iframe
-            src="https://www.youtube.com/embed/OTBDC83l6cU" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
-        </body>
+    <div class="info-section">
+        <h2>Орієнтовний час добирання легковим автомобілем:</h2>
+        <ul>
+            <!-- Можна додати пункти вручну -->
+        </ul>
+        <p style="font-size: 0.9em; font-weight: normal; margin: 0;">
+            *Час може змінюватись залежно від заторів та дорожніх умов.
+        </p>
+    </div>
+
+    <div id="mapContainer">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d161521.8415256926!2d-1.993708456073748!3d51.17887752763294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x487396696b020001%3A0x6d9f03e2c3664d6!2z0KHRgtC10L_RgdGD0Y7RgNC-0L_QsCwgU1A0IDcwQSwg0JPRgNC10L3RgdGM!3m2!1d51.1788819!2d-1.826215!4m5!1s0x4873b22e70c50d75%3A0x4a4a58f700940560!2z0JHQvtGB0LrRgNC1LCDQkdGC0L3RgdC_0L7RgNCz0LDRjyAi0JHQsNGA0L3RgdGM0LgiINCU0LDQvdGM0YHQutC4!3m2!1d51.066485999999995!2d-1.7944062!5e0!3m2!1suk!2suk!4v1687445200000!5m2!1suk!2suk"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <div id="panoContainer">
+        <h2>Панорамний перегляд (Google Street View)</h2>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <div class="audio-section">
+        <p style="margin: 0 0 5px 0;">Для кращого занурення в атмосферу давнини можна запустити фонову музику:</p>
+        <audio controls loop style="width: 100%;">
+            <source src="ваш_файл.mp3" type="audio/mpeg">
+            Ваш браузер не підтримує елемент audio.
+        </audio>
+    </div>
+
+    <div id="videoContainer">
+        <h2>Відео про Стоунхендж (YouTube)</h2>
+        <iframe
+            src="https://www.youtube.com/embed/OTBDC83l6cU"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+    </div>
+
+    <!-- 🔹 Telegram-посилання -->
+    <div class="social-link">
+        <a href="https://t.me/Artemchyk2007" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+            Мій Telegram
+        </a>
+    </div>
+
+    <!-- 🔹 Віджет погоди -->
+    <div class="weather-widget">
+        <div id="ww_7263022cbf2b2" v='1.3' loc='id'
+            a='{"t":"horizontal","lang":"uk","sl_lpl":1,"ids":["wl1331"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+            Більше прогнозів: <a href="https://oneweather.org/london/21_days/" id="ww_7263022cbf2b2_u" target="_blank"
+                style="color: #fff;">Weather London 21 days</a>
+        </div>
+        <script async src="https://app3.weatherwidget.org/js/?id=ww_7263022cbf2b2"></script>
+    </div>
+
+</body>
 </html>

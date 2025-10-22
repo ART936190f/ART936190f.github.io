@@ -37,19 +37,19 @@
             border: 0;
             display: block;
         }
-        #videoContainer {
-            width: 100%;
-            padding-bottom: 20px; /* Відступ внизу */
-            border-top: 2px solid #ccc;
-        }
-        #videoContainer iframe {
-            display: block;
-            margin: 0 auto; /* Центрування */
-            width: 100%; /* Ширина на весь контейнер */
-            height: 350px; /* Фіксована висота для відео */
-            max-width: 800px; /* Обмеження максимальної ширини відео */
-            border: 0;
-        }
+        #videoContainer {
+            width: 100%;
+            padding-bottom: 20px; /* Відступ внизу */
+            border-top: 2px solid #ccc;
+        }
+        #videoContainer iframe {
+            display: block;
+            margin: 0 auto; /* Центрування */
+            width: 100%; /* Ширина на весь контейнер */
+            height: 350px; /* Фіксована висота для відео */
+            max-width: 800px; /* Обмеження максимальної ширини відео */
+            border: 0;
+        }
         h1 {
             padding: 10px;
             margin: 0;
@@ -59,48 +59,62 @@
             margin: 0;
             font-size: 1.2em;
         }
-        .audio-section {
-            padding: 10px; 
-            border-bottom: 1px solid #ccc; 
-            background-color: #f9f9f9;
-        }
+        .audio-section {
+            padding: 10px; 
+            border-bottom: 1px solid #ccc; 
+            background-color: #f9f9f9;
+        }
+        .info-section {
+            padding: 10px; 
+            border-bottom: 1px solid #ccc; 
+            background-color: #e6f7ff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <h1>Стоунхендж та околиці</h1>
     
-      
+    <div class="info-section">
+        <h2>Орієнтовний час добирання легковим автомобілем:</h2>
+        <ul>
+
+        </ul>
+        <p style="font-size: 0.9em; font-weight: normal; margin: 0;">*Час може змінюватись залежно від заторів та дорожніх умов.</p>
+    </div>
+    
         <div id="mapContainer">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d9509.897944690585!2d-1.8239858253784182!3d51.17792037644398!3m2!1i1024!2i768!4f13.1!5e1!3m2!1suk!2sua!4v1761122436390!5m2!1suk!2sua" width="600" height="450" 
-                style="border:0;" allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d161521.8415256926!2d-1.993708456073748!3d51.17887752763294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x487396696b020001%3A0x6d9f03e2c3664d6!2z0KHRgtC10L_RgdGD0Y7RgNC-0L_QsCwgU1A0IDcwQSwg0JPRgNC10L3RgdGM!3m2!1d51.1788819!2d-1.826215!4m5!1s0x4873b22e70c50d75%3A0x4a4a58f700940560!2z0JHQvtGB0LrRgNC1LCDQkdGC0L3RgdC_0L7RgNCz0LDRjyAi0JHQsNGA0L3RgdGM0LgiINCU0LDQvdGM0YHQutC4!3m2!1d51.066485999999995!2d-1.7944062!5e0!3m2!1suk!2suk!4v1687445200000!5m2!1suk!2suk" width="600" height="450" 
+                style="border:0;" allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
     <div id="panoContainer">
         <h2>Панорамний перегляд (Google Street View)</h2>
-        <iframe
+                <iframe
             width="100%"
             height="100%"
             frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed?pb=!3m2!1suk!2sua!4v1761065304977!5m2!1suk!2sua!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG13b3FlUFE.!2m2!1d51.17843307511775!2d-1.826001340014652!3f357.315239888935!4f-21.49353908800488!5f0.7820865974627469" 
+            src="https://www.google.com/maps/embed?pb=!4v1687445400000!6m8!1m7!1sCAoSLEFGMVFpcE5pTUVvWmZ2NTRVbW5KUE9DdkZ6eS1xNnJkR2R1b0xJc2p1XzZ4!2m2!1d51.1788819!2d-1.826215!3f0!4f0!5f0.7820865974627469"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
     </div>
-      <div class="audio-section">
-        <p style="margin: 0 0 5px 0;">Для кращого в атмосферу давними, можна запустити фонову музику:</p>
+      <div class="audio-section">
+        <p style="margin: 0 0 5px 0;">Для кращого в атмосферу давнини, можна запустити фонову музику:</p>
         <audio controls loop style="width: 100%;">
                         <source src="ваш_файл.mp3" type="audio/mpeg">
             Ваш браузер не підтримує елемент audio.
         </audio>
     </div>
-    <div id="videoContainer">
-        <h2>Відео про Стоунхендж (YouTube)</h2>
-        <iframe
-            src="https://www.youtube.com/embed/OTBDC83l6cU" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
-        </body>
+    <div id="videoContainer">
+        <h2>Відео про Стоунхендж (YouTube)</h2>
+        <iframe
+            src="https://www.youtube.com/embed/OTBDC83l6cU" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
+        </body>
 </html>

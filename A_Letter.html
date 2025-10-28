@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Цікаві Факти про Морських Тварин (jQuery UI)</title>
+    <title>Цікаві Факти про Морських Тварин (jQuery UI) — Розширено</title>
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
 
@@ -12,9 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-  
 
-        /* ================================================= */
         /* 2. ПІДКЛЮЧЕННЯ ЛОКАЛЬНОГО ШРИФТУ (@FONT-FACE) */
         @font-face {
             font-family: 'SourceCodePro'; 
@@ -28,7 +26,7 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 20px;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 20px auto;
         }
 
@@ -126,7 +124,7 @@
             color: #00796b;
         }
         
-/* === Datepicker === */
+    /* === Datepicker === */
         #datepicker-section {
             margin: 40px 0;
             background-color: #e3f2fd;
@@ -140,9 +138,37 @@
             border: 1px solid #90caf9;
             border-radius: 5px;
         }
+
+        /* === Нові секції (не змінюючи існуючі) === */
+        #extras {
+            margin: 40px 0;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+        }
+        .panel {
+            background: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .control-row {
+            display:flex;
+            gap:8px;
+            align-items:center;
+            margin-bottom:8px;
+        }
+        label { min-width: 110px; display:inline-block }
+
+        /* make dialogs look nicer on narrow screens */
+        @media (max-width:720px){
+            #extras{ grid-template-columns: 1fr }
+            #animal-menu{ width:100% }
+        }
     </style>
 </head>
 <body>
+    
     <h1>Цікаві Факти про Великих Морських Ссавців 🐋</h1>
 
     <h2>Основні Факти (Accordion)</h2>
@@ -243,36 +269,134 @@
         <h2>Оберіть дату вашого візиту до океанаріуму (Datepicker) 🗓️</h2>
         <p><input type="text" id="datepicker" placeholder="Натисніть для вибору дати"></p>
     </div>
-    
+   
+    <hr>
+    <h2>Додаткові віджети (набір плагінів з можливістю налаштувань)</h2>
+
+    <div id="extras">
+        <!-- Ліва колонка: самі віджети -->
+        <div class="panel" id="widgets-panel">
+            <h3>Інтерактивні віджети</h3>
+
+            <!-- Autocomplete -->
+            <div class="control-row">
+                <label for="autocomplete">Пошук тварин (Autocomplete):</label>
+                <input id="autocomplete" placeholder="Почніть вводити...">
+            </div>
+
+            <!-- Spinner -->
+            <div class="control-row">
+                <label for="spinner">Кількість відвідувачів (Spinner):</label>
+                <input id="spinner" value="1">
+            </div>
+
+            <!-- Progressbar -->
+            <div style="margin-top:12px">
+                <label>Завантаження даних (Progressbar):</label>
+                <div id="progressbar" style="margin-top:8px"></div>
+                <div style="margin-top:8px">
+                    <button id="progress-start">Старт</button>
+                    <button id="progress-stop">Стоп</button>
+                </div>
+            </div>
+
+            <!-- Dialog -->
+            <div style="margin-top:14px">
+                <button id="open-dialog">Відкрити інформаційне вікно (Dialog)</button>
+                <div id="info-dialog" title="Додаткова інформація" style="display:none">
+                    <p>Це приклад вікна-dialog, яке можна налаштувати (modal, ширина, кнопки тощо).</p>
+                </div>
+            </div>
+
+            <!-- Selectmenu -->
+            <div style="margin-top:14px" class="control-row">
+                <label for="select-habitat">Середовище:</label>
+                <select id="select-habitat">
+                    <option>Океан</option>
+                    <option>Прибережна зона</option>
+                    <option>Льодовикові води</option>
+                    <option>Кораллові рифи</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Права колонка: панель налаштувань -->
+        <div class="panel" id="options-panel">
+            <h3>Панель налаштувань віджетів</h3>
+
+            <h4>Autocomplete</h4>
+            <div class="control-row">
+                <label for="ac-minlen">minLength:</label>
+                <input id="ac-minlen" type="number" value="1" min="0" max="10">
+            </div>
+            <div class="control-row">
+                <label for="ac-delay">delay (ms):</label>
+                <input id="ac-delay" type="number" value="300" min="0" step="50">
+            </div>
+            <button id="apply-ac">Застосувати для Autocomplete</button>
+
+            <hr>
+            <h4>Spinner</h4>
+            <div class="control-row">
+                <label for="sp-min">min:</label>
+                <input id="sp-min" type="number" value="0">
+            </div>
+            <div class="control-row">
+                <label for="sp-max">max:</label>
+                <input id="sp-max" type="number" value="10">
+            </div>
+            <div class="control-row">
+                <label for="sp-step">step:</label>
+                <input id="sp-step" type="number" value="1" step="1">
+            </div>
+            <button id="apply-sp">Застосувати для Spinner</button>
+
+            <hr>
+            <h4>Dialog</h4>
+            <div class="control-row">
+                <label for="dlg-modal">modal:</label>
+                <input id="dlg-modal" type="checkbox" checked>
+            </div>
+            <div class="control-row">
+                <label for="dlg-width">width (px):</label>
+                <input id="dlg-width" type="number" value="400">
+            </div>
+            <button id="apply-dlg">Застосувати для Dialog</button>
+
+            <hr>
+            <h4>Progressbar</h4>
+            <div class="control-row">
+                <label for="pb-value">value (0-100):</label>
+                <input id="pb-value" type="number" value="0" min="0" max="100">
+            </div>
+            <button id="set-pb">Встановити Progress</button>
+        </div>
+    </div>
+
+    <!-- Скрипти (jQuery + jQuery UI вже підключені в наявному коді) -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script>
         $( function() {
-            // ІНІЦІАЛІЗАЦІЯ ACCORDION
-            // Зробить Accordion розгортання/згортання секцій
+            // ІСНУЮЧА ІНІЦІАЛІЗАЦІЯ (не змінювати)
             $( "#animal-accordion" ).accordion({
-                collapsible: true, // Дозволяє згорнути всі секції
-                heightStyle: "content" // Висота секції підлаштовується під її контент
+                collapsible: true,
+                heightStyle: "content"
             });
 
-            // ІНІЦІАЛІЗАЦІЯ TABS
-            // Перетворює список посилань та відповідні div-и на вкладки
             $( "#animal-tabs" ).tabs();
 
-            // ІНІЦІАЛІЗАЦІЯ TOOLTIP
-            // Застосовує спливаючу підказку до будь-якого елемента з атрибутом 'title' (у нашому випадку, це span з id="sleep-term")
             $( document ).tooltip({
-                items: "#sleep-term", // Застосовуємо лише до нашого елемента
+                items: "#sleep-term",
                 content: function() {
                     return $(this).attr('title');
                 }
             });
 
-             // Menu
             $("#animal-menu").menu();
 
-            // Slider
             $("#slider").slider({
                 value: 5,
                 min: 0,
@@ -283,7 +407,6 @@
                 }
             });
 
-            // Datepicker
             $("#datepicker").datepicker({
                 dateFormat: "dd.mm.yy",
                 firstDay: 1,
@@ -291,6 +414,98 @@
                 changeMonth: true,
                 changeYear: true
             });
+
+            // === НОВІ ВІДЖЕТИ ТА ЇХНЯ ІНІЦІАЛІЗАЦІЯ ===
+
+            // Autocomplete: джерело даних
+            var animals = [
+                "Тюлень", "Морж", "Кит", "Дельфін", "Восьминіг", "Акула", "Медуза", "Морська зірка", "Краб", "Коала (не морський, для тесту)"
+            ];
+            $("#autocomplete").autocomplete({
+                source: animals,
+                minLength: 1,
+                delay: 300
+            });
+
+            // Spinner
+            $("#spinner").spinner({
+                min: 0,
+                max: 10,
+                step: 1
+            });
+
+            // Progressbar
+            $("#progressbar").progressbar({ value: 0 });
+            var progressTimer = null;
+            $("#progress-start").button().on('click', function(){
+                if(progressTimer) return;
+                progressTimer = setInterval(function(){
+                    var v = $("#progressbar").progressbar('value') || 0;
+                    v += 5;
+                    if(v>100) v = 100;
+                    $("#progressbar").progressbar('value', v);
+                    if(v===100) { clearInterval(progressTimer); progressTimer=null; }
+                }, 400);
+            });
+            $("#progress-stop").button().on('click', function(){ if(progressTimer){ clearInterval(progressTimer); progressTimer=null; }});
+
+            // Dialog
+            $("#info-dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 400,
+                buttons: {
+                    "Закрити": function(){ $(this).dialog('close'); }
+                }
+            });
+            $("#open-dialog").button().on('click', function(){ $("#info-dialog").dialog('open'); });
+
+            // Selectmenu
+            $("#select-habitat").selectmenu();
+
+            // === Панель керування (застосування опцій динамічно) ===
+            $("#apply-ac").button().on('click', function(){
+                var mn = parseInt($("#ac-minlen").val(),10) || 0;
+                var dl = parseInt($("#ac-delay").val(),10) || 0;
+                $("#autocomplete").autocomplete('option', 'minLength', mn);
+                $("#autocomplete").autocomplete('option', 'delay', dl);
+                // невеликий фідбек
+                $(this).text('Застосовано').prop('disabled', true);
+                setTimeout(()=>{ $(this).text('Застосувати для Autocomplete').prop('disabled', false); }, 1000);
+            });
+
+            $("#apply-sp").button().on('click', function(){
+                var mn = parseFloat($("#sp-min").val());
+                var mx = parseFloat($("#sp-max").val());
+                var st = parseFloat($("#sp-step").val());
+                $("#spinner").spinner('option', 'min', mn);
+                $("#spinner").spinner('option', 'max', mx);
+                $("#spinner").spinner('option', 'step', st);
+                $(this).text('Застосовано').prop('disabled', true);
+                setTimeout(()=>{ $(this).text('Застосувати для Spinner').prop('disabled', false); }, 1000);
+            });
+
+            $("#apply-dlg").button().on('click', function(){
+                var modal = $("#dlg-modal").is(':checked');
+                var width = parseInt($("#dlg-width").val(),10) || 400;
+                $("#info-dialog").dialog('option', 'modal', modal);
+                $("#info-dialog").dialog('option', 'width', width);
+                $(this).text('Застосовано').prop('disabled', true);
+                setTimeout(()=>{ $(this).text('Застосувати для Dialog').prop('disabled', false); }, 1000);
+            });
+
+            $("#set-pb").button().on('click', function(){
+                var val = parseInt($("#pb-value").val(),10) || 0;
+                if(val<0) val=0; if(val>100) val=100;
+                $("#progressbar").progressbar('value', val);
+            });
+
+            // Кнопки з jQuery UI стилем для інших елементів
+            $("#open-dialog, #apply-ac, #apply-sp, #apply-dlg, #set-pb").button();
+
+            // Невеликий кастомізований фон для підказки autocomplete (опціонально)
+            $(".ui-autocomplete").css({'max-height':'180px', 'overflow-y':'auto'});
+
         } );
     </script>
 </body>

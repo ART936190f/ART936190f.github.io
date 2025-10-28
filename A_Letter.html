@@ -175,6 +175,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
+
     <script>
         $( function() {
             // ІНІЦІАЛІЗАЦІЯ ACCORDION
@@ -195,6 +196,53 @@
                 content: function() {
                     return $(this).attr('title');
                 }
+$( function() {
+            // ІНІЦІАЛІЗАЦІЯ ВІДЖЕТІВ З ПОПЕРЕДНЬОГО КРОКУ
+            $( "#animal-accordion" ).accordion({
+                collapsible: true,
+                heightStyle: "content"
+            });
+            $( "#animal-tabs" ).tabs();
+            $( document ).tooltip({
+                items: "#sleep-term",
+                content: function() {
+                    return $(this).attr('title');
+                }
+            });
+            
+            // ===================================
+            // ІНІЦІАЛІЗАЦІЯ НОВИХ ВІДЖЕТІВ
+            // ===================================
+
+            // 1. DATEPICKER
+            $( "#date-field" ).datepicker({
+                dateFormat: "dd.mm.yy", // Формат дати: день.місяць.рік
+                showAnim: "slideDown" // Ефект появи календаря
+            });
+            
+            // 2. MENU
+            $( "#animal-menu" ).menu({
+                // При натисканні на елемент меню, сторінка прокручується до відповідної секції
+                select: function(event, ui) {
+                    var targetId = ui.item.find("a").attr("href");
+                    if (targetId) {
+                        $('html, body').animate({
+                            scrollTop: $(targetId).offset().top
+                        }, 500);
+                    }
+                }
+            });
+            
+            // 3. SLIDER
+            $( "#number-slider" ).slider({
+                min: 0,
+                max: 9,
+                value: 0,
+                // Функція, яка викликається під час переміщення повзунка
+                slide: function( event, ui ) {
+                    $( "#slider-value" ).text( ui.value );
+                }
+                
             });
         } );
     </script>

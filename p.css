@@ -1,0 +1,52 @@
+:root{
+  --brand:#0d6efd;
+  --muted:#6c757d;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+body { background:#fff; color:#222; }
+
+.site-header { background:#263238; color:#fff; }
+.site-header .nav-link { color: rgba(255,255,255,0.85); }
+.logo svg { flex-shrink:0; }
+
+.company-logo { object-fit:cover; width:72px; height:72px; }
+
+.search-form input { min-width:240px; }
+
+.card { box-shadow: 0 1px 3px rgba(16,24,40,.05); }
+
+@media (max-width: 767px) {
+  .search-form { display:none !important; }
+}
+
+/* простий анімаційний ефект для банера */
+.carousel-item > div { transition: transform .6s ease; }
+.carousel-item.active > div { transform: translateY(-4px); }
+
+/* Footer small text */
+footer small { color: #444; }
+
+/* utility bar */
+.utility-bar { background: #fff; }
+.utility-link small { color: #444; }
+.utility-link img { filter: none; }
+
+/* logos strip */
+.logos-strip { background: #fafafa; }
+.company-logo-small { height:36px; width:auto; opacity:0.9; }
+.logos-view { overflow:hidden; }
+.logos-wrapper { transition: transform .35s ease; }
+
+/* кнопки керування логотипами */
+.logos-prev, .logos-next { width:38px; height:38px; display:flex; align-items:center; justify-content:center; }
+
+/* small helper card */
+.quick-links-card .card-title { font-size:0.95rem; margin-bottom:0.6rem; }
+.quick-links-card ul li a { color: #0d6efd; text-decoration: none; }
+.quick-links-card ul li a:hover { text-decoration: underline; }
+
+/* responsive tweaks */
+@media (max-width: 991px) {
+  .logos-prev, .logos-next { display:none; }
+  .logos-wrapper { gap:1rem; padding:4px 0; }
+}

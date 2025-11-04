@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Інтерактивний демо — анімації, події та втеча об'єктів</title>
+  <style>
+    :root{--accent:#2b90d9;--bg:#f6f8fb;--muted:#666}
+    body{font-family:Inter, system-ui, Arial, sans-serif;margin:0;background:var(--bg);color:#111}
+    header{background:#fff;border-bottom:1px solid #e6e9ef;padding:12px 20px;display:flex;align-items:center;gap:16px}
+    .brand{font-weight:700;color:var(--accent)}
+    nav{display:flex;gap:12px}
+    /* Hover dropdown */
+    .menu{position:relative}
+    .menu > a{padding:8px 12px;display:inline-block;text-decoration:none;color:#111;border-radius:6px}
+    .submenu{position:absolute;left:0;top:36px;background:#fff;border:1px solid #e0e4ea;padding:8px;border-radius:6px;display:none;min-width:180px;box-shadow:0 6px 18px rgba(20,30,60,0.08)}
+    .menu:hover .submenu{display:block}
+    .submenu a{display:block;padding:6px 8px;text-decoration:none;color:#111;border-radius:4px}
+    .container{display:grid;grid-template-columns:300px 1fr;gap:18px;padding:20px}
+    .card{background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(20,30,60,0.04)}
+    .left .card{margin-bottom:12px}
+    .center{position:relative;overflow:hidden;min-height:520px}
+    /* fleeing area */
+    .playground{position:relative;background:linear-gradient(180deg,#fcfeff,#eef6ff);height:520px;border-radius:10px;overflow:hidden}
+    .flee{position:absolute;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;cursor:pointer;transition:transform .15s linear}
+    .f0{background:#ff6b6b}
+    .f1{background:#ffd166}
+    .f2{background:#06d6a0}
+    .f3{background:#4d96ff}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+    button{border:0;background:var(--accent);color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .ghost{background:#fff0;border:1px dashed #cfd8e3}
+    /* Modal & backdrop */
+    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center}
+    .modal{background:#fff;padding:18px;border-radius:12px;max-width:640px;width:90%;box-shadow:0 20px 40px rgba(10,20,40,0.25);opacity:0;transform:translateY(12px) scale(.98);transition:all .28s ease}
+    .backdrop.show{display:flex}
+    .backdrop.show .modal{opacity:1;transform:translateY(0) scale(1)}
+    /* small UI */
+    label{display:block;font-size:13px;margin:6px 0;color:var(--muted)}
+    input[type="text"],input[type="number"],select{width:100%;padding:8px;border-radius:8px;border:1px solid #d6dbe8}
+    .row{display:flex;gap:8px}
+    .row>div{flex:1}
+    .fade{transition:opacity .25s ease,transform .25s ease}
+    .hidden{opacity:0;pointer-events:none}
+    .result{background:#f8fbff;padding:8px;border-radius:8px;margin-top:8px;border:1px solid #ecf3ff}
+    footer{padding:12px 20px;text-align:center;color:#666;font-size:13px}
+    /* small responsive */
+    @media (max-width:800px){.container{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Інтерактивна сторінка</div>
+    <nav>
+      <div class="menu">
+        <a href="#">Меню ▼</a>
+        <div class="submenu">
+          <a href="#timer">Таймер відліку</a>
+          <a href="#calc">Калькулятор</a>
+          <a href="#converter">Конвертер RGB→HEX</a>
+          <a href="#poll">Опитування</a>
+        </div>
+      </div>
+      <a href="#" id="openModalBtn">Відкрити діалог</a>
+      <a href="#" id="toggleBoxBtn">Показати/Приховати блок</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <aside class="left">
+      <div class="card">
+        <h3>Управління</h3>
+        <div class="toolbar">
+          <button id="spawnBtn">Додати об'єкт</button>
+          <button id="clearBtn">Очистити</button>
+          <button id="randomizeBtn">Перемішати</button>
+        </div>
+        <p style="font-size:13px;color:var(--muted)">Утримуйте <strong>лівий Ctrl</strong> або клацніть лівою кнопкою миші (утримуючи) — щоб об'єкти не втікали.</p>
+      </div>
+
+      <div class="card" id="timer">
+        <h3>Таймер зворотного відліку</h3>
+        <label>Введіть дату та час (YYYY-MM-DDTHH:MM):</label>
+        <input type="text" id="countdownInput" placeholder="2025-12-31T23:59" />
+        <div style="margin-top:8px"><button id="startCountdown">Запустити</button></div>
+        <div class="result" id="countdownDisplay">Тут буде відлік</div>
+      </div>
+
+      <div class="card" id="calc">
+        <h3>Математичний калькулятор</h3>
+        <label>Вираз (наприклад: (4+7)/3*2):</label>
+        <input type="text" id="expr" placeholder="3+4*2" />
+        <div style="margin-top:8px"><button id="evalBtn">Обчислити</button></div>
+        <div class="result" id="exprResult">—</div>
+      </div>
+
+      <div class="card" id="converter">
+        <h3>RGB → HEX</h3>
+        <label>R</label><input type="number" id="r" min="0" max="255" value="255" />
+        <label>G</label><input type="number" id="g" min="0" max="255" value="100" />
+        <label>B</label><input type="number" id="b" min="0" max="255" value="50" />
+        <div style="margin-top:8px"><button id="rgbToHexBtn">Конвертувати</button></div>
+        <div class="result" id="hexResult">#FFFFFF</div>
+      </div>
+
+      <div class="card" id="poll">
+        <h3>Опитування</h3>
+        <p>Який ефект вам найбільше подобається?</p>
+        <label><input type="radio" name="vote" value="Анімація" checked> Анімація</label><br/>
+        <label><input type="radio" name="vote" value="Вікно"> Діалог</label><br/>
+        <label><input type="radio" name="vote" value="Конвертер"> Конвертер</label><br/>
+        <div style="margin-top:8px"><button id="voteBtn">Голосувати</button></div>
+        <div class="result" id="pollResult">Поки немає голосів</div>
+      </div>
+
+    </aside>
+
+    <main class="center">
+      <div class="card center">
+        <h2>Playground — тікаючі об'єкти</h2>
+        <div class="playground" id="playground">
+          <!-- fleeing objects injected here -->
+        </div>
+
+        <div style="margin-top:12px">
+          <button id="showPopupBtn">Показати спливаюче</button>
+          <button id="toggleAnimBtn">Пауза/Резюме анімації</button>
+        </div>
+
+        <div id="infoBox" class="card fade hidden" style="margin-top:12px">
+          <h4>Інтерактивний блок</h4>
+          <p>Натисніть на круг, щоб змінити його зовнішній вигляд і додати data-атрибут.</p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer class="card">Побудовано на чистому HTML/CSS/JS — відкрийте файл локально у браузері.</footer>
+
+  <!-- Modal / Backdrop -->
+  <div class="backdrop" id="backdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3>Діалогове вікно</h3>
+      <p>Це модальне вікно з затемненням фону. Воно з'являється плавно.</p>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="closeModalBtn">Закрити</button>
+        <button id="actionModalBtn">Дія</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exit-intent popup (hidden by default) -->
+  <div class="backdrop" id="exitIntentBackdrop" style="display:none;">
+    <div class="modal">
+      <h3>Побачили, що ви йдете!</h3>
+      <p>Зачекайте — передбачена знижка :)</p>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="stayBtn">Залишаюсь</button>
+        <button id="leaveBtn">Все одно піду</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // -------------------- Внутрішній стан --------------------
+  const playground = document.getElementById('playground');
+  let objects = [];
+  let animationPaused = false;
+  let ctrlPressed = false;
+  let leftMouseDown = false;
+
+  // Helpful utilities
+  function rnd(min, max){return Math.random()*(max-min)+min}
+  function clamp(v, a, b){return Math.max(a,Math.min(b,v))}
+
+  // Create a fleeing object
+  function createFlee(id){
+    const el = document.createElement('div');
+    el.className = 'flee f'+(id%4);
+    el.textContent = id%100;
+    el.style.left = rnd(10, playground.clientWidth-50)+'px';
+    el.style.top = rnd(10, playground.clientHeight-50)+'px';
+    // physical state
+    const state = {el,x:parseFloat(el.style.left),y:parseFloat(el.style.top),vx:rnd(-0.6,0.6),vy:rnd(-0.6,0.6),w:40,h:40,id}
+
+    el.addEventListener('click', ()=>{
+      // toggle bigger state and add attribute
+      const bigger = el.classList.toggle('big');
+      if(bigger){
+        el.style.transform = 'scale(1.4)';
+        el.dataset.clicked = new Date().toISOString();
+      } else {
+        el.style.transform = '';
+        delete el.dataset.clicked;
+      }
+      // show info box
+      document.getElementById('infoBox').classList.remove('hidden');
+      setTimeout(()=>document.getElementById('infoBox').classList.add('hidden'),3000);
+    });
+
+    el.addEventListener('mouseenter', ()=>{el.style.transform += ' rotate(5deg)';});
+    el.addEventListener('mouseleave', ()=>{el.style.transform = el.classList.contains('big') ? 'scale(1.4)' : '';});
+
+    playground.appendChild(el);
+    objects.push(state);
+  }
+
+  // initial population
+  for(let i=0;i<8;i++) createFlee(i+1);
+
+  // spawn/clear UI
+  document.getElementById('spawnBtn').addEventListener('click', ()=>createFlee(objects.length+1));
+  document.getElementById('clearBtn').addEventListener('click', ()=>{
+    objects.forEach(s=>s.el.remove()); objects=[];
+  });
+  document.getElementById('randomizeBtn').addEventListener('click', ()=>{
+    objects.forEach(s=>{s.x=rnd(10,playground.clientWidth-50); s.y=rnd(10,playground.clientHeight-50)});
+  });
+
+  // Control pressed detection (left ctrl)
+  window.addEventListener('keydown', (e)=>{ if(e.code==='ControlLeft') ctrlPressed=true; });
+  window.addEventListener('keyup', (e)=>{ if(e.code==='ControlLeft') ctrlPressed=false; });
+  // left mouse detection
+  window.addEventListener('mousedown',(e)=>{ if(e.button===0) leftMouseDown=true; });
+  window.addEventListener('mouseup',(e)=>{ if(e.button===0) leftMouseDown=false; });
+
+  // animation loop
+  let mouse = {x:-9999,y:-9999};
+  playground.addEventListener('mousemove', (ev)=>{ const r = playground.getBoundingClientRect(); mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; });
+  playground.addEventListener('mouseleave', ()=>{ mouse.x = -9999; mouse.y = -9999; });
+
+  function step(){
+    if(!animationPaused){
+      objects.forEach(s=>{
+        // compute center
+        const cx = s.x + s.w/2; const cy = s.y + s.h/2;
+        const dx = cx - mouse.x; const dy = cy - mouse.y;
+        const dist = Math.hypot(dx,dy);
+        // if mouse is near and ctrl NOT pressed and left mouse NOT down -> flee
+        if(dist < 140 && mouse.x>-900 && !ctrlPressed && !leftMouseDown){
+          const force = (140-dist)/140; // 0..1
+          // normalized away vector
+          const nx = dx/dist || rnd(-1,1);
+          const ny = dy/dist || rnd(-1,1);
+          s.vx += nx * force * 2.2;
+          s.vy += ny * force * 2.2;
+        }
+        // friction
+        s.vx *= 0.94; s.vy *= 0.94;
+        s.x += s.vx; s.y += s.vy;
+        // keep inside
+        s.x = clamp(s.x, 4, playground.clientWidth - s.w - 4);
+        s.y = clamp(s.y, 4, playground.clientHeight - s.h - 4);
+        // write
+        s.el.style.left = s.x + 'px'; s.el.style.top = s.y + 'px';
+      });
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+
+  // Toggle animation
+  document.getElementById('toggleAnimBtn').addEventListener('click', ()=>{ animationPaused = !animationPaused; document.getElementById('toggleAnimBtn').textContent = animationPaused ? 'Резюме анімації' : 'Пауза/Резюме анімації'; });
+
+  // Modal open/close
+  const backdrop = document.getElementById('backdrop');
+  document.getElementById('openModalBtn').addEventListener('click',(e)=>{ e.preventDefault(); backdrop.classList.add('show'); });
+  document.getElementById('closeModalBtn').addEventListener('click', ()=> backdrop.classList.remove('show'));
+  document.getElementById('actionModalBtn').addEventListener('click', ()=>{ alert('Ви виконали дію!'); backdrop.classList.remove('show'); });
+  backdrop.addEventListener('click', (e)=>{ if(e.target===backdrop) backdrop.classList.remove('show'); });
+
+  // Toggle box show/hide
+  const toggleBoxBtn = document.getElementById('toggleBoxBtn');
+  const infoBox = document.getElementById('infoBox');
+  toggleBoxBtn.addEventListener('click',(e)=>{ e.preventDefault(); if(infoBox.classList.contains('hidden')){ infoBox.classList.remove('hidden'); } else { infoBox.classList.add('hidden'); } });
+
+  // popup on button
+  document.getElementById('showPopupBtn').addEventListener('click', ()=>{
+    const p = document.createElement('div'); p.className='card'; p.style.position='absolute'; p.style.right='18px'; p.style.bottom='18px'; p.style.width='220px'; p.innerHTML='<b>Спливаюче</b><p style="margin:6px 0">Це спливаюче в куточку.</p>';
+    playground.appendChild(p);
+    setTimeout(()=>p.remove(),4000);
+  });
+
+  // Exit intent
+  let exitShown=false;
+  document.addEventListener('mouseout',(e)=>{
+    if(exitShown) return;
+    e = e || window.event;
+    const from = e.relatedTarget || e.toElement;
+    if(!from && e.clientY <= 0){ // cursor left to top
+      exitShown=true;
+      const exitEl = document.getElementById('exitIntentBackdrop');
+      exitEl.style.display='flex';
+      exitEl.querySelector('button#stayBtn').onclick = ()=>{ exitEl.style.display='none'; };
+      exitEl.querySelector('button#leaveBtn').onclick = ()=>{ exitEl.style.display='none'; };
+    }
+  });
+
+  // -------------------- Countdown --------------------
+  let countdownTimer = null;
+  document.getElementById('startCountdown').addEventListener('click', ()=>{
+    const val = document.getElementById('countdownInput').value.trim();
+    if(!val) { document.getElementById('countdownDisplay').textContent='Введіть дату.'; return; }
+    const target = new Date(val);
+    if(isNaN(target)) { document.getElementById('countdownDisplay').textContent='Неправильний формат дати'; return; }
+    if(countdownTimer) clearInterval(countdownTimer);
+    function tick(){
+      const now = new Date(); const diff = target - now;
+      if(diff<=0){ document.getElementById('countdownDisplay').textContent='Час настав!'; clearInterval(countdownTimer); return; }
+      const days = Math.floor(diff/86400000); const hours = Math.floor((diff%86400000)/3600000);
+      const mins = Math.floor((diff%3600000)/60000); const secs = Math.floor((diff%60000)/1000);
+      document.getElementById('countdownDisplay').textContent = `${days}д ${hours}г ${mins}хв ${secs}с`;
+    }
+    tick(); countdownTimer = setInterval(tick,1000);
+  });
+
+  // -------------------- Calculator / Expression --------------------
+  document.getElementById('evalBtn').addEventListener('click', ()=>{
+    const expr = document.getElementById('expr').value.trim();
+    if(!expr){ document.getElementById('exprResult').textContent='Введіть вираз'; return; }
+    try{
+      // Safe-ish evaluation: allow digits, +-*/()., spaces
+      if(!/^[-+*\/%0-9().\s]+$/.test(expr)){ throw new Error('Некоректні символи'); }
+      const fn = new Function('return ('+expr+')');
+      const res = fn();
+      document.getElementById('exprResult').textContent = String(res);
+    } catch(err){ document.getElementById('exprResult').textContent = 'Помилка: '+err.message; }
+  });
+
+  // -------------------- RGB → HEX --------------------
+  document.getElementById('rgbToHexBtn').addEventListener('click', ()=>{
+    const r = parseInt(document.getElementById('r').value||0);
+    const g = parseInt(document.getElementById('g').value||0);
+    const b = parseInt(document.getElementById('b').value||0);
+    const clamp8 = v=>clamp(Math.round(v),0,255);
+    const toHex = v => clamp8(v).toString(16).padStart(2,'0').toUpperCase();
+    const hex = '#'+toHex(r)+toHex(g)+toHex(b);
+    document.getElementById('hexResult').textContent = hex;
+  });
+
+  // -------------------- Poll --------------------
+  const votes = {};
+  document.getElementById('voteBtn').addEventListener('click', ()=>{
+    const choice = document.querySelector('input[name="vote"]:checked').value;
+    votes[choice] = (votes[choice]||0)+1;
+    // compute totals
+    const entries = Object.entries(votes);
+    const total = entries.reduce((s,[k,v])=>s+v,0);
+    const lines = entries.map(([k,v])=>`${k}: ${v} (${Math.round(v/total*100)}%)`);
+    document.getElementById('pollResult').textContent = lines.join(' | ');
+  });
+
+  // -------------------- Misc small behaviours --------------------
+  // clicking outside modal
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ backdrop.classList.remove('show'); document.getElementById('exitIntentBackdrop').style.display='none'; } });
+
+  // resize handling to keep objects inside
+  window.addEventListener('resize', ()=>{
+    objects.forEach(s=>{ s.x = clamp(s.x,4,playground.clientWidth - s.w -4); s.y = clamp(s.y,4,playground.clientHeight - s.h -4); });
+  });
+
+  // Add a few helpful hints: clicking on the playground toggles ctrl simulation (dev convenience)
+  playground.addEventListener('click',(e)=>{ /* keep for potential expansion */ });
+
+  // ensure accessibility: focus trap removed for simplicity
+  </script>
+</body>
+</html>

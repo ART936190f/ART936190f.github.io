@@ -11,6 +11,8 @@
     grid-template-rows: repeat(var(--rows), var(--cell-size));
     border: 3px solid #333;
     user-select: none; /* Забороняємо виділення тексту */
+    margin: 20px auto; /* Центрування дошки для кращого вигляду */
+    width: fit-content;
 }
 
 .cell {

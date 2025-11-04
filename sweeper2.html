@@ -2,14 +2,22 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Сапер на JavaScript</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сапер - Гра</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Сапер</h1>
-    <div id="game-container">
-        <div id="board" class="board"></div>
+    <div id="begin">
+        <form id="formBoom">
+            Розмір сітки <input type="text" id="matrixSize" size="2" value="10">
+            Кількість бомб <input type="text" id="matrixBomb" size="2" value="10">
+            <input value="START" type="button" onclick="startGame()">
+            <input value="FAQ" type="button" onclick="info()">
+        </form>
     </div>
-    <script src="game.js"></script>
+
+    <div id="board" class="board"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>

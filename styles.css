@@ -1,0 +1,52 @@
+:root {
+    --rows: 10;
+    --cols: 10;
+    --cell-size: 30px;
+}
+
+.board {
+    display: grid;
+    /* Визначаємо сітку на основі змінних, встановлених у JS */
+    grid-template-columns: repeat(var(--cols), var(--cell-size));
+    grid-template-rows: repeat(var(--rows), var(--cell-size));
+    border: 3px solid #333;
+    user-select: none; /* Забороняємо виділення тексту */
+}
+
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid #777;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Стан: Розкрита клітинка */
+.cell.revealed {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    cursor: default;
+}
+
+/* Стан: Міна */
+.cell.mine {
+    background-color: #f00;
+    color: white;
+}
+
+/* Стан: Прапорець */
+.cell.flagged {
+    color: #0000ff; /* Синій колір для прапорця */
+    font-size: 1.2em;
+}
+
+/* Стан: Числові значення */
+.cell[data-value="1"] { color: blue; }
+.cell[data-value="2"] { color: green; }
+.cell[data-value="3"] { color: red; }
+.cell[data-value="4"] { color: purple; }
+/* Додайте стилі для інших чисел */

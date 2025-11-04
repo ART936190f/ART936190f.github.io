@@ -35,7 +35,7 @@ function init() {
     for (let column = 0; column < columns; column++) {
       let index = row * columns + column;
       tile[row][column] = document.createElement('img');
-      tile[row][column].src = 'images\hidden.png';
+      tile[row][column].src = 'images\hidden.png.png';
       tile[row][column].style = 'position:absolute;height:30px; width: 30px';
       tile[row][column].style.top = 150 + row * 30;
       tile[row][column].style.left = 50 + column * 30;
@@ -82,17 +82,17 @@ function click(event) {
   if (event.which == 3) {
     switch (picture[row][column]) {
       case 'hidden':
-        tile[row][column].src = 'images\flag.png';
+        tile[row][column].src = 'images\flag.png.png';
         remaining--;
         picture[row][column] = 'flag';
         break;
       case 'flag':
-        tile[row][column].src = 'images\question.png';
+        tile[row][column].src = 'images\question.png.png';
         remaining++;
         picture[row][column] = 'question';
         break;
       case 'question':
-        tile[row][column].src = 'images\hidden.png';
+        tile[row][column].src = 'images\hidden.png.png';
         picture[row][column] = 'hidden';
         break;
     }
@@ -105,10 +105,10 @@ function click(event) {
       for (let row = 0; row < rows; row++)
         for (let column = 0; column < columns; column++) {
           if (board[row][column] == 'mine') {
-            tile[row][column].src = 'images\mine.png';
+            tile[row][column].src = 'images\mine.png.png';
           }
           if (board[row][column] != 'mine' && picture[row][column] == 'flag') {
-            tile[row][column].src = 'images\misplaced.png';
+            tile[row][column].src = 'images\misplaced.png.png';
           }
         }
       status.innerHTML = 'GAME OVER<br><br>Click here to restart';
@@ -121,7 +121,7 @@ function click(event) {
 }
  
 function reveal(row, column) {
-  tile[row][column].src = board[row][column] + 'images\.png';
+  tile[row][column].src = board[row][column] + 'images\.png.png';
   if (board[row][column] != 'mine' && picture[row][column] == 'hidden')
     revealed++;
   picture[row][column] = board[row][column];

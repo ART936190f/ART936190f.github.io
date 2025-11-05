@@ -46,7 +46,7 @@ class MinesweeperGame {
         this.rows = rows;
         this.cols = cols;
         this.mines = mines;
-        this.board = []; // ВИПРАВЛЕНО: Ініціалізація масиву
+        this.board = []; 
         this.gameStatus = 'AwaitingFirstMove';
 
         this.initializeBoard();
@@ -60,7 +60,7 @@ class MinesweeperGame {
      */
     initializeBoard() {
         for (let y = 0; y < this.rows; y++) {
-            this.board[y] = []; // ВИПРАВЛЕНО: Ініціалізація внутрішнього масиву
+            this.board[y] = []; 
             for (let x = 0; x < this.cols; x++) {
                 this.board[y][x] = {
                     isMine: false,
@@ -73,7 +73,7 @@ class MinesweeperGame {
     }
 
     /**
-     * Випадкове розміщення мін. O(M) складність.
+     * Випадкове розміщення мін.
      */
     placeMines() {
         let minesPlaced = 0;
@@ -89,7 +89,7 @@ class MinesweeperGame {
     }
 
     /**
-     * Розраховує кількість сусідніх мін для кожної клітинки. O(N) складність.
+     * Розраховує кількість сусідніх мін для кожної клітинки.
      */
     calculateValues() {
         for (let y = 0; y < this.rows; y++) {
@@ -124,7 +124,7 @@ class MinesweeperGame {
     revealCell(x, y) {
         const cell = this.board[y][x];
 
-        // ВИПРАВЛЕНО: Використання ||
+        // Перевірка умов: вже розкрито, стоїть прапорець, або гра закінчена
         if (cell.isRevealed || cell.isFlagged || (this.gameStatus !== 'InProgress' && this.gameStatus !== 'AwaitingFirstMove')) {
             return;
         }
@@ -144,10 +144,12 @@ class MinesweeperGame {
             return;
         }
 
+        // === КЛЮЧОВИЙ КОД ДЛЯ АВТОМАТИЧНОГО РОЗКРИТТЯ ===
         // Якщо клітинка порожня (значення 0), активуємо алгоритм Flood-Fill
         if (cell.value === 0) {
             this.floodFill(x, y);
         }
+        // ===============================================
 
         this.checkWinCondition();
     }
@@ -159,17 +161,16 @@ class MinesweeperGame {
      */
     floodFill(x, y) {
         // Умова зупинки: вихід за межі
-        // ВИПРАВЛЕНО: Використання ||
         if (x < 0 || x >= this.cols || y < 0 || y >= this.rows) return;
 
         const cell = this.board[y][x];
-        // Умова зупинки: розкрита клітинка, міна, або прапорець
+        // Умова зупинки: вже розкрито, міна, або прапорець
         if (cell.isRevealed || cell.isMine || cell.isFlagged) return;
 
         cell.isRevealed = true;
         this.updateDOMCell(x, y);
 
-        // Зупиняємо рекурсію, якщо дісталися клітинки з числом > 0
+        // Зупиняємо рекурсію, якщо дісталися клітинки з числом > 0 (край заповнення)
         if (cell.value > 0) return;
 
         // Рекурсивний виклик для 8 сусідів
@@ -207,7 +208,7 @@ class MinesweeperGame {
         if (!domElement) return;
 
         domElement.className = 'cell';
-        domElement.textContent = ''; // Очищаємо текст, щоб уникнути накладання
+        domElement.textContent = ''; 
         domElement.removeAttribute('data-value');
 
         if (cell.isRevealed) {
@@ -275,13 +276,12 @@ class MinesweeperGame {
      */
     renderBoard() {
         BOARD_DOM.innerHTML = '';
-        BOARD_DOM.className = 'board'; // Забезпечуємо наявність класу
+        BOARD_DOM.className = 'board'; 
 
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0; x < this.cols; x++) {
                 const cellDiv = document.createElement('div');
                 cellDiv.className = 'cell';
-                // Використовуємо ідентифікатор 'x:y' для швидкої DOM-маніпуляції
                 cellDiv.id = `${x}:${y}`;
 
                 // Обробка лівого кліка (Розкриття)
@@ -289,7 +289,7 @@ class MinesweeperGame {
 
                 // Обробка правого кліка (Прапорець)
                 cellDiv.addEventListener('contextmenu', (e) => {
-                    e.preventDefault(); // Забороняємо стандартне контекстне меню
+                    e.preventDefault(); 
                     this.toggleFlag(x, y);
                 });
 
@@ -301,8 +301,5 @@ class MinesweeperGame {
 
 // === ІНІЦІАЛІЗАЦІЯ ===
 document.addEventListener('DOMContentLoaded', () => {
-    // Ініціалізуємо гру зі значеннями за замовчуванням при першому завантаженні
-    // або чекаємо на клік користувача по "START"
-    // window.game = new MinesweeperGame(ROWS, COLS, MINES); // Прибрано, очікуємо на startGame
     console.log("Введіть розмір сітки та кількість бомб і натисніть START.");
 });

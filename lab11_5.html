@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Зібрані приклади — натисни кнопку</title>
+  <style>
+    :root{
+      --bg:#f6f9fc;
+      --panel:#ffffff;
+      --accent:#2b82ff;
+      --muted:#666;
+    }
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      background: linear-gradient(180deg,var(--bg),#e9f2ff 60%);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+    .container{
+      width:100%;
+      max-width:980px;
+      background:var(--panel);
+      border-radius:14px;
+      box-shadow:0 10px 30px rgba(20,40,80,0.08);
+      padding:22px;
+    }
+    h1{margin:0 0 8px 0;font-size:20px}
+    p.lead{margin:0 0 18px 0;color:var(--muted)}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    button{
+      background:var(--accent);
+      color:white;
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(43,130,255,0.18);
+      font-weight:600;
+    }
+    button.secondary{
+      background:transparent;
+      color:var(--accent);
+      border:1px solid rgba(43,130,255,0.16);
+      box-shadow:none;
+      font-weight:600;
+    }
+    #result{
+      background:linear-gradient(180deg,#fff,#fbfdff);
+      border-radius:10px;
+      padding:16px;
+      min-height:140px;
+      color:#123;
+      box-shadow:inset 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .row{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap}
+    footer{margin-top:14px;color:var(--muted);font-size:13px}
+    .small{font-size:13px;color:var(--muted)}
+    input[type="number"]{width:110px;padding:6px;border-radius:8px;border:1px solid #ddd}
+    label{font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <h1>Зразки JavaScript — запуск окремими кнопками</h1>
+    <p class="lead">Натисни кнопку, щоб виконати відповідний приклад. Результат з'явиться в блоці нижче.</p>
+
+    <div class="controls" aria-hidden="false">
+      <button id="btnDialogs">1. Діалоги (колір фону)</button>
+      <button id="btnCalc">2. Арифметика (новий вираз)</button>
+      <button id="btnPolygon">3. Геометрія (правильний багатокутник)</button>
+      <button id="btnDynamic" class="secondary">4. Динамічна сторінка (список)</button>
+      <button id="btnClear" class="secondary" title="Очистити результат">Очистити</button>
+    </div>
+
+    <div id="result" aria-live="polite">
+      <p class="small">Тут будуть показані результати виконання прикладів.</p>
+    </div>
+
+    <footer>
+      <span class="small">© Прізвище — демо приклади</span>
+    </footer>
+  </div>
+
+  <script>
+    "use strict";
+
+    const result = document.getElementById('result');
+
+    // Допоміжна функція — вивід у блок
+    function show(html) {
+      result.innerHTML = html;
+    }
+
+    // 1) Діалоги — нова версія: питаємо колір, змінюємо фон сторінки, підтвердження
+    function demoDialogs() {
+      // Привітання через alert
+      alert("Привіт! Зараз змінимо фон сторінки через діалоги.");
+
+      // confirm — чи хоче користувач змінити фон
+      const proceed = confirm("Хочете вибрати колір фону (так — вибрати, відміна — випадковий)?");
+      let color;
+      if (proceed) {
+        // prompt — очікуємо назву кольору або hex-код
+        const input = prompt("Введіть колір (наприклад: lightblue або #ffd700):", "#e0f7ff");
+        color = input && input.trim() ? input.trim() : null;
+      } else {
+        // випадковий колір
+        const r = Math.floor(Math.random()*200) + 30;
+        const g = Math.floor(Math.random()*200) + 30;
+        const b = Math.floor(Math.random()*200) + 30;
+        color = `rgb(${r}, ${g}, ${b})`;
+      }
+
+      // Змінюємо фон і виводимо повідомлення
+      document.body.style.background = color;
+      show(`<strong>Фон змінено на:</strong> <code>${color}</code><br><span class="small">Щоб повернути стандарт, оновіть сторінку (F5).</span>`);
+    }
+
+    // 2) Арифметика — новий вираз: обчислення коренів квадратного рівняння ax^2+bx+c=0
+    function demoCalc() {
+      // Попросимо три коефіцієнти через prompt з валідацією
+      const parseNum = (txt, fallback=0) => {
+        if (txt === null) return null; // скасування
+        const n = Number(txt.replace(',', '.'));
+        return Number.isFinite(n) ? n : fallback;
+      };
+
+      const aInput = prompt("Коефіцієнт a (не 0) — для ax² + bx + c = 0", "1");
+      if (aInput === null) { show('Операцію скасовано.'); return; }
+      const a = parseNum(aInput);
+      if (a === 0) { show('a не може бути 0. Спробуйте ще раз.'); return; }
+
+      const bInput = prompt("Коефіцієнт b", "0");
+      if (bInput === null) { show('Операцію скасовано.'); return; }
+      const b = parseNum(bInput);
+
+      const cInput = prompt("Коефіцієнт c", "0");
+      if (cInput === null) { show('Операцію скасовано.'); return; }
+      const c = parseNum(cInput);
+
+      // Обчислення дискримінанту та коренів
+      const D = b*b - 4*a*c;
+      let html = `<strong>Рівняння:</strong> ${a}x² + ${b}x + ${c} = 0<br>`;
+      html += `<strong>Дискримінант D =</strong> ${D}<br>`;
+
+      if (D > 0) {
+        const x1 = (-b + Math.sqrt(D)) / (2*a);
+        const x2 = (-b - Math.sqrt(D)) / (2*a);
+        html += `<strong>Два дійсні корені:</strong> x₁ = ${x1.toFixed(6)}, x₂ = ${x2.toFixed(6)}`;
+      } else if (D === 0) {
+        const x = -b / (2*a);
+        html += `<strong>Подвійний корінь:</strong> x = ${x.toFixed(6)}`;
+      } else {
+        // комплексні корені
+        const re = (-b / (2*a)).toFixed(6);
+        const im = (Math.sqrt(Math.abs(D)) / (2*a)).toFixed(6);
+        html += `<strong>Комплексні корені:</strong> x₁ = ${re} + ${im}i, x₂ = ${re} - ${im}i`;
+      }
+
+      show(html);
+    }
+
+    // 3) Лінійні алгоритми / Геометрія — нова версія: задана кількість сторін і довжина сторони -> площа і периметр правильного багатокутника
+    function demoPolygon() {
+      // Використаємо модальність вводу через просту форму, а не prompt, — створимо невеликий інтерфейс у блоці результату
+      show(`
+        <form id="polyForm">
+          <div class="row">
+            <label>Кількість сторін (n ≥ 3): <input id="polyN" type="number" value="5" min="3" required></label>
+            <label>Довжина сторони (s > 0): <input id="polyS" type="number" value="3" min="0.001" step="0.01" required></label>
+            <button id="polyCalc" type="submit">Обчислити</button>
+          </div>
+          <div id="polyOut" style="margin-top:12px"></div>
+        </form>
+      `);
+
+      const form = document.getElementById('polyForm');
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const n = Number(document.getElementById('polyN').value);
+        const s = Number(document.getElementById('polyS').value);
+        const out = document.getElementById('polyOut');
+
+        if (!Number.isFinite(n) || n < 3) { out.innerHTML = '<span class="small">Помилка: n має бути цілим ≥ 3.</span>'; return; }
+        if (!Number.isFinite(s) || s <= 0) { out.innerHTML = '<span class="small">Помилка: s має бути додатним числом.</span>'; return; }
+
+        // Периметр
+        const perimeter = n * s;
+        // Площа правильного багатокутника зі стороною s: S = (n * s^2) / (4 * tan(pi/n))
+        const area = (n * s * s) / (4 * Math.tan(Math.PI / n));
+
+        out.innerHTML = `<strong>Результат:</strong><br> Периметр = ${perimeter.toFixed(4)}<br> Площа = ${area.toFixed(4)}`;
+      }, { once: true });
+    }
+
+    // 4) Динамічно сформована сторінка — нова версія: створюємо список-заставку з кількох елементів, які можна додавати/видаляти
+    function demoDynamic() {
+      show(`
+        <div>
+          <div class="row">
+            <label>Нова позиція: <input type="text" id="itemText" placeholder="Наприклад: Задача 1"></label>
+            <button id="addItem">Додати</button>
+            <button id="clearList" class="secondary">Очистити список</button>
+          </div>
+          <ul id="dynamicList" style="margin-top:12px;padding-left:20px"></ul>
+        </div>
+      `);
+
+      const list = document.getElementById('dynamicList');
+      const addBtn = document.getElementById('addItem');
+      const clearBtn = document.getElementById('clearList');
+
+      addBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const text = document.getElementById('itemText').value.trim();
+        if (!text) { alert('Введіть текст елемента'); return; }
+        const li = document.createElement('li');
+        li.textContent = text;
+        const del = document.createElement('button');
+        del.textContent = '✖';
+        del.style.marginLeft = '10px';
+        del.style.border = 'none';
+        del.style.background = 'transparent';
+        del.style.cursor = 'pointer';
+        del.title = 'Видалити';
+        del.addEventListener('click', () => li.remove());
+        li.appendChild(del);
+        list.appendChild(li);
+        document.getElementById('itemText').value = '';
+      });
+
+      clearBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm('Впевнені, що хочете очистити список?')) list.innerHTML = '';
+      });
+    }
+
+    // Подія очищення
+    document.getElementById('btnClear').addEventListener('click', () => {
+      // скидаємо фон до дефолту і очищуємо результат
+      document.body.style.background = '';
+      show('<p class="small">Очищено. Стандартний фон відновлено.</p>');
+    });
+
+    // Прив'язки кнопок
+    document.getElementById('btnDialogs').addEventListener('click', demoDialogs);
+    document.getElementById('btnCalc').addEventListener('click', demoCalc);
+    document.getElementById('btnPolygon').addEventListener('click', demoPolygon);
+    document.getElementById('btnDynamic').addEventListener('click', demoDynamic);
+
+    // Початкове вітання
+    show('<p class="small">Готово — натисніть одну з кнопок вище, щоб виконати приклад.</p>');
+  </script>
+</body>
+</html>

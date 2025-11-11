@@ -149,35 +149,31 @@
       show(html);
     }
 
-    // 3) Геометрія — правильний багатокутник (форму залишив як у попередньому файлі)
-    function demoPolygon() {
-      show(`
-        <form id="polyForm">
-          <div class="row">
-            <label>Кількість сторін (n ≥ 3): <input id="polyN" type="number" value="5" min="3" required></label>
-            <label>Довжина сторони (s > 0): <input id="polyS" type="number" value="3" min="0" step="1" required></label>
-            <button id="polyCalc" type="submit">Обчислити</button>
-          </div>
-          <div id="polyOut" style="margin-top:12px"></div>
-        </form>
-      `);
+    // 3) Геометрія — правильний багатокутник
+function demoPolygon() {
+  "use strict";
 
-      const form = document.getElementById('polyForm');
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        const n = Number(document.getElementById('polyN').value);
-        const s = Number(document.getElementById('polyS').value);
-        const out = document.getElementById('polyOut');
+  const n = parseInt(prompt("Введіть кількість сторін (n ≥ 3):", "5"));
+  if (!Number.isFinite(n) || n < 3) {
+    alert("Помилка: n має бути цілим числом не менше 3.");
+    return;
+  }
 
-        if (!Number.isFinite(n) || n < 3) { out.innerHTML = '<span class="small">Помилка: n має бути цілим ≥ 3.</span>'; return; }
-        if (!Number.isFinite(s) || s <= 0) { out.innerHTML = '<span class="small">Помилка: s має бути додатним числом.</span>'; return; }
+  const s = parseFloat(prompt("Введіть довжину сторони (s > 0):", "3"));
+  if (!Number.isFinite(s) || s <= 0) {
+    alert("Помилка: довжина сторони має бути додатним числом.");
+    return;
+  }
 
-        const perimeter = n * s;
-        const area = (n * s * s) / (4 * Math.tan(Math.PI / n));
+  const perimeter = n * s;
+  const area = (n * s * s) / (4 * Math.tan(Math.PI / n));
 
-        out.innerHTML = `<strong>Результат:</strong><br> Периметр = ${perimeter.toFixed(4)}<br> Площа = ${area.toFixed(4)}`;
-      }, { once: true });
-    }
+  alert(
+    "Результати обчислення багатокутника:\n\n" +
+    "Периметр = " + perimeter.toFixed(4) + "\n" +
+    "Площа = " + area.toFixed(4)
+  );
+}
 
     // 4) Просте привітання — повернено класичну версію діалогів (як у твоєму прикладі)
     function demoGreetingSimple() {

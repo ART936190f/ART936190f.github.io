@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Використання оператора SWITCH</title>
+	</head>	
+	<body>
+		<script> 
+			"use strict";
+			let age = parseInt(prompt("Введіть ваш вік")); 
+			let b = age % 10;
+			let s; 
+			switch (b) { 
+				case 1:
+					s = "рік"; 
+					break;
+				case 2:
+				case 3:
+				case 4:
+					s = "роки";
+				break; 
+				default: s = "років";
+			}
+			if (age > 10 && age < 20) 
+				s = "років"; 
+			document.write("Вам - ", age, s);
+		</script>
+	</body>
+</html>

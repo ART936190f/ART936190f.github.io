@@ -93,7 +93,7 @@
     const result = document.getElementById('result');
     function show(html) { result.innerHTML = html; }
 
-    // 1) Діалоги — ВЕРСІЯ: зміна кольору фону (повернено як було)
+    // 1) Функцій для швидкої зміни заднього фону. 
     function demoDialogsColor() {
       alert("Привіт! Зараз запропонуємо змінити колір фону.");
       const answer = confirm("Хочете вибрати колір фону вручну?");
@@ -124,15 +124,12 @@
       if (aInput === null) { show('Операцію скасовано.'); return; }
       const a = parseNum(aInput);
       if (!Number.isFinite(a) || a === 0) { show('a має бути числом і не дорівнювати 0.'); return; }
-
       const bInput = prompt("Коефіцієнт b", "0");
       if (bInput === null) { show('Операцію скасовано.'); return; }
       const b = parseNum(bInput);
-
       const cInput = prompt("Коефіцієнт c", "0");
       if (cInput === null) { show('Операцію скасовано.'); return; }
       const c = parseNum(cInput);
-
       const D = b*b - 4*a*c;
       let html = `<strong>Рівняння:</strong> ${a}x² + ${b}x + ${c} = 0<br>`;
       html += `<strong>Дискримінант D =</strong> ${D}<br>`;
@@ -149,7 +146,6 @@
         const im = (Math.sqrt(Math.abs(D)) / (2*a)).toFixed(6);
         html += `<strong>Комплексні корені:</strong> x₁ = ${re} + ${im}i, x₂ = ${re} - ${im}i`;
       }
-
       show(html);
     }
 

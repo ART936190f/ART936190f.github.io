@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Використання оператора IF</title>
+	</head>	
+	<body>
+		<script>
+			"use strict";
+			//Приклад знаходження більшого среди трех чисел
+			
+			document.write("<p style='text-align:center'>Приклад знаходження більшого числа</p>");
+			let a = 41; let b = 22; let c = 33;
+			
+			if (a > b && a > c) document.write("Найбільше серед трьох чисел - a=", a);
+				else 
+					if (b > c) document.write("Найбільше серед трьох чисел - b=", b);
+						else document.write("Найбільше серед трьох чисел - c=", c);
+						//Использование тернарной операции
+			let max = a > b ? a : b; max = max > c ? max : c;
+			document.write("<p>Значення найбільшого серед трьох чисел - ", max);
+		</script>
+	</body>
+</html>

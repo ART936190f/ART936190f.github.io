@@ -66,14 +66,14 @@
 </head>
 <body>
   <div class="container" role="main">
-    <h1>Зразки JavaScript — запуск окремими кнопками</h1>
-    <p class="lead">Натисни кнопку, щоб виконати відповідний приклад. Результат з'явиться в блоці нижче.</p>
+    <h1>Використання JavaScript — запуск спливаючих іконок</h1>
+    <p class="lead">Всього лиш клік на кнопку, і з'явиться результатик :3</p>
 
     <div class="controls" aria-hidden="false">
-      <button id="btnDialogs">1. Діалоги (колір фону)</button>
-      <button id="btnCalc">2. Арифметика (новий вираз)</button>
+      <button id="btnDialogs">1. Діалоги — зміна кольору фону</button>
+      <button id="btnCalc">2. Арифметика (обчислення дискримінанту)</button>
       <button id="btnPolygon">3. Геометрія (правильний багатокутник)</button>
-      <button id="btnDynamic" class="secondary">4. Динамічна сторінка (список)</button>
+      <button id="btnGreeting" class="secondary">4. Просте привітання (діалог)</button>
       <button id="btnClear" class="secondary" title="Очистити результат">Очистити</button>
     </div>
 
@@ -82,7 +82,7 @@
     </div>
 
     <footer>
-      <span class="small">© Прізвище — демо приклади</span>
+      <span class="small">© Голяницький — спливаючі іконки</span>
     </footer>
   </div>
 
@@ -90,50 +90,39 @@
     "use strict";
 
     const result = document.getElementById('result');
+    function show(html) { result.innerHTML = html; }
 
-    // Допоміжна функція — вивід у блок
-    function show(html) {
-      result.innerHTML = html;
-    }
-
-    // 1) Діалоги — нова версія: питаємо колір, змінюємо фон сторінки, підтвердження
-    function demoDialogs() {
-      // Привітання через alert
-      alert("Привіт! Зараз змінимо фон сторінки через діалоги.");
-
-      // confirm — чи хоче користувач змінити фон
-      const proceed = confirm("Хочете вибрати колір фону (так — вибрати, відміна — випадковий)?");
+    // 1) Діалоги — ВЕРСІЯ: зміна кольору фону (повернено як було)
+    function demoDialogsColor() {
+      alert("Привіт! Зараз запропонуємо змінити колір фону.");
+      const answer = confirm("Хочете вибрати колір фону вручну?");
       let color;
-      if (proceed) {
-        // prompt — очікуємо назву кольору або hex-код
-        const input = prompt("Введіть колір (наприклад: lightblue або #ffd700):", "#e0f7ff");
-        color = input && input.trim() ? input.trim() : null;
+      if (answer) {
+        const name = prompt("Введіть колір або hex-код (наприклад: lightblue або #ffd700):", "#e0f7ff");
+        color = name && name.trim() ? name.trim() : null;
       } else {
-        // випадковий колір
-        const r = Math.floor(Math.random()*200) + 30;
-        const g = Math.floor(Math.random()*200) + 30;
-        const b = Math.floor(Math.random()*200) + 30;
+        // випадковий м'який колір
+        const r = Math.floor(Math.random()*140) + 80;
+        const g = Math.floor(Math.random()*140) + 80;
+        const b = Math.floor(Math.random()*140) + 80;
         color = `rgb(${r}, ${g}, ${b})`;
       }
-
-      // Змінюємо фон і виводимо повідомлення
       document.body.style.background = color;
       show(`<strong>Фон змінено на:</strong> <code>${color}</code><br><span class="small">Щоб повернути стандарт, оновіть сторінку (F5).</span>`);
     }
 
-    // 2) Арифметика — новий вираз: обчислення коренів квадратного рівняння ax^2+bx+c=0
+    // 2) Арифметика — корені квадратного рівняння (як раніше)
     function demoCalc() {
-      // Попросимо три коефіцієнти через prompt з валідацією
-      const parseNum = (txt, fallback=0) => {
-        if (txt === null) return null; // скасування
+      const parseNum = (txt) => {
+        if (txt === null) return null;
         const n = Number(txt.replace(',', '.'));
-        return Number.isFinite(n) ? n : fallback;
+        return Number.isFinite(n) ? n : NaN;
       };
 
       const aInput = prompt("Коефіцієнт a (не 0) — для ax² + bx + c = 0", "1");
       if (aInput === null) { show('Операцію скасовано.'); return; }
       const a = parseNum(aInput);
-      if (a === 0) { show('a не може бути 0. Спробуйте ще раз.'); return; }
+      if (!Number.isFinite(a) || a === 0) { show('a має бути числом і не дорівнювати 0.'); return; }
 
       const bInput = prompt("Коефіцієнт b", "0");
       if (bInput === null) { show('Операцію скасовано.'); return; }
@@ -143,7 +132,6 @@
       if (cInput === null) { show('Операцію скасовано.'); return; }
       const c = parseNum(cInput);
 
-      // Обчислення дискримінанту та коренів
       const D = b*b - 4*a*c;
       let html = `<strong>Рівняння:</strong> ${a}x² + ${b}x + ${c} = 0<br>`;
       html += `<strong>Дискримінант D =</strong> ${D}<br>`;
@@ -156,7 +144,6 @@
         const x = -b / (2*a);
         html += `<strong>Подвійний корінь:</strong> x = ${x.toFixed(6)}`;
       } else {
-        // комплексні корені
         const re = (-b / (2*a)).toFixed(6);
         const im = (Math.sqrt(Math.abs(D)) / (2*a)).toFixed(6);
         html += `<strong>Комплексні корені:</strong> x₁ = ${re} + ${im}i, x₂ = ${re} - ${im}i`;
@@ -165,9 +152,8 @@
       show(html);
     }
 
-    // 3) Лінійні алгоритми / Геометрія — нова версія: задана кількість сторін і довжина сторони -> площа і периметр правильного багатокутника
+    // 3) Геометрія — правильний багатокутник (форму залишив як у попередньому файлі)
     function demoPolygon() {
-      // Використаємо модальність вводу через просту форму, а не prompt, — створимо невеликий інтерфейс у блоці результату
       show(`
         <form id="polyForm">
           <div class="row">
@@ -189,71 +175,44 @@
         if (!Number.isFinite(n) || n < 3) { out.innerHTML = '<span class="small">Помилка: n має бути цілим ≥ 3.</span>'; return; }
         if (!Number.isFinite(s) || s <= 0) { out.innerHTML = '<span class="small">Помилка: s має бути додатним числом.</span>'; return; }
 
-        // Периметр
         const perimeter = n * s;
-        // Площа правильного багатокутника зі стороною s: S = (n * s^2) / (4 * tan(pi/n))
         const area = (n * s * s) / (4 * Math.tan(Math.PI / n));
 
         out.innerHTML = `<strong>Результат:</strong><br> Периметр = ${perimeter.toFixed(4)}<br> Площа = ${area.toFixed(4)}`;
       }, { once: true });
     }
 
-    // 4) Динамічно сформована сторінка — нова версія: створюємо список-заставку з кількох елементів, які можна додавати/видаляти
-    function demoDynamic() {
-      show(`
-        <div>
-          <div class="row">
-            <label>Нова позиція: <input type="text" id="itemText" placeholder="Наприклад: Задача 1"></label>
-            <button id="addItem">Додати</button>
-            <button id="clearList" class="secondary">Очистити список</button>
-          </div>
-          <ul id="dynamicList" style="margin-top:12px;padding-left:20px"></ul>
-        </div>
-      `);
-
-      const list = document.getElementById('dynamicList');
-      const addBtn = document.getElementById('addItem');
-      const clearBtn = document.getElementById('clearList');
-
-      addBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const text = document.getElementById('itemText').value.trim();
-        if (!text) { alert('Введіть текст елемента'); return; }
-        const li = document.createElement('li');
-        li.textContent = text;
-        const del = document.createElement('button');
-        del.textContent = '✖';
-        del.style.marginLeft = '10px';
-        del.style.border = 'none';
-        del.style.background = 'transparent';
-        del.style.cursor = 'pointer';
-        del.title = 'Видалити';
-        del.addEventListener('click', () => li.remove());
-        li.appendChild(del);
-        list.appendChild(li);
-        document.getElementById('itemText').value = '';
-      });
-
-      clearBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (confirm('Впевнені, що хочете очистити список?')) list.innerHTML = '';
-      });
+    // 4) Просте привітання — повернено класичну версію діалогів (як у твоєму прикладі)
+    function demoGreetingSimple() {
+      alert("Вітальне діалогове вікно");
+      const answer = confirm("Хочеться продовжити?");
+      if (answer) {
+        const name = prompt("Укажи своє ім'я чи псевдонім", "");
+        // Якщо натиснули Скасувати у prompt — name === null
+        if (name === null) {
+          alert("Бачу, ви не говіркий, але спасибі, що хоч сюди добралися :>");
+        } else {
+          alert(name + ", у вас вже починає виходити!");
+        }
+      } else {
+        alert("Шкода, можна було б ще попрацювати!");
+      }
+      show('<p class="small">Діалог виконано (перевірте модальні повідомлення).</p>');
     }
 
-    // Подія очищення
+    // Очистити
     document.getElementById('btnClear').addEventListener('click', () => {
-      // скидаємо фон до дефолту і очищуємо результат
       document.body.style.background = '';
       show('<p class="small">Очищено. Стандартний фон відновлено.</p>');
     });
 
     // Прив'язки кнопок
-    document.getElementById('btnDialogs').addEventListener('click', demoDialogs);
+    document.getElementById('btnDialogs').addEventListener('click', demoDialogsColor);
     document.getElementById('btnCalc').addEventListener('click', demoCalc);
     document.getElementById('btnPolygon').addEventListener('click', demoPolygon);
-    document.getElementById('btnDynamic').addEventListener('click', demoDynamic);
+    document.getElementById('btnGreeting').addEventListener('click', demoGreetingSimple);
 
-    // Початкове вітання
+    // Початкове повідомлення
     show('<p class="small">Готово — натисніть одну з кнопок вище, щоб виконати приклад.</p>');
   </script>
 </body>

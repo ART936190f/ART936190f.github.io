@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Демонстрація Операторів JS</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #333; }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #4CAF50;
+            background-color: #e8f5e9;
+            min-height: 100px;
+            white-space: pre-wrap; /* Зберігає форматування виводу */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Демонстрація Операторів JavaScript</h1>
+
+        <button onclick="runIfElseIf()">1. IF-ELSE-IF (Визначення мови)</button>
+        <button onclick="runFindMax()">2. IF та Тернарний оператор (Максимум)</button>
+        <button onclick="runSwitch()">3. SWITCH (Визначення пори року)</button>
+        <button onclick="runLoops()">4. Цикли FOR, WHILE, DO-WHILE (Сума ряду)</button>
+        <button onclick="runForIn()">5. Цикл FOR-IN (Властивості Window)</button>
+        <button onclick="runGuessGame()">6. Цикл WHILE (Гра "Вгадай число")</button>
+
+        <hr>
+
+        <h2>Результат:</h2>
+        <div id="output">Натисніть на кнопку, щоб побачити результат.</div>
+    </div>
+
+    <script>
+        "use strict";
+
+        // Функція для очищення та виводу результату
+        function output(title, content) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `<h3>${title}</h3>` + content;
+        }
+
+        // --- 1. Умовний оператор IF, IF-ELSE, IF-ELSE-IF (Визначення мови) ---
+        function runIfElseIf() {
+            let lang = prompt("Введіть код мови ('ua', 'en', 'pl', 'de'):", "ua");
+            let languageName = "";
+            let htmlContent = "";
+
+            if (lang === "ua") {
+                languageName = "Українська";
+                htmlContent += `<p style='color: green;'>Код '${lang}' відповідає мові: <strong>${languageName}</strong></p>`;
+            } else if (lang === "en") {
+                languageName = "Англійська";
+                htmlContent += `<p style='color: green;'>Код '${lang}' відповідає мові: <strong>${languageName}</strong></p>`;
+            } else if (lang === "pl") {
+                languageName = "Польська";
+                htmlContent += `<p style='color: green;'>Код '${lang}' відповідає мові: <strong>${languageName}</strong></p>`;
+            } else if (lang === "de") {
+                languageName = "Німецька";
+                htmlContent += `<p style='color: green;'>Код '${lang}' відповідає мові: <strong>${languageName}</strong></p>`;
+            } else {
+                languageName = "Мову невизначено";
+                htmlContent += `<p style='color: red;'>Код '${lang}' не розпізнано. <strong>${languageName}</strong></p>`;
+            }
+            
+            output("1. Використання оператора IF-ELSE-IF (Визначення мови)", htmlContent);
+        }
+
+        // --- 2. Умовний оператор IF та Умовна (Тернарна) операція (Знаходження максимуму) ---
+        function runFindMax() {
+            let a = 55;
+            let b = 101;
+            let c = 88;
+            let htmlContent = `<p>Дано числа: a=${a}, b=${b}, c=${c}.</p>`;
+
+            // 1. Використання IF-ELSE-IF
+            let maxIf;
+            if (a > b && a > c) {
+                maxIf = a;
+                htmlContent += `<p style='color: blue;'>За допомогою IF: Найбільше число - a = ${a}</p>`;
+            } else if (b > c) {
+                maxIf = b;
+                htmlContent += `<p style='color: blue;'>За допомогою IF: Найбільше число - b = ${b}</p>`;
+            } else {
+                maxIf = c;
+                htmlContent += `<p style='color: blue;'>За допомогою IF: Найбільше число - c = ${c}</p>`;
+            }
+
+            // 2. Використання Тернарної операції
+            let maxTernary = (a > b ? a : b); // max з a та b
+            maxTernary = (maxTernary > c ? maxTernary : c); // max з попереднього max та c
+            
+            htmlContent += `<p>За допомогою Тернарної операції: Значення найбільшого числа - <strong>${maxTernary}</strong></p>`;
+
+            output("2. Знаходження більшого числа (IF та Тернарний оператор)", htmlContent);
+        }
+
+        // --- 3. Оператор SWITCH (Визначення пори року за номером місяця) ---
+        function runSwitch() {
+            let month = parseInt(prompt("Введіть номер місяця (1-12):", 6));
+            let season = "";
+            let htmlContent = "";
+
+            if (isNaN(month) || month < 1 || month > 12) {
+                htmlContent = `<p style='color: red;'>Введено невірний номер місяця: ${month}.</p>`;
+            } else {
+                switch (month) {
+                    case 12:
+                    case 1:
+                    case 2:
+                        season = "Зима";
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                        season = "Весна";
+                        break;
+                    case 6:
+                    case 7:
+                    case 8:
+                        season = "Літо";
+                        break;
+                    case 9:
+                    case 10:
+                    case 11:
+                        season = "Осінь";
+                        break;
+                    // default тут не потрібен, оскільки ми перевірили діапазон
+                }
+                htmlContent = `<p>Номер місяця: <strong>${month}</strong>. Це пора року: <strong>${season}</strong>.</p>`;
+            }
+            output("3. Використання оператора SWITCH (Визначення пори року)", htmlContent);
+        }
+
+        // --- 4. Цикли FOR, WHILE, DO-WHILE (Знаходження суми ряду 1 + 1/2 + 1/3 + ... + 1/n) ---
+        function runLoops() {
+            let n = parseInt(prompt("Введіть число n (для обчислення суми ряду 1 + 1/2 + ... + 1/n):", 5));
+            if (isNaN(n) || n <= 0) {
+                output("4. Використання операторів циклу", "<p style='color: red;'>Введено невірне або від'ємне число n.</p>");
+                return;
+            }
+            
+            let htmlContent = `<p>Обчислення суми ряду $S_n = 1 + \\frac{1}{2} + \\frac{1}{3} + \\dots + \\frac{1}{n}$, де n = ${n}.</p>`;
+
+            // Цикл FOR
+            let sumFor = 0;
+            for (let i = 1; i <= n; i++) {
+                sumFor += 1 / i;
+            }
+            htmlContent += `<p>За допомогою <b>FOR</b>: Сума дорівнює <strong>${sumFor.toFixed(4)}</strong></p>`;
+
+            // Цикл WHILE
+            let sumWhile = 0;
+            let iWhile = 1;
+            while (iWhile <= n) {
+                sumWhile += 1 / iWhile;
+                iWhile++;
+            }
+            htmlContent += `<p>За допомогою <b>WHILE</b>: Сума дорівнює <strong>${sumWhile.toFixed(4)}</strong></p>`;
+
+            // Цикл DO-WHILE
+            let sumDoWhile = 0;
+            let iDoWhile = 1;
+            if (n >= 1) { // Умова, щоб уникнути помилки, якщо n=0 (хоча ми перевірили)
+                 do {
+                    sumDoWhile += 1 / iDoWhile;
+                    iDoWhile++;
+                } while (iDoWhile <= n);
+            }
+            htmlContent += `<p>За допомогою <b>DO-WHILE</b>: Сума дорівнює <strong>${sumDoWhile.toFixed(4)}</strong></p>`;
+
+            output("4. Використання операторів циклу (Сума ряду)", htmlContent);
+        }
+
+        // --- 5. Цикл FOR-IN (Перерахування властивостей об'єкта) ---
+        function runForIn() {
+            let car = {
+                brand: "Tesla",
+                model: "Model 3",
+                year: 2021,
+                color: "Red"
+            };
+            let htmlContent = "<p>Властивості об'єкта <strong>Car</strong>:</p>";
+            
+            for (let propertyName in car) {
+                // Використовуємо obj[prop] для доступу до значення
+                htmlContent += `Властивість: <strong>${propertyName}</strong>, Значення: ${car[propertyName]}<br>`;
+            }
+            
+            output("5. Використання оператора циклу FOR-IN (Властивості об'єкта)", htmlContent);
+        }
+
+        // --- 6. Цикл WHILE (Гра "Вгадай число") ---
+        function runGuessGame() {
+             const guess = Math.floor(Math.random() * 10) + 1; // Генерація випадкового числа від 1 до 10
+             let f = true;
+             let count = 0;
+             let number;
+             let htmlContent = "Спроба гри розпочата. Перевірте спливаючі вікна **Alert/Prompt**.";
+             
+             let answer = confirm("Зіграємо в гру? Я загадав число від 1 до 10. Спробуйте вгадати!");
+
+             if (answer) {
+                while (f) {
+                    number = parseInt(prompt("Введіть число від 1 до 10:"));
+                    
+                    if (isNaN(number) || number < 1 || number > 10) {
+                        alert("Будь ласка, введіть дійсне число від 1 до 10.");
+                        continue; 
+                    }
+                    
+                    count++;
+                    
+                    if (number === guess) {
+                        alert(`🎉 Ви вгадали! Загадане число було: ${guess}.\nКількість спроб: ${count}`);
+                        f = false;
+                        htmlContent = `<p style='color: green;'>Гра завершена! Ви вгадали число <strong>${guess}</strong> за ${count} спроб.</p>`;
+                    } else if (number > guess) {
+                        alert("Число менше, спробуйте ще раз!");
+                    } else {
+                        alert("Число більше, спробуйте ще раз!");
+                    }
+                }
+            } else {
+                alert("Шкода. Може бути в інший раз? (Гра скасована)");
+                htmlContent = "<p style='color: gray;'>Гра скасована користувачем.</p>";
+            }
+
+            output("6. Використання оператора циклу WHILE (Гра 'Вгадай число')", htmlContent);
+        }
+    </script>
+</body>
+</html>

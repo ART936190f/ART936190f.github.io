@@ -253,31 +253,23 @@
                 output("4. Використання операторів циклу", "<p style='color: var(--muted);'>Виконання скасовано користувачем.</p>");
                 return;
             }
-            
             let n = parseInt(nStr);
             if (isNaN(n) || n <= 0) {
                 output("4. Використання операторів циклу", "<p style='color: var(--red);'>Введено невірне або від'ємне число n. Спробуйте ще раз.</p>");
-                return;
-            }
-            
+                return;  }
             let htmlContent = `<p>Обчислення суми ряду $S_n = 1 + \\frac{1}{2} + \\dots + \\frac{1}{n}$, де n = ${n}.</p>`;
-
             // Цикл FOR
             let sumFor = 0;
             for (let i = 1; i <= n; i++) {
-                sumFor += 1 / i;
-            }
+                sumFor += 1 / i; }
             htmlContent += `<p>За допомогою <b>FOR</b>: Сума дорівнює <strong>${sumFor.toFixed(4)}</strong></p>`;
-
             // Цикл WHILE
             let sumWhile = 0;
             let iWhile = 1;
             while (iWhile <= n) {
                 sumWhile += 1 / iWhile;
-                iWhile++;
-            }
+                iWhile++; }
             htmlContent += `<p>За допомогою <b>WHILE</b>: Сума дорівнює <strong>${sumWhile.toFixed(4)}</strong></p>`;
-
             // Цикл DO-WHILE
             let sumDoWhile = 0;
             let iDoWhile = 1;
@@ -285,10 +277,8 @@
                  do {
                     sumDoWhile += 1 / iDoWhile;
                     iDoWhile++;
-                } while (iDoWhile <= n);
-            }
-            htmlContent += `<p>За допомогою <b>DO-WHILE</b>: Сума дорівнює <strong>${sumDoWhile.toFixed(4)}</strong></p>`;
-
+                } while (iDoWhile <= n); }
+            htmlContent += `<p>За допомогою <b>DO-WHILE</b>: Сума дорівнює <strong>${sumDoWhile.toFixed(4)}</strong></p>`; 
             output("4. Використання операторів циклу (Сума ряду)", htmlContent);
         }
 
@@ -328,29 +318,20 @@
              let f = true;
              let count = 0;
              let htmlContent = "<p>Спроба гри розпочата. Перевірте спливаючі вікна.</p>";
-             
              let answer = confirm("Зіграємо в гру? Я загадав число від 1 до 10. Спробуйте вгадати!");
-
              if (answer) {
                 while (f) {
                     let input = prompt(`Введіть число від 1 до 10 (Спроба ${count + 1}):`);
-                    
                     if (input === null) {
                         alert("Гра скасована.");
                         htmlContent = "<p style='color: var(--muted);'>Гра скасована користувачем.</p>";
                         f = false;
-                        break; 
-                    }
-
+                        break; }
                     let number = parseInt(input);
-                    
                     if (isNaN(number) || number < 1 || number > 10) {
                         alert("Будь ласка, введіть дійсне число від 1 до 10.");
-                        continue; 
-                    }
-                    
+                        continue;  }
                     count++;
-                    
                     if (number === guess) {
                         alert(`🎉 Вгадано! Загадане число було: ${guess}.\nКількість спроб: ${count}`);
                         f = false;
@@ -358,16 +339,11 @@
                     } else if (number > guess) {
                         alert("Число менше, спробуйте ще раз!");
                     } else {
-                        alert("Число більше, спробуйте ще раз!");
-                    }
-                }
+                        alert("Число більше, спробуйте ще раз!"); } }
             } else {
                 alert("Шкода. Може бути в інший раз? (Гра скасована)");
-                htmlContent = "<p style='color: var(--muted);'>Гра скасована користувачем.</p>";
-            }
-
-            output("6. Використання оператора циклу WHILE (Гра 'Вгадай число')", htmlContent);
-        }
+                htmlContent = "<p style='color: var(--muted);'>Гра скасована користувачем.</p>"; } 
+            output("6. Використання оператора циклу WHILE (Гра 'Вгадай число')", htmlContent); }
     </script>
 </body>
 </html>

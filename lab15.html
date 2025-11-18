@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ПП-23 — Голяницький Артем (Обробка Тексту)</title>
+    <style>
+        :root{
+            --bg:#f6f9fc;
+            --panel:#ffffff;
+            --accent:#2b82ff;
+            --muted:#666;
+            --red:#e53935;
+            --green:#4CAF50;
+        }
+        body{
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            margin:0;
+            background: linear-gradient(180deg,var(--bg),#e9f2ff 60%);
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:32px;
+        }
+        .container{
+            width:100%;
+            max-width:1000px;
+            background:var(--panel);
+            border-radius:14px;
+            box-shadow:0 10px 30px rgba(20,40,80,0.08);
+            padding:22px;
+            z-index: 10;
+        }
+        h1{margin:0 0 8px 0;font-size:24px}
+        h2 { font-size: 18px; margin-top: 15px; margin-bottom: 5px; color: #1e40af;}
+        p.lead{margin:0 0 18px 0;color:var(--muted)}
+        .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+        button{
+            background:var(--accent);
+            color:white;
+            border:0;
+            padding:10px 14px;
+            border-radius:10px;
+            cursor:pointer;
+            box-shadow:0 6px 14px rgba(43,130,255,0.18);
+            font-weight:600;
+            transition: transform 0.1s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button.secondary{
+            background:transparent;
+            color:var(--accent);
+            border:1px solid rgba(43,130,255,0.16);
+            box-shadow:none;
+            font-weight:600;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .row{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap;margin-bottom:10px;}
+        footer{margin-top:14px;color:var(--muted);font-size:13px}
+        .small{font-size:13px;color:var(--muted)}
+        
+        /* --- СТИЛІ ДЛЯ МОДАЛЬНОГО ВІКНА --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            padding-top: 30px;
+        }
+        .modal-content {
+            background-color: var(--panel);
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s;
+        }
+        .modal-content h3 { margin-top: 0; color: var(--accent); }
+        .modal-content .modal-body { margin-bottom: 20px; }
+        .modal-content .modal-result { 
+            padding: 15px; 
+            border-left: 4px solid var(--green); 
+            background-color: #e8ffe8;
+            font-weight: 500;
+            min-height: 20px;
+            margin-top: 15px;
+            white-space: pre-wrap; /* Зберігає форматування тексту */
+            word-break: break-word; /* Дозволяє переносити довгі слова */
+        }
+        .close-btn {
+            color: var(--muted);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--red);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📝 Обробка та Шифрування Тексту</h1>
+        <p class="lead">Введіть ваше есе (до 2500 символів) та виберіть завдання для виконання.</p>
+        
+        <textarea id="textInput" maxlength="2500" placeholder="Введіть ваш текст сюди... Наприклад: 'Fantasy and Dragons. Deep in the dungeon...'"></textarea>
+        
+        <hr>
+        
+        <h2>1️⃣ Завдання 1: Заміна та Підрахунок</h2>
+        <div class="controls">
+            <button onclick="executeTask1()">Виконати Завдання 1</button>
+        </div>
+        
+        <hr>
+
+        <h2>2️⃣ Завдання 2: Форматування та Підрахунок Слів</h2>
+        <div class="controls">
+            <button onclick="executeTask2()">Виконати Завдання 2</button>
+        </div>
+        
+        <hr>
+
+        <h2>3️⃣ Завдання 3: Шифр Цезаря (+1)</h2>
+        <div class="controls">
+            <button onclick="executeTask3()">Зашифрувати Текст</button>
+        </div>
+
+        <hr>
+
+        <h2>4️⃣ Завдання 4: Шифр Перемішування (Перша і Остання Фіксовані)</h2>
+        <div class="controls">
+            <button onclick="executeTask4()">Зашифрувати Текст</button>
+        </div>
+        
+        <footer>ПП-23 | Виконавець: Голяницький Артем</footer>
+    </div>
+
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Результат</h3>
+            <div id="modalBody" class="modal-body"></div>
+            <div id="modalResult" class="modal-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // =================================================================
+        // =========== Утиліти для інтерфейсу ===========
+        // =================================================================
+        
+        function getTextInput() {
+            const text = document.getElementById('textInput').value.trim();
+            if (text.length === 0) {
+                alert("Будь ласка, введіть текст у поле вище для виконання завдання.");
+                return null;
+            }
+            return text;
+        }
+
+        function showModal(title, body, result) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = body;
+            document.getElementById('modalResult').textContent = result;
+            document.getElementById('resultModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // =================================================================
+        // =========== Завдання 1: Заміна та Підрахунок ===========
+        // =================================================================
+
+        function executeTask1() {
+            const text = getTextInput();
+            if (!text) return;
+
+            let output = "";
+            let processedText = text;
+            
+            // 1. Замінити символ '*' на '++'
+            // Використовуємо глобальний регулярний вираз /g для заміни всіх входжень
+            processedText = processedText.replace(/\*/g, '++');
+
+            output += "✅ **Текст після заміни '*' на '++':**\n";
+            output += processedText + "\n\n";
+
+            // 2. Підрахувати загальну кількість літер 'F' та 'D' (чутливість до регістру)
+            
+            // Використовуємо глобальний регулярний вираз з прапором 'i' (нечутливий до регістру)
+            const countF = (processedText.match(/f/gi) || []).length;
+            const countD = (processedText.match(/d/gi) || []).length;
+            const totalCount = countF + countD;
+            
+            output += `🔎 Кількість літер 'F'/'f': ${countF}\n`;
+            output += `🔎 Кількість літер 'D'/'d': ${countD}\n`;
+            output += `✅ Загальна кількість 'F'/'f' та 'D'/'d': ${totalCount}\n`;
+
+            const body = "Виконано заміну символів та підрахунок загальної кількості літер 'F'/'f' та 'D'/'d' (нечутливий до регістру).";
+            showModal("✅ Результат виконання Завдання 1", body, output);
+        }
+
+        // =================================================================
+        // =========== Завдання 2: Форматування та Підрахунок Слів ===========
+        // =================================================================
+        
+        function executeTask2() {
+            const text = getTextInput();
+            if (!text) return;
+
+            let output = "";
+            
+            // Розбиваємо текст на слова, використовуючи пробіли як роздільник
+            const words = text.split(/\s+/).filter(word => word.length > 0);
+            
+            let processedWords = [];
+            let countE = 0;
+
+            for (let i = 0; i < words.length; i++) {
+                let currentWord = words[i];
+                
+                // 1. У другому слові (i == 1) після кожної літери вставити пробіл
+                if (i === 1) {
+                    // Розбиваємо слово на масив символів, потім об'єднуємо їх пробілом
+                    // Використовуємо .split('') та .join(' ')
+                    processedWords.push(currentWord.split('').join(' '));
+                } else {
+                    processedWords.push(currentWord);
+                }
+
+                // 2. Визначити кількість слів, які закінчуються на 'е' (нечутливо до регістру)
+                // Використовуємо регулярний вираз /е$/i
+                if (currentWord.match(/е$/i)) {
+                    countE++;
+                }
+            }
+            
+            const processedText = processedWords.join(' ');
+            
+            output += "✅ **Текст після обробки (у другому слові додано пробіли):**\n";
+            output += processedText + "\n\n";
+            output += `🔎 Кількість слів, які закінчуються на 'е'/'Е': ${countE}\n`;
+
+            const body = "Виконано вставку пробілу після кожної літери у другому слові та підраховано кількість слів, що закінчуються на 'е' (нечутливий до регістру).";
+            showModal("✅ Результат виконання Завдання 2", body, output);
+        }
+
+        // =================================================================
+        // =========== Завдання 3: Шифр Цезаря (+1) ===========
+        // =================================================================
+        
+        // Український алфавіт
+        const UKR_LOWER = 'абвгґдеєжзиіїйклмнопрстуфхцчшщьюя';
+        const UKR_UPPER = 'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ';
+
+        function caesarCipher(text) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                let index;
+                
+                if (UKR_LOWER.includes(char)) {
+                    index = UKR_LOWER.indexOf(char);
+                    // Замінюємо на наступну літеру, 'я' -> 'а'
+                    const newIndex = (index + 1) % UKR_LOWER.length;
+                    result += UKR_LOWER[newIndex];
+                } else if (UKR_UPPER.includes(char)) {
+                    index = UKR_UPPER.indexOf(char);
+                    // Замінюємо на наступну літеру, 'Я' -> 'А'
+                    const newIndex = (index + 1) % UKR_UPPER.length;
+                    result += UKR_UPPER[newIndex];
+                } else {
+                    // Залишаємо інші символи (пробіли, розділові знаки, цифри, латиниця) без змін
+                    result += char;
+                }
+            }
+            return result;
+        }
+
+        function executeTask3() {
+            const text = getTextInput();
+            if (!text) return;
+
+            const encryptedText = caesarCipher(text);
+
+            let output = "✅ **Зашифрований текст (кожна літера замінена наступною):**\n";
+            output += encryptedText;
+
+            const body = "Виконано шифрування за правилом 'наступна літера в алфавіті' (шифр Цезаря +1). Літери 'я' та 'Я' циклічно переходять в 'а' та 'А'. Інші символи залишаються незмінними.";
+            showModal("✅ Результат виконання Завдання 3", body, output);
+        }
+
+        // =================================================================
+        // =========== Завдання 4: Шифр Перемішування (Перша і Остання Фіксовані) ===========
+        // =================================================================
+        
+        // Допоміжна функція для перемішування (тасування) масиву
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                // Обмін елементів
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function scrambleWord(word) {
+            // Якщо слово має 3 або менше символів, або не містить літер, не змінюємо його
+            if (word.length <= 3 || !word.match(/[a-zа-я]/i)) {
+                return word;
+            }
+
+            // 1. Виділяємо перший та останній символи
+            const firstChar = word[0];
+            const lastChar = word[word.length - 1];
+
+            // 2. Виділяємо середню частину
+            const middle = word.substring(1, word.length - 1);
+            
+            // 3. Розбиваємо середню частину на символи, перемішуємо їх та з'єднуємо
+            const shuffledMiddle = shuffleArray(middle.split('')).join('');
+
+            // 4. Збираємо слово назад
+            return firstChar + shuffledMiddle + lastChar;
+        }
+
+        function executeTask4() {
+            const text = getTextInput();
+            if (!text) return;
+
+            // 1. Розбиваємо текст на слова, зберігаючи роздільники (пробіли та розділові знаки)
+            // Регулярний вираз: розбиваємо за групами символів (слово/не-слово)
+            const parts = text.match(/(\w+|[^\w\s]+|\s+)/g) || [];
+            
+            let resultParts = parts.map(part => {
+                // Якщо частина містить лише букви (це "слово"), шифруємо
+                if (part.match(/^\w+$/)) {
+                    return scrambleWord(part);
+                }
+                // Інакше (пробіл, розділовий знак), залишаємо як є
+                return part;
+            });
+            
+            const encryptedText = resultParts.join('');
+
+            let output = "✅ **Зашифрований текст (перемішано всередині слів):**\n";
+            output += encryptedText;
+
+            const body = "Виконано шифрування: у кожному слові, яке складається з більш ніж 3 літер, перемішано внутрішні букви, тоді як перша та остання букви слова залишилися на своїх місцях.";
+            showModal("✅ Результат виконання Завдання 4", body, output);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ПП-23 — Голяницький Артем (Функції)</title>
+    <style>
+        :root{
+            --bg:#f6f9fc;
+            --panel:#ffffff;
+            --accent:#2b82ff;
+            --muted:#666;
+            --red:#e53935;
+            --green:#4CAF50;
+        }
+        body{
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            margin:0;
+            background: linear-gradient(180deg,var(--bg),#e9f2ff 60%);
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:32px;
+        }
+        .container{
+            width:100%;
+            max-width:1000px;
+            background:var(--panel);
+            border-radius:14px;
+            box-shadow:0 10px 30px rgba(20,40,80,0.08);
+            padding:22px;
+            z-index: 10;
+        }
+        h1{margin:0 0 8px 0;font-size:24px}
+        h2 { font-size: 18px; margin-top: 15px; margin-bottom: 5px; color: #1e40af;}
+        p.lead{margin:0 0 18px 0;color:var(--muted)}
+        .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+        button{
+            background:var(--accent);
+            color:white;
+            border:0;
+            padding:10px 14px;
+            border-radius:10px;
+            cursor:pointer;
+            box-shadow:0 6px 14px rgba(43,130,255,0.18);
+            font-weight:600;
+            transition: transform 0.1s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button.secondary{
+            background:transparent;
+            color:var(--accent);
+            border:1px solid rgba(43,130,255,0.16);
+            box-shadow:none;
+            font-weight:600;
+        }
+        .row{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap;margin-bottom:10px;}
+        .row label { flex-shrink: 0; }
+        .row input { padding: 5px; border: 1px solid #ddd; border-radius: 5px; width: 50px;}
+        footer{margin-top:14px;color:var(--muted);font-size:13px}
+        .small{font-size:13px;color:var(--muted)}
+        
+        /* --- СТИЛІ ДЛЯ МОДАЛЬНОГО ВІКНА --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            padding-top: 30px;
+        }
+        .modal-content {
+            background-color: var(--panel);
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s;
+        }
+        .modal-content h3 { margin-top: 0; color: var(--accent); }
+        .modal-content .modal-body { margin-bottom: 20px; }
+        .modal-content .modal-result { 
+            padding: 15px; 
+            border-left: 4px solid var(--green); 
+            background-color: #e8ffe8;
+            font-weight: 500;
+            min-height: 20px;
+            margin-top: 15px;
+            white-space: pre-wrap; /* Зберігає форматування тексту */
+        }
+        .close-btn {
+            color: var(--muted);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--red);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📊 Робота з масивами (Голяницький Артем)</h1>
+        <p class="lead">Виконання завдань з програмування на JavaScript.</p>
+        
+        <hr>
+        
+        <h2>1️⃣ Завдання 1: Трикутні, квадратні та об'єднані числа</h2>
+        <div class="controls">
+            <button onclick="executeTask1()">Обчислити та показати результати</button>
+        </div>
+        
+        <hr>
+
+        <h2>2️⃣ Завдання 2: Мінімальний елемент та перестановка (без вбудованих функцій)</h2>
+        <div class="row">
+            <label for="arraySize">Кількість елементів (≥ 15):</label>
+            <input type="number" id="arraySize" value="15" min="15">
+        </div>
+        <div class="controls">
+            <button onclick="executeTask2()">Створити масив та переставити</button>
+        </div>
+        
+        <footer>ПП-23 | Виконавець: Голяницький Артем</footer>
+    </div>
+
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Результат</h3>
+            <div id="modalBody" class="modal-body"></div>
+            <div id="modalResult" class="modal-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Функція для відкриття модального вікна
+        function showModal(title, body, result) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = body;
+            document.getElementById('modalResult').textContent = result;
+            document.getElementById('resultModal').style.display = 'block';
+        }
+
+        // Функція для закриття модального вікна
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+
+        // Закриття модального вікна при кліку поза ним
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // =================================================================
+        // =========== Завдання 1: Трикутні, квадратні, об'єднання ===========
+        // =================================================================
+
+        function executeTask1() {
+            let output = "";
+            
+            // 1. Створення масиву Treag «трикутних» чисел (n(n+1)/2)
+            const Treag = [];
+            for (let n = 1; n <= 10; n++) {
+                Treag.push(n * (n + 1) / 2);
+            }
+            output += "✅ Масив «трикутних» чисел (Treag):\n";
+            output += Treag.join("  ") + "\n\n";
+
+            // 2. Створення масиву kvd квадратів натуральних чисел (n*n)
+            const kvd = [];
+            for (let n = 1; n <= 10; n++) {
+                kvd.push(n * n);
+            }
+            output += "✅ Масив квадратів чисел (kvd):\n";
+            output += kvd.join("  ") + "\n\n";
+
+            // 3. Об'єднання масивів у масив rez
+            let rez = [...Treag, ...kvd]; // Використовуємо оператор розширення для об'єднання
+            output += "✅ Об'єднаний масив (rez):\n";
+            output += rez.join(" ") + "\n\n";
+
+            // 4. Сортування масиву rez у зворотному порядку
+            // Використовуємо вбудовану функцію sort для порівняння a та b, 
+            // щоб отримати спадаючий порядок (a < b, якщо b більше, то b-a > 0)
+            rez.sort((a, b) => b - a); 
+            output += "✅ Відсортований масив rez (у зворотному порядку):\n";
+            output += rez.join(" ") + "\n";
+
+
+            const body = "Виконано створення масивів «трикутних» та квадратних чисел, їх об'єднання та сортування в порядку спадання.";
+            showModal("✅ Результат виконання Завдання 1", body, output);
+        }
+
+        // =================================================================
+        // =========== Завдання 2: Мін. елемент та перестановка (без вбудованих функцій) ===========
+        // =================================================================
+
+        function executeTask2() {
+            const sizeInput = document.getElementById('arraySize');
+            let size = parseInt(sizeInput.value);
+
+            // Перевірка на мінімальний розмір
+            if (isNaN(size) || size < 15) {
+                size = 15;
+                sizeInput.value = 15;
+            }
+            
+            let output = "";
+            let arr = [];
+
+            // 1. Сформувати одновимірний масив (не менше 15 елементів)
+            for (let i = 0; i < size; i++) {
+                // Генерація цілих чисел від -50 до 50
+                let randomValue = Math.floor(Math.random() * 101) - 50; 
+                arr.push(randomValue);
+            }
+
+            output += `✅ Початковий масив [${size} елементів]:\n`;
+            output += arr.join(" ") + "\n\n";
+
+            // 2. Знайти мінімальний елемент та його індекс (БЕЗ вбудованих функцій)
+            let minElement = arr[0];
+            let minIndex = 0;
+            
+            if (arr.length > 0) {
+                for (let i = 1; i < arr.length; i++) {
+                    if (arr[i] < minElement) {
+                        minElement = arr[i];
+                        minIndex = i;
+                    }
+                }
+            }
+
+            output += `✅ Мінімальний елемент: ${minElement} (Індекс: ${minIndex})\n`;
+
+            // 3. Поміняти мінімальний елемент місцями з наступним елементом масиву
+            // Перевіряємо, чи існує наступний елемент (це індекс minIndex + 1)
+            if (minIndex < arr.length - 1) {
+                // Зберігаємо значення наступного елемента
+                let nextElement = arr[minIndex + 1];
+
+                // Виконуємо обмін (БЕЗ вбудованої функції swap)
+                // 1. На місце мінімального елемента ставимо наступний
+                arr[minIndex] = nextElement; 
+                // 2. На місце наступного елемента ставимо мінімальний (який ми зберегли як minElement)
+                arr[minIndex + 1] = minElement; 
+
+                output += `✅ Елемент на індексі ${minIndex} поміняний з елементом на індексі ${minIndex + 1}\n\n`;
+            } else {
+                output += "❗️ Перестановка неможлива: Мінімальний елемент є останнім у масиві.\n\n";
+            }
+            
+            output += `✅ Кінцевий масив:\n`;
+            output += arr.join(" ") + "\n";
+            
+            const body = `Сформовано масив випадкових чисел розміром ${size}. Знайдено мінімальний елемент і поміняно його місцями з наступним елементом (якщо він існує), без використання вбудованих функцій пошуку/сортування.`;
+            showModal("✅ Результат виконання Завдання 2", body, output);
+        }
+    </script>
+
+</body>
+</html>

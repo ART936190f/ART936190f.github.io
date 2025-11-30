@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Готель "Затишний Куточок" - Бронювання</title>
+    <!-- Підключення Tailwind CSS для стилізації -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Використання шрифту Inter для всього тексту */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            scroll-behavior: smooth;
+        }
+        .service-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .service-card-selected {
+            border-color: #f59e0b; /* Amber/Orange */
+            background-color: #fffbeb; /* Amber-50 */
+            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2), 0 4px 6px -2px rgba(245, 158, 11, 0.05);
+        }
+        .counter-btn {
+            @apply p-1 w-8 h-8 flex items-center justify-center bg-amber-200 text-amber-800 rounded-full hover:bg-amber-300 transition disabled:opacity-50 disabled:cursor-not-allowed;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Хедер (Навігаційна панель) -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-amber-600 hover:text-amber-800 transition duration-300">
+                Затишний Куточок
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#booking" class="text-gray-600 hover:text-amber-600 font-medium">Бронювання</a>
+                <a href="#gallery-section" class="text-gray-600 hover:text-amber-600 font-medium">Галерея</a>
+                <a href="#services-select" class="text-gray-600 hover:text-amber-600 font-medium">Послуги</a>
+                <a href="#my-plans" class="text-gray-600 hover:text-amber-600 font-medium">Ваше Замовлення</a>
+            </div>
+            <a href="#booking" class="hidden md:block bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-105">
+                Забронювати
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Секція Герой -->
+        <section id="hero" class="relative h-[60vh] md:h-[80vh] bg-cover bg-center" 
+                 style="background-image: url('https://placehold.co/1920x800/f59e0b/ffffff?text=Гірський+Готельний+Комплекс')">
+            <!-- ВСТАВТЕ ВАШЕ ЗОБРАЖЕННЯ ТУТ: Головне зображення (банер). Розмір: 1920x800. -->
+            <!-- Замініть посилання у властивості url('...') -->
+            <!-- Приклад: url('https://your-image-url.com/hero_banner.jpg') -->
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full relative z-10">
+                <div class="text-white max-w-xl">
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                        Ваш ідеальний гірський відпочинок
+                    </h1>
+                    <p class="text-lg md:text-xl mb-8">
+                        Розкішні номери та ексклюзивні послуги чекають на вас.
+                    </p>
+                    <a href="#booking" class="bg-white text-amber-600 hover:bg-amber-100 font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
+                        Обрати Дати
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Галерея -->
+        <section id="gallery-section" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Галерея: Номери та Послуги</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Галерея: Номер Люкс -->
+                    <div class="rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
+                        <!-- ВСТАВТЕ ВАШЕ ЗОБРАЖЕННЯ ТУТ: Номер Люкс. Розмір: 600x400. -->
+                        <img src="https://placehold.co/600x400/f59e0b/ffffff?text=Люкс+з+Каміном" 
+                             onerror="this.src='https://placehold.co/600x400/f59e0b/ffffff?text=Люкс+з+Каміном';" 
+                             alt="Номер Люкс" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4 bg-gray-50">
+                            <h3 class="font-semibold text-xl text-gray-800">Преміум Люкс</h3>
+                            <p class="text-sm text-gray-600">Елегантний дизайн та краєвид на гори.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Галерея: Карпатський Чан -->
+                    <div class="rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
+                        <!-- ВСТАВТЕ ВАШЕ ЗОБРАЖЕННЯ ТУТ: Карпатський Чан. Розмір: 600x400. -->
+                        <img src="https://placehold.co/600x400/f59e0b/ffffff?text=Карпатський+Чан" 
+                             onerror="this.src='https://placehold.co/600x400/f59e0b/ffffff?text=Карпатський+Чан';" 
+                             alt="Карпатський Чан" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4 bg-gray-50">
+                            <h3 class="font-semibold text-xl text-gray-800">Відпочинок у Чані</h3>
+                            <p class="text-sm text-gray-600">Сеанси під відкритим небом із травами.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Галерея: Ресторан -->
+                    <div class="rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
+                        <!-- ВСТАВТЕ ВАШЕ ЗОБРАЖЕННЯ ТУТ: Ресторан. Розмір: 600x400. -->
+                        <img src="https://placehold.co/600x400/f59e0b/ffffff?text=Ресторан+Авторської+Кухні" 
+                             onerror="this.src='https://placehold.co/600x400/f59e0b/ffffff?text=Ресторан+Авторської+Кухні';" 
+                             alt="Ресторан" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4 bg-gray-50">
+                            <h3 class="font-semibold text-xl text-gray-800">Ресторан "Вершина"</h3>
+                            <p class="text-sm text-gray-600">Авторська кухня та локальні вина.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секція Бронювання (Booking) -->
+        <section id="booking" class="py-16 bg-amber-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Крок 1: Бронювання Номера</h2>
+                <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-2xl border border-amber-200">
+                    <form id="booking-form" onsubmit="event.preventDefault(); document.getElementById('booking-message').classList.remove('hidden'); scrollToServices();">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                            <!-- Дата Заїзду -->
+                            <div>
+                                <label for="check-in" class="block text-sm font-medium text-gray-700 mb-2">Дата Заїзду</label>
+                                <input type="date" id="check-in" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 transition" required onchange="calculateTotal()">
+                            </div>
+                            <!-- Дата Виїзду -->
+                            <div>
+                                <label for="check-out" class="block text-sm font-medium text-gray-700 mb-2">Дата Виїзду</label>
+                                <input type="date" id="check-out" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 transition" required onchange="calculateTotal()">
+                            </div>
+                            <!-- Тип Номера -->
+                            <div>
+                                <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Тип Номера</label>
+                                <select id="room-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 transition" required onchange="calculateTotal()">
+                                    <option value="" disabled selected>Оберіть</option>
+                                    <option value="standard" data-price="1500">Стандарт (1500 грн/ніч)</option>
+                                    <option value="suite" data-price="3200">Люкс (3200 грн/ніч)</option>
+                                    <option value="premium" data-price="4500">Преміум Студіо (4500 грн/ніч)</option>
+                                </select>
+                            </div>
+                            <!-- Кількість Заїжджих (Нове поле) -->
+                            <div class="relative">
+                                <label for="guests" class="block text-sm font-medium text-gray-700 mb-2">Кількість Гостей</label>
+                                <div class="flex items-center justify-between bg-white border border-gray-300 rounded-lg p-3">
+                                    <button type="button" id="minus-guest-btn" class="counter-btn" onclick="updateGuestCount(-1)" disabled>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                                    </button>
+                                    <span class="text-xl font-bold text-gray-800 w-8 text-center" id="guest-count-display">1</span>
+                                    <input type="hidden" id="guests" value="1" onchange="calculateTotal()">
+                                    <button type="button" id="plus-guest-btn" class="counter-btn" onclick="updateGuestCount(1)">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1 text-center">Максимум 4</p>
+                            </div>
+                        </div>
+
+                        <!-- Кнопка Перехід до Послуг -->
+                        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow-lg transition transform hover:scale-[1.01]">
+                            <span id="booking-button-text">Перевірити дати та перейти до послуг</span>
+                        </button>
+                    </form>
+                    <!-- Повідомлення про успішне бронювання (імітація) -->
+                    <div id="booking-message" class="hidden mt-6 p-4 bg-green-100 text-green-700 rounded-lg border border-green-300 text-center font-medium">
+                        Дати, номер та кількість гостей вибрано! Виберіть додаткові послуги нижче.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Крок 2: Динамічний Вибір Послуг -->
+        <section id="services-select" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-12 text-amber-700">Крок 2: Додаткові Послуги</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="services-list-container">
+                    <!-- Послуги будуть згенеровані тут JavaScript-ом -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Крок 3: Мої Плани (Відображення та Оплата) -->
+        <section id="my-plans" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Крок 3: Ваше Замовлення та Оплата</h2>
+                <div class="max-w-3xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Колонка 1 & 2: Перелік Вибраного (Динамічний) -->
+                    <div class="lg:col-span-2 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Деталі Замовлення</h3>
+                        <div id="order-summary" class="space-y-3">
+                            <p class="text-gray-500">Будь ласка, оберіть дати, номер та кількість гостей для розрахунку.</p>
+                        </div>
+                        
+                        <!-- Зона розрахунку підсумкової суми -->
+                        <div class="pt-4 border-t border-amber-300 mt-4">
+                            <div id="discount-info" class="hidden text-sm text-green-600 font-semibold mb-2">
+                                🎉 Застосовано знижку 5% за бронювання від 7 ночей!
+                            </div>
+                            <div class="flex justify-between font-bold text-xl mt-2">
+                                <span>Загальна Сума:</span>
+                                <span id="final-total" class="text-amber-600">0 грн</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Колонка 3: Меню Оплати -->
+                    <div class="p-6 bg-amber-600 rounded-xl shadow-xl text-white flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">Оплата</h3>
+                            <p class="mb-6 text-sm opacity-90">Завершіть бронювання, сплативши 10% передоплати або повну суму.</p>
+                        </div>
+                        <div class="space-y-3">
+                            <button id="pay-full-btn" class="w-full bg-white text-amber-700 hover:bg-amber-100 font-semibold py-3 rounded-lg transition duration-300 disabled:opacity-50" disabled>
+                                Сплатити Повну Суму (<span id="pay-full-amount">0</span> грн)
+                            </button>
+                            <button id="pay-deposit-btn" class="w-full bg-amber-700 text-white border border-amber-400 hover:bg-amber-800 font-semibold py-3 rounded-lg transition duration-300 disabled:opacity-50" disabled>
+                                Внести Передоплату (<span id="pay-deposit-amount">0</span> грн)
+                            </button>
+                        </div>
+                        <p class="mt-4 text-xs opacity-75 text-center">Безпечна оплата.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="bg-gray-900 text-white pt-12 pb-6 border-t border-amber-700">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-10 mb-8">
+                <div>
+                    <h4 class="text-2xl font-bold text-amber-400 mb-4">Затишний Куточок</h4>
+                    <p class="text-gray-400 text-sm">Ваш дім далеко від дому.</p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-amber-300">Навігація</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#booking" class="text-gray-400 hover:text-amber-400 transition">Бронювання</a></li>
+                        <li><a href="#gallery-section" class="text-gray-400 hover:text-amber-400 transition">Галерея</a></li>
+                        <li><a href="#my-plans" class="text-gray-400 hover:text-amber-400 transition">Замовлення</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-amber-300">Правова інформація</h5>
+                    <ul class="space-y-2">
+                        <!-- ПОСИЛАННЯ НА ОКРЕМІ HTML-ФАЙЛИ -->
+                        <li><a href="privacy_policy.html" target="_blank" class="text-gray-400 hover:text-amber-400 transition">Політика конфіденційності</a></li>
+                        <li><a href="terms_and_conditions.html" target="_blank" class="text-gray-400 hover:text-amber-400 transition">Умови й положення</a></li>
+                        <li><a href="refund_policy.html" target="_blank" class="text-gray-400 hover:text-amber-400 transition">Правила повернення коштів</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-amber-300">Контакти</h5>
+                    <p class="text-gray-400 text-sm">hotel@cozy.com</p>
+                </div>
+            </div>
+            <div class="text-center text-sm text-gray-500">
+                &copy; 2024 Готель "Затишний Куточок".
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Ініціалізація змінних
+        let roomPricePerNight = 0;
+        let numberOfNights = 0;
+        let totalRoomCost = 0;
+        let totalServiceCost = 0;
+        let discountRate = 0;
+
+        // Дані про послуги. ВСІ послуги тепер мають тип 'counter' для ручного вибору.
+        const SERVICES = [
+            // Послуги з можливістю багаторазового замовлення (multiplier = counter)
+            { id: 'restaurant', name: 'Вечеря у Ресторані (1 день)', description: 'Спеціальне меню на один вечір.', price: 500, type: 'counter', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>' },
+            { id: 'guide', name: 'Послуги Гіда (1 день)', description: 'Персональний гід по регіону.', price: 1500, type: 'counter', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 9a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a4 4 0 014-4h10a4 4 0 014 4v1z"></path>' },
+            { id: 'sauna', name: 'Фінська Сауна (1 сеанс)', description: 'Ідеальне місце для релаксації.', price: 800, type: 'counter', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>' },
+            { id: 'chan', name: 'Карпатський Чан (1 сеанс)', description: 'Купання під відкритим небом з травами.', price: 1200, type: 'counter', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9h-3M12 21a9 9 0 01-9-9m9 9v-3M3 12h3M12 3v3"></path>' },
+            { id: 'transport', name: 'Трансфер (одноразово)', description: 'Поїздка до вокзалу/аеропорту.', price: 400, type: 'counter', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>' },
+        ];
+        
+        // Зберігання поточного стану лічильників
+        const serviceCounts = {};
+        let guestCount = 1;
+
+        // Ініціалізація DOM-елементів
+        const checkInInput = document.getElementById('check-in');
+        const checkOutInput = document.getElementById('check-out');
+        const roomTypeSelect = document.getElementById('room-type');
+        const servicesContainer = document.getElementById('services-list-container');
+        const orderSummaryDiv = document.getElementById('order-summary');
+        const finalTotalSpan = document.getElementById('final-total');
+        const discountInfoDiv = document.getElementById('discount-info');
+        const payFullAmountSpan = document.getElementById('pay-full-amount');
+        const payDepositAmountSpan = document.getElementById('pay-deposit-amount');
+        const payFullBtn = document.getElementById('pay-full-btn');
+        const payDepositBtn = document.getElementById('pay-deposit-btn');
+        const bookingButtonText = document.getElementById('booking-button-text');
+        const guestCountDisplay = document.getElementById('guest-count-display');
+        const guestsInput = document.getElementById('guests');
+        const minusGuestBtn = document.getElementById('minus-guest-btn');
+        const plusGuestBtn = document.getElementById('plus-guest-btn');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Встановлення мінімальної дати на сьогодні
+            const today = new Date().toISOString().split('T')[0];
+            checkInInput.setAttribute('min', today);
+            checkOutInput.setAttribute('min', today);
+            
+            // Генерація карток послуг
+            generateServiceCards();
+        });
+
+        // Функція оновлення лічильника гостей
+        function updateGuestCount(delta) {
+            const newCount = guestCount + delta;
+            
+            if (newCount >= 1 && newCount <= 4) { // Обмеження від 1 до 4 гостей
+                guestCount = newCount;
+                guestCountDisplay.textContent = guestCount;
+                guestsInput.value = guestCount;
+                
+                // Оновлення стану кнопок
+                minusGuestBtn.disabled = guestCount <= 1;
+                plusGuestBtn.disabled = guestCount >= 4;
+                
+                calculateTotal();
+            }
+        }
+
+
+        // Функція для генерації карток послуг з лічильниками (ВСІ COUNTER)
+        function generateServiceCards() {
+            servicesContainer.innerHTML = SERVICES.map(service => {
+                // Ініціалізація лічильника (для всіх 0, оскільки вони тепер ручні)
+                serviceCounts[service.id] = 0;
+                
+                const cardHtml = `
+                    <div class="service-card text-center p-4 bg-white rounded-xl border-2 border-transparent transition duration-300" 
+                         data-service-id="${service.id}">
+                        
+                        <!-- Іконка та Назва -->
+                        <div class="flex items-center justify-center h-16 w-16 bg-amber-100 text-amber-500 rounded-full mx-auto mb-3">
+                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${service.icon}</svg>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-1">${service.name}</h3>
+                        <p class="text-gray-500 text-sm mb-2">${service.description}</p>
+                        <p class="text-amber-600 font-bold mb-3">${service.price} грн</p>
+
+                        <!-- Лічильник -->
+                        <div class="flex justify-center items-center space-x-3 mt-2">
+                            <button type="button" class="counter-btn minus-btn" data-service-id="${service.id}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                            </button>
+                            <span class="text-xl font-bold text-gray-800 w-6" id="count-${service.id}">${serviceCounts[service.id]}</span>
+                            <button type="button" class="counter-btn plus-btn" data-service-id="${service.id}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return cardHtml;
+            }).join('');
+            
+            // Додавання обробників подій для лічильників
+            document.querySelectorAll('.plus-btn').forEach(btn => btn.addEventListener('click', updateServiceCount));
+            document.querySelectorAll('.minus-btn').forEach(btn => btn.addEventListener('click', updateServiceCount));
+        }
+
+        // Обробник зміни лічильника послуги
+        function updateServiceCount(event) {
+            const btn = event.currentTarget;
+            const serviceId = btn.getAttribute('data-service-id');
+            const isPlus = btn.classList.contains('plus-btn');
+            const countSpan = document.getElementById(`count-${serviceId}`);
+            
+            let currentCount = serviceCounts[serviceId];
+            
+            if (isPlus) {
+                currentCount++;
+            } else if (currentCount > 0) {
+                currentCount--;
+            }
+            
+            serviceCounts[serviceId] = currentCount;
+            countSpan.textContent = currentCount;
+            
+            // Оновлення стилю картки
+            const card = document.querySelector(`.service-card[data-service-id="${serviceId}"]`);
+            if (currentCount > 0) {
+                card.classList.add('service-card-selected');
+            } else {
+                card.classList.remove('service-card-selected');
+            }
+
+            calculateTotal();
+        }
+
+        // Функція для прокрутки до секції "Послуги"
+        function scrollToServices() {
+             const servicesSection = document.getElementById('services-select');
+             servicesSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Основна функція розрахунку
+        function calculateTotal() {
+            const checkInDate = new Date(checkInInput.value);
+            const checkOutDate = new Date(checkOutInput.value);
+            const selectedRoomOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+
+            // 1. Перевірка валідності даних
+            if (!checkInInput.value || !checkOutInput.value || !selectedRoomOption || !selectedRoomOption.value || checkOutDate <= checkInDate) {
+                if (checkInInput.value && checkOutInput.value && checkOutDate <= checkInDate) {
+                    bookingButtonText.textContent = "Дата виїзду має бути пізнішою за дату заїзду!";
+                    bookingButtonText.classList.add('text-red-500');
+                } else {
+                    bookingButtonText.textContent = "Перевірити дати та перейти до послуг";
+                    bookingButtonText.classList.remove('text-red-500');
+                }
+                updateSummary(false);
+                return;
+            } else {
+                bookingButtonText.textContent = "Перевірити дати та перейти до послуг";
+                bookingButtonText.classList.remove('text-red-500');
+            }
+
+            // Розрахунок кількості ночей
+            const diffTime = Math.abs(checkOutDate - checkInDate);
+            numberOfNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // 2. Розрахунок вартості номера
+            roomPricePerNight = parseFloat(selectedRoomOption.getAttribute('data-price')) || 0;
+            totalRoomCost = roomPricePerNight * numberOfNights;
+            
+            // 3. Розрахунок вартості послуг
+            totalServiceCost = 0;
+            const selectedServices = [];
+            
+            SERVICES.forEach(service => {
+                const count = serviceCounts[service.id] || 0;
+                
+                if (count > 0) {
+                    const costPerStay = service.price * count;
+                    totalServiceCost += costPerStay;
+                    
+                    let nameDisplay = `${service.name.split('(')[0].trim()} (x${count} разів)`;
+
+                    selectedServices.push({ 
+                        name: nameDisplay, 
+                        cost: costPerStay, 
+                        quantity: count 
+                    });
+                }
+            });
+
+            // 4. Загальна сума до знижки
+            let subtotal = totalRoomCost + totalServiceCost;
+            let finalTotal = subtotal;
+            
+            // 5. Застосування знижки (якщо більше 7 ночей)
+            discountRate = 0;
+            if (numberOfNights >= 7) {
+                discountRate = 0.05; // 5%
+                finalTotal = subtotal * (1 - discountRate);
+                discountInfoDiv.classList.remove('hidden');
+            } else {
+                discountInfoDiv.classList.add('hidden');
+            }
+            
+            // Оновлення підсумкового блоку
+            updateSummary(true, selectedRoomOption.textContent, numberOfNights, totalRoomCost, selectedServices, subtotal, finalTotal, guestCount);
+        }
+
+        // Функція оновлення розділу "Мої Плани"
+        function updateSummary(isValid, roomName = null, nights = 0, roomCost = 0, selectedServices = [], subtotal = 0, finalTotal = 0, guests = 1) {
+            
+            if (!isValid) {
+                orderSummaryDiv.innerHTML = '<p class="text-gray-500">Будь ласка, оберіть коректні дати, номер та кількість гостей для розрахунку.</p>';
+                finalTotalSpan.textContent = '0 грн';
+                payFullAmountSpan.textContent = '0';
+                payDepositAmountSpan.textContent = '0';
+                payFullBtn.disabled = true;
+                payDepositBtn.disabled = true;
+                discountInfoDiv.classList.add('hidden');
+                return;
+            }
+            
+            // Формування переліку послуг
+            let servicesListHtml = '';
+            if (selectedServices.length > 0) {
+                servicesListHtml = selectedServices.map(service => `
+                    <li class="flex justify-between border-b border-gray-100 pb-2">
+                        <span class="text-gray-600">${service.name}</span>
+                        <span class="font-medium">${service.cost.toFixed(0)} грн</span>
+                    </li>
+                `).join('');
+            } else {
+                servicesListHtml = '<li class="text-gray-500 border-b border-gray-100 pb-2">Додаткові послуги не обрано.</li>';
+            }
+
+            // Формування основного списку
+            const summaryHtml = `
+                <li class="flex justify-between border-b pb-2">
+                    <span class="text-gray-700 font-semibold">Номер: ${roomName.split('(')[0].trim()} (${nights} ночей)</span>
+                    <span class="font-bold text-amber-700">${roomCost.toFixed(0)} грн</span>
+                </li>
+                <li class="flex justify-between border-b pb-2">
+                    <span class="text-gray-700 font-semibold">Кількість Гостей:</span>
+                    <span class="font-bold text-amber-700">${guests}</span>
+                </li>
+                <li class="mt-4 text-sm font-semibold text-gray-700">Додаткові послуги:</li>
+                ${servicesListHtml}
+                <li class="flex justify-between border-b border-gray-100 pt-4 font-medium">
+                    <span>Проміжна Сума (Номер + Послуги):</span>
+                    <span>${subtotal.toFixed(0)} грн</span>
+                </li>
+                ${discountRate > 0 ? `
+                    <li class="flex justify-between text-sm text-green-600 font-bold">
+                        <span>Знижка (${(discountRate * 100).toFixed(0)}%):</span>
+                        <span>-${(subtotal - finalTotal).toFixed(0)} грн</span>
+                    </li>
+                ` : ''}
+            `;
+            
+            orderSummaryDiv.innerHTML = `<ul class="space-y-3">${summaryHtml}</ul>`;
+
+            // Оновлення фінальної суми
+            finalTotalSpan.textContent = `${finalTotal.toFixed(0)} грн`;
+
+            // Оновлення кнопок оплати
+            const depositAmount = finalTotal * 0.10;
+            payFullAmountSpan.textContent = finalTotal.toFixed(0);
+            payDepositAmountSpan.textContent = depositAmount.toFixed(0);
+            
+            payFullBtn.disabled = false;
+            payDepositBtn.disabled = false;
+        }
+    </script>
+</body>
+</html>

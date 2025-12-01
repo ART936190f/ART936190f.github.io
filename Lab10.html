@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Готель "Затишний Куточок" - Бронювання та Планування</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; scroll-behavior: smooth; }
+        
+        /* Стилі для приховування скролбару у слайдері, але збереження функціоналу */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .counter-btn { @apply p-1 w-8 h-8 flex items-center justify-center bg-amber-200 text-amber-800 rounded-full hover:bg-amber-300 transition disabled:opacity-50 disabled:cursor-not-allowed; }
+        
+        /* Ефекти для карток */
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .service-card-selected { border-color: #f59e0b; background-color: #fffbeb; }
+
+        /* Стилі для Календаря */
+        .calendar-day { @apply p-2 rounded-lg cursor-pointer transition text-center font-medium; }
+        .calendar-day:hover { @apply bg-amber-200; }
+        .calendar-day-current { @apply bg-amber-600 text-white shadow-md; }
+        .calendar-day-selected { @apply bg-blue-500 text-white shadow-md; }
+        
+        /* Стиль для Карти */
+        #map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Хедер -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-amber-600 hover:text-amber-800 transition duration-300">
+                Затишний Куточок
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#rooms-slider-section" class="text-gray-600 hover:text-amber-600 font-medium">Номери</a>
+                <!-- Посилання на окрему сторінку галереї -->
+                <a href="gallery.html" class="text-gray-600 hover:text-amber-600 font-medium">Галерея</a> 
+                <a href="#location-map" class="text-gray-600 hover:text-amber-600 font-medium">Локація</a>
+                <a href="#planning-section" class="text-gray-600 hover:text-amber-600 font-medium">Планування</a>
+                <a href="#services-select" class="text-gray-600 hover:text-amber-600 font-medium">Послуги</a>
+                <a href="#my-plans" class="text-gray-600 hover:text-amber-600 font-medium">Ваше Замовлення</a>
+            </div>
+            <a href="#booking" class="hidden md:block bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-105">
+                Забронювати
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Секція Герой -->
+        <!-- Фонове зображення високої якості -->
+        <section id="hero" class="relative h-[60vh] md:h-[80vh] bg-cover bg-center" style="background-image: url('https://i.ibb.co/3sXfN0x/high-res-mountain-hotel.jpg'); background-position: center bottom;">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full relative z-10">
+                <div class="text-white max-w-xl">
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Ваш ідеальний гірський відпочинок</h1>
+                    <p class="text-lg md:text-xl mb-8">Розкішні номери та ексклюзивні послуги чекають на вас.</p>
+                    <a href="#booking" class="bg-white text-amber-600 hover:bg-amber-100 font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">Обрати Дати</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЛАЙДЕР НОМЕРІВ -->
+        <section id="rooms-slider-section" class="py-16 bg-white relative">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Наші Номери</h2>
+                
+                <div class="relative group">
+                    <!-- Кнопка Вліво -->
+                    <button onclick="scrollSlider('rooms-slider', -350)" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg text-amber-600 hidden group-hover:block transition">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+
+                    <!-- Сам слайдер -->
+                    <div id="rooms-slider" class="flex space-x-6 overflow-x-auto scrollbar-hide py-4 px-2 scroll-smooth snap-x">
+                        
+                        <!-- Картки Номерів (Усі 12 варіантів) -->
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/xCPzX4X/economy-room.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Економ';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Економ Одномісний</h3><p class="text-gray-600 text-sm mb-4">Затишний номер для соло-мандрівників.</p><p class="text-amber-600 font-bold text-lg">900 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/60a5fa/double-room.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Стандарт';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Стандарт Двомісний</h3><p class="text-gray-600 text-sm mb-4">Класичний вибір для пар.</p><p class="text-amber-600 font-bold text-lg">1500 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/L5w12k5/suite-with-fireplace.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Люкс';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Люкс з Каміном</h3><p class="text-gray-600 text-sm mb-4">Простір та романтика.</p><p class="text-amber-600 font-bold text-lg">3200 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/93c5fd/family-room.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Сімейний';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Сімейний Апартамент</h3><p class="text-gray-600 text-sm mb-4">Дві кімнати для комфорту всієї родини.</p><p class="text-amber-600 font-bold text-lg">3800 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/P44n7L1/mountain-restaurant.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Президентський';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Президентський Номер</h3><p class="text-gray-600 text-sm mb-4">Максимальна розкіш та панорамні вікна.</p><p class="text-amber-600 font-bold text-lg">6500 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/KyR0g6m/bar.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Студіо';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Студіо з видом на гори</h3><p class="text-gray-600 text-sm mb-4">Відкритий простір, міні-кухня.</p><p class="text-amber-600 font-bold text-lg">2100 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/30zT28S/carpathian-vat.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Двокімнатний';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Двокімнатний Люкс</h3><p class="text-gray-600 text-sm mb-4">Окрема вітальня та спальня.</p><p class="text-amber-600 font-bold text-lg">4500 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/Jqvz8x9/chef-dish.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Хостел';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Ліжко в Хостел-Кімнаті</h3><p class="text-gray-600 text-sm mb-4">Економний варіант для груп.</p><p class="text-amber-600 font-bold text-lg">550 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/68nL04J/mountain-hotel-banner.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Котедж';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Окремий Котедж</h3><p class="text-gray-600 text-sm mb-4">Приватний будинок на 4-6 осіб.</p><p class="text-amber-600 font-bold text-lg">7000 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/xf0Xg9z/lounge-area.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Супер+Люкс';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Супер Люкс VIP</h3><p class="text-gray-600 text-sm mb-4">Власна тераса та джакузі.</p><p class="text-amber-600 font-bold text-lg">8500 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/Vtq5N8S/lobby.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=3+Спальні';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Апартаменти (3 спальні)</h3><p class="text-gray-600 text-sm mb-4">Ідеально для великої компанії.</p><p class="text-amber-600 font-bold text-lg">5500 грн/ніч</p></div>
+                        </div>
+                        <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
+                            <img src="https://i.ibb.co/0jZ1yqB/hallway.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Балкон';" class="w-full h-48 object-cover">
+                            <div class="p-6"><h3 class="font-bold text-xl mb-2">Стандарт з балконом</h3><p class="text-gray-600 text-sm mb-4">Свіже повітря та краєвид.</p><p class="text-amber-600 font-bold text-lg">1800 грн/ніч</p></div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Кнопка Вправо -->
+                    <button onclick="scrollSlider('rooms-slider', 350)" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg text-amber-600 hidden group-hover:block transition">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секція Бронювання -->
+        <section id="booking" class="py-16 bg-amber-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Крок 1: Бронювання Номера</h2>
+                <div class="max-w-5xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-2xl border border-amber-200">
+                    <form id="booking-form" onsubmit="event.preventDefault(); document.getElementById('booking-message').classList.remove('hidden'); scrollToMap();">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                            <div>
+                                <label for="check-in" class="block text-sm font-medium text-gray-700 mb-2">Заїзд</label>
+                                <input type="date" id="check-in" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-amber-500" required onchange="calculateTotal()">
+                            </div>
+                            <div>
+                                <label for="check-out" class="block text-sm font-medium text-gray-700 mb-2">Виїзд</label>
+                                <input type="date" id="check-out" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-amber-500" required onchange="calculateTotal()">
+                            </div>
+                            <div>
+                                <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Тип Номера</label>
+                                <select id="room-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-amber-500" required onchange="calculateTotal()">
+                                    <option value="" disabled selected>Оберіть</option>
+                                    <option value="economy" data-price="900">Економ Одномісний (900 грн)</option>
+                                    <option value="hostel" data-price="550">Ліжко в Хостел-Кімнаті (550 грн)</option>
+                                    <option value="standard_balcony" data-price="1800">Стандарт з балконом (1800 грн)</option>
+                                    <option value="standard" data-price="1500">Стандарт Двомісний (1500 грн)</option>
+                                    <option value="studio_view" data-price="2100">Студіо з видом на гори (2100 грн)</option>
+                                    <option value="suite" data-price="3200">Люкс з Каміном (3200 грн)</option>
+                                    <option value="two_room_suite" data-price="4500">Двокімнатний Люкс (4500 грн)</option>
+                                    <option value="family" data-price="3800">Сімейний Апартамент (3800 грн)</option>
+                                    <option value="three_bed_apt" data-price="5500">Апартаменти (3 спальні) (5500 грн)</option>
+                                    <option value="cottage" data-price="7000">Окремий Котедж (7000 грн)</option>
+                                    <option value="super_suite" data-price="8500">Супер Люкс VIP (8500 грн)</option>
+                                </select>
+                            </div>
+                            <!-- Кількість Гостей -->
+                            <div class="relative">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Гостей</label>
+                                <div class="flex items-center justify-between bg-white border border-gray-300 rounded-lg p-3">
+                                    <button type="button" id="minus-guest-btn" class="counter-btn" onclick="updateGuestCount(-1)" disabled>-</button>
+                                    <span class="text-xl font-bold text-gray-800 w-8 text-center" id="guest-count-display">1</span>
+                                    <button type="button" id="plus-guest-btn" class="counter-btn" onclick="updateGuestCount(1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow-lg transition">Перевірити дати та перейти до карти</button>
+                    </form>
+                    <div id="booking-message" class="hidden mt-6 p-4 bg-green-100 text-green-700 rounded-lg text-center font-medium">Дати та номер обрано!</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ПЕРЕМІЩЕНА НОВА СЕКЦІЯ: Карта -->
+        <section id="location-map" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-6 text-amber-700">Крок 2: Де нас знайти? (Карта)</h2>
+                <div class="max-w-5xl mx-auto">
+                    <div id="map-container" class="shadow-2xl border-4 border-white">
+                        <!-- Вбудована карта Google Maps через iframe -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d8929.201968835148!2d24.034659511827723!3d48.29000986144291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1suk!2sua!4v1764621605698!5m2!1suk!2sua" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <button onclick="scrollToPlanning()" class="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md transition">Перейти до планування та погоди</button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- СЕКЦІЯ: Планування (Календар та Погода) -->
+        <section id="planning-section" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Крок 3: Планування Поїздки та Погода</h2>
+                <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 bg-gray-50 rounded-xl shadow-xl border border-gray-200">
+                    
+                    <!-- Колонка Погоди -->
+                    <div class="lg:col-span-1 p-4 bg-white rounded-xl shadow-lg border border-blue-100">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-700 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            Прогноз Погоди (Умовний)
+                        </h3>
+                        <div id="weather-display" class="bg-blue-50 p-4 rounded-lg text-center">
+                            <div id="weather-icon" class="text-6xl mb-2 text-blue-500">☀️</div>
+                            <p class="text-2xl font-bold text-gray-800 mb-1" id="weather-temp">+7°C</p>
+                            <p class="text-lg font-semibold text-blue-600 mb-2" id="weather-day">Сьогодні</p>
+                            <p class="text-sm text-gray-500" id="weather-condition">Сонячно</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-3 text-center">Натисніть на день у календарі, щоб побачити прогноз.</p>
+                    </div>
+
+                    <!-- Колонка Календаря -->
+                    <div class="lg:col-span-2 p-4 bg-white rounded-xl shadow-lg border border-amber-100">
+                        <div class="flex justify-between items-center mb-4">
+                            <button onclick="changeMonth(-1)" class="p-2 rounded-full hover:bg-amber-100 transition"><svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                            <h3 id="calendar-month-year" class="text-xl font-semibold text-amber-700">Вересень 2025</h3>
+                            <button onclick="changeMonth(1)" class="p-2 rounded-full hover:bg-amber-100 transition"><svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                        </div>
+                        
+                        <!-- Дні тижня -->
+                        <div class="grid grid-cols-7 text-center font-bold text-sm text-gray-500 mb-2">
+                            <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span class="text-red-500">Сб</span><span class="text-red-500">Нд</span>
+                        </div>
+
+                        <!-- Сітка Календаря -->
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1">
+                            <!-- Дні генеруються JS -->
+                        </div>
+                        <button onclick="scrollToServices()" class="mt-6 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl shadow-md transition">Перейти до вибору послуг</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Секція 4: Послуги -->
+        <section id="services-select" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-12 text-amber-700">Крок 4: Додаткові Послуги</h2>
+                
+                <!-- Контейнер для слайдера послуг -->
+                <div class="relative group">
+                    <button onclick="scrollSlider('services-slider', -300)" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg text-amber-600 hidden group-hover:block transition">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+
+                    <!-- Слайдер послуг (ID для JS) -->
+                    <div id="services-slider" class="flex space-x-6 overflow-x-auto scrollbar-hide py-4 px-2 scroll-smooth snap-x">
+                        <!-- Послуги генеруються JS -->
+                    </div>
+
+                    <button onclick="scrollSlider('services-slider', 300)" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg text-amber-600 hidden group-hover:block transition">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секція 5: Мої Плани -->
+        <section id="my-plans" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center mb-10 text-amber-700">Крок 5: Ваше Замовлення</h2>
+                <div class="max-w-3xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 p-6 bg-gray-50 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Деталі</h3>
+                        <div id="order-summary" class="space-y-3"><p class="text-gray-500">Оберіть параметри.</p></div>
+                        <div class="pt-4 border-t border-amber-300 mt-4">
+                            <div id="discount-info" class="hidden text-sm text-green-600 font-semibold mb-2">🎉 Знижка 5% (>7 ночей)!</div>
+                            <div class="flex justify-between font-bold text-xl mt-2">
+                                <span>Разом:</span><span id="final-total" class="text-amber-600">0 грн</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-amber-600 rounded-xl shadow-xl text-white flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">Оплата</h3>
+                            <p class="mb-6 text-sm opacity-90">10% передоплати для бронювання.</p>
+                        </div>
+                        <div class="space-y-3">
+                            <button id="pay-full-btn" class="w-full bg-white text-amber-700 hover:bg-amber-100 font-semibold py-3 rounded-lg disabled:opacity-50" disabled>Повна сума (<span id="pay-full-amount">0</span>)</button>
+                            <button id="pay-deposit-btn" class="w-full bg-amber-700 text-white border border-amber-400 hover:bg-amber-800 font-semibold py-3 rounded-lg disabled:opacity-50" disabled>Передоплата (<span id="pay-deposit-amount">0</span>)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="bg-gray-900 text-white pt-12 pb-6 border-t border-amber-700">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-10 mb-8">
+                <div><h4 class="text-2xl font-bold text-amber-400 mb-4">Затишний Куточок</h4><p class="text-gray-400 text-sm">Ваш дім в горах.</p></div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-amber-300">Навігація</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#booking" class="text-gray-400 hover:text-amber-400">Бронювання</a></li>
+                        <li><a href="gallery.html" class="text-gray-400 hover:text-amber-400">Галерея</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-amber-300">Інфо</h5>
+                    <ul class="space-y-2">
+                        <li><a href="CGW.html" class="text-gray-400 hover:text-amber-400">Конфіденційність</a></li>
+                        <li><a href="CGW.html" class="text-gray-400 hover:text-amber-400">Умови</a></li>
+                        <li><a href="CGW.html" class="text-gray-400 hover:text-amber-400">Повернення</a></li>
+                    </ul>
+                </div>
+                <div><h5 class="text-lg font-semibold mb-4 text-amber-300">Контакти</h5><p class="text-gray-400 text-sm">info@cozy-hotel.com</p></div>
+            </div>
+            <div class="text-center text-sm text-gray-500">&copy; 2025 Готель "Затишний Куточок".</div>
+        </div>
+    </footer>
+
+    <script>
+        // --- ЛОГІКА СЛАЙДЕРІВ ---
+        function scrollSlider(sliderId, amount) {
+            const slider = document.getElementById(sliderId);
+            slider.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+
+        // --- ЛОГІКА БРОНЮВАННЯ ТА ПОСЛУГ ---
+        let roomPricePerNight = 0;
+        let numberOfNights = 0;
+        let totalRoomCost = 0;
+        let totalServiceCost = 0;
+        let discountRate = 0;
+        let guestCount = 1;
+        const serviceCounts = {};
+
+        const SERVICES = [
+            { id: 'restaurant', name: 'Вечеря (1 день)', description: 'Спеціальне меню.', price: 500, icon: '<path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>' },
+            { id: 'guide', name: 'Гід (1 день)', description: 'Екскурсії по горах.', price: 1500, icon: '<path d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 9a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a4 4 0 014-4h10a4 4 0 014 4v1z"></path>' },
+            { id: 'sauna', name: 'Сауна (1 сеанс)', description: 'Фінська парна.', price: 800, icon: '<path d="M13 10V3L4 14h7v7l9-11h-7z"></path>' },
+            { id: 'chan', name: 'Чан (1 сеанс)', description: 'Купання в травах.', price: 1200, icon: '<path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9h-3M12 21a9 9 0 01-9-9m9 9v-3M3 12h3M12 3v3"></path>' },
+            { id: 'transport', name: 'Трансфер', description: 'З/до вокзалу.', price: 400, icon: '<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>' },
+            { id: 'massage', name: 'Масаж (1 год)', description: 'Релакс та відновлення.', price: 900, icon: '<path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>' }
+        ];
+
+        // Ініціалізація DOM-елементів
+        const checkInInput = document.getElementById('check-in');
+        const checkOutInput = document.getElementById('check-out');
+        const roomTypeSelect = document.getElementById('room-type');
+        const servicesSlider = document.getElementById('services-slider');
+        const orderSummaryDiv = document.getElementById('order-summary');
+        const finalTotalSpan = document.getElementById('final-total');
+        const discountInfoDiv = document.getElementById('discount-info');
+        const payFullAmountSpan = document.getElementById('pay-full-amount');
+        const payDepositAmountSpan = document.getElementById('pay-deposit-amount');
+        const payFullBtn = document.getElementById('pay-full-btn');
+        const payDepositBtn = document.getElementById('pay-deposit-btn');
+        const guestCountDisplay = document.getElementById('guest-count-display');
+        const minusGuestBtn = document.getElementById('minus-guest-btn');
+        const plusGuestBtn = document.getElementById('plus-guest-btn');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            checkInInput.setAttribute('min', today);
+            checkOutInput.setAttribute('min', today);
+            generateServiceCards();
+            renderCalendar(currentDate.getFullYear(), currentDate.getMonth()); // Ініціалізація календаря
+            updateWeatherDisplay(new Date().toISOString().split('T')[0]); // Ініціалізація погоди
+        });
+
+        function updateGuestCount(delta) {
+            const newCount = guestCount + delta;
+            if (newCount >= 1 && newCount <= 6) {
+                guestCount = newCount;
+                guestCountDisplay.textContent = guestCount;
+                minusGuestBtn.disabled = guestCount <= 1;
+                plusGuestBtn.disabled = guestCount >= 6;
+                calculateTotal();
+            }
+        }
+
+        function generateServiceCards() {
+            servicesSlider.innerHTML = SERVICES.map(service => {
+                serviceCounts[service.id] = 0;
+                return `
+                    <div class="min-w-[280px] bg-white rounded-xl border-2 border-transparent p-4 text-center snap-center service-card" data-service-id="${service.id}">
+                        <div class="flex items-center justify-center h-12 w-12 bg-amber-100 text-amber-500 rounded-full mx-auto mb-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">${service.icon}</svg>
+                        </div>
+                        <h3 class="font-bold text-gray-800">${service.name}</h3>
+                        <p class="text-xs text-gray-500 mb-2">${service.description}</p>
+                        <p class="text-amber-600 font-bold mb-3">${service.price} грн</p>
+                        <div class="flex justify-center items-center space-x-3">
+                            <button type="button" class="counter-btn minus-btn" data-service-id="${service.id}" onclick="updateServiceCount(event)"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg></button>
+                            <span class="font-bold text-gray-800 w-4" id="count-${service.id}">0</span>
+                            <button type="button" class="counter-btn plus-btn" data-service-id="${service.id}" onclick="updateServiceCount(event)"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateServiceCount(event) {
+            const btn = event.currentTarget;
+            const serviceId = btn.getAttribute('data-service-id');
+            const isPlus = btn.classList.contains('plus-btn');
+            const countSpan = document.getElementById(`count-${serviceId}`);
+            let currentCount = serviceCounts[serviceId];
+            
+            if (isPlus) currentCount++;
+            else if (currentCount > 0) currentCount--;
+            
+            serviceCounts[serviceId] = currentCount;
+            countSpan.textContent = currentCount;
+            
+            const card = document.querySelector(`.service-card[data-service-id="${serviceId}"]`);
+            if (currentCount > 0) card.classList.add('service-card-selected');
+            else card.classList.remove('service-card-selected');
+
+            calculateTotal();
+        }
+
+        // Нова функція для прокрутки до секції карти
+        function scrollToMap() {
+            document.getElementById('location-map').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Функція для прокрутки до планування
+        function scrollToPlanning() {
+            document.getElementById('planning-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Функція для прокрутки до послуг
+        function scrollToServices() {
+            document.getElementById('services-select').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculateTotal() {
+            const checkInDate = new Date(checkInInput.value);
+            const checkOutDate = new Date(checkOutInput.value);
+            const selectedRoomOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+
+            if (!checkInInput.value || !checkOutInput.value || !selectedRoomOption.value || checkOutDate <= checkInDate) {
+                updateSummary(false);
+                return;
+            }
+
+            const diffTime = Math.abs(checkOutDate - checkInDate);
+            numberOfNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            roomPricePerNight = parseFloat(selectedRoomOption.getAttribute('data-price')) || 0;
+            totalRoomCost = roomPricePerNight * numberOfNights;
+            
+            totalServiceCost = 0;
+            const selectedServices = [];
+            
+            SERVICES.forEach(service => {
+                const count = serviceCounts[service.id] || 0;
+                if (count > 0) {
+                    const cost = service.price * count;
+                    totalServiceCost += cost;
+                    selectedServices.push({ name: `${service.name} (x${count})`, cost: cost });
+                }
+            });
+
+            let subtotal = totalRoomCost + totalServiceCost;
+            let finalTotal = subtotal;
+            discountRate = 0;
+            
+            if (numberOfNights >= 7) {
+                discountRate = 0.05;
+                finalTotal = subtotal * 0.95;
+                discountInfoDiv.classList.remove('hidden');
+            } else {
+                discountInfoDiv.classList.add('hidden');
+            }
+            
+            updateSummary(true, selectedRoomOption.textContent, numberOfNights, totalRoomCost, selectedServices, subtotal, finalTotal, guestCount);
+        }
+
+        function updateSummary(isValid, roomName = "", nights = 0, roomCost = 0, services = [], subtotal = 0, finalTotal = 0, guests = 1) {
+            if (!isValid) {
+                orderSummaryDiv.innerHTML = '<p class="text-gray-500">Оберіть коректні параметри.</p>';
+                finalTotalSpan.textContent = '0 грн';
+                payFullBtn.disabled = true;
+                payDepositBtn.disabled = true;
+                return;
+            }
+
+            let servicesHtml = services.length ? services.map(s => `<li class="flex justify-between border-b border-gray-100 pb-1"><span class="text-sm text-gray-600">${s.name}</span><span class="text-sm font-medium">${s.cost} грн</span></li>`).join('') : '<li class="text-sm text-gray-400">Без додаткових послуг</li>';
+
+            orderSummaryDiv.innerHTML = `
+                <ul class="space-y-2">
+                    <li class="flex justify-between font-medium"><span class="text-gray-800">${roomName.split('(')[0]} (${nights} ніч.)</span><span class="text-amber-700">${roomCost} грн</span></li>
+                    <li class="text-sm text-gray-600">Гостей: ${guests}</li>
+                    <li class="pt-2 font-semibold text-gray-700 text-sm">Послуги:</li>
+                    ${servicesHtml}
+                </ul>
+            `;
+
+            finalTotalSpan.textContent = `${finalTotal.toFixed(0)} грн`;
+            payFullAmountSpan.textContent = finalTotal.toFixed(0);
+            payDepositAmountSpan.textContent = (finalTotal * 0.1).toFixed(0);
+            payFullBtn.disabled = false;
+            payDepositBtn.disabled = false;
+        }
+
+        // --- ЛОГІКА КАЛЕНДАРЯ ТА ПОГОДИ ---
+
+        let currentDate = new Date();
+        const monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
+
+        // Умовні дані для прогнозу погоди
+        const MOCK_WEATHER = {
+            // Додано кілька конкретних дат для тестування
+            "2025-12-01": { temp: "+5°C", condition: "Хмарно, можливий дощ", icon: "🌧️" },
+            "2025-12-02": { temp: "+7°C", condition: "Сонячно", icon: "☀️" },
+            "2025-12-03": { temp: "+3°C", condition: "Сніг", icon: "❄️" },
+            "2025-12-04": { temp: "+4°C", condition: "Хмарно", icon: "☁️" },
+            "2025-12-05": { temp: "+6°C", condition: "Вітряно", icon: "🌬️" },
+            "2025-12-06": { temp: "+8°C", condition: "Ясно", icon: "☀️" },
+            "2025-12-07": { temp: "+5°C", condition: "Мінлива хмарність", icon: "🌤️" },
+        };
+
+        function getWeatherForDate(dateStr) {
+            if (MOCK_WEATHER[dateStr]) {
+                return MOCK_WEATHER[dateStr];
+            }
+            // Проста логіка для майбутніх дат на основі дня місяця
+            const date = new Date(dateStr);
+            const day = date.getDate();
+            const conditions = [
+                { temp: "+5°C", condition: "Хмарно", icon: "☁️" },
+                { temp: "+10°C", condition: "Сонячно", icon: "☀️" },
+                { temp: "+2°C", condition: "Сніг", icon: "❄️" },
+                { temp: "+7°C", condition: "Дощ", icon: "🌧️" },
+                { temp: "+12°C", condition: "Ясно", icon: "☀️" },
+                { temp: "+4°C", condition: "Туман", icon: "🌫️" },
+                { temp: "+9°C", condition: "Вітряно", icon: "🌬️" },
+            ];
+            return conditions[day % 7];
+        }
+
+        function updateWeatherDisplay(dateStr) {
+            const weather = getWeatherForDate(dateStr);
+            const displayDate = new Date(dateStr).toLocaleDateString('uk-UA', { weekday: 'long', day: 'numeric', month: 'long' });
+
+            document.getElementById('weather-icon').textContent = weather.icon;
+            document.getElementById('weather-temp').textContent = weather.temp;
+            document.getElementById('weather-day').textContent = displayDate;
+            document.getElementById('weather-condition').textContent = weather.condition;
+        }
+
+        function renderCalendar(year, month) {
+            const calendarGrid = document.getElementById('calendar-grid');
+            calendarGrid.innerHTML = '';
+            document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay(); // 0 = Нд, 1 = Пн, ...
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            
+            // Зсув для початку з понеділка (0=Нд, має стати 6. 1=Пн, має стати 0)
+            const startDayIndex = (firstDay === 0) ? 6 : firstDay - 1; 
+
+            // Пусті клітинки для зсуву
+            for (let i = 0; i < startDayIndex; i++) {
+                calendarGrid.innerHTML += '<span class="calendar-day text-gray-300"></span>';
+            }
+
+            // Дні місяця
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDate = new Date(year, month, day);
+                const dayDateStr = dayDate.toISOString().split('T')[0];
+                const isToday = dayDateStr === todayStr;
+                
+                let classes = 'calendar-day';
+                if (isToday) {
+                    classes += ' calendar-day-current';
+                }
+
+                calendarGrid.innerHTML += `<span 
+                    class="${classes}" 
+                    data-date="${dayDateStr}" 
+                    onclick="selectCalendarDay(this)">${day}</span>`;
+            }
+        }
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        }
+
+        function selectCalendarDay(element) {
+            const selectedDateStr = element.getAttribute('data-date');
+            
+            // Знімаємо виділення з усіх днів
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('calendar-day-selected');
+            });
+            
+            // Виділяємо обраний день
+            element.classList.add('calendar-day-selected');
+            
+            // Оновлюємо прогноз погоди
+            updateWeatherDisplay(selectedDateStr);
+        }
+
+    </script>
+</body>
+</html>

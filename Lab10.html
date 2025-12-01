@@ -44,7 +44,7 @@
             </a>
             <div class="hidden md:flex space-x-8">
                 <a href="#rooms-slider-section" class="text-gray-600 hover:text-amber-600 font-medium">Номери</a>
-                <!-- Посилання на окрему сторінку галереї -->
+                <!-- ВИПРАВЛЕНО: Посилання на окремий файл gallery.html -->
                 <a href="gallery.html" class="text-gray-600 hover:text-amber-600 font-medium">Галерея</a> 
                 <a href="#location-map" class="text-gray-600 hover:text-amber-600 font-medium">Локація</a>
                 <a href="#planning-section" class="text-gray-600 hover:text-amber-600 font-medium">Планування</a>
@@ -59,8 +59,8 @@
 
     <main>
         <!-- Секція Герой -->
-        <!-- Фонове зображення високої якості -->
-        <section id="hero" class="relative h-[60vh] md:h-[80vh] bg-cover bg-center" style="background-image: url('https://i.ibb.co/3sXfN0x/high-res-mountain-hotel.jpg'); background-position: center bottom;">
+        <!-- Фонове зображення: використовуємо локальний шлях, додано fallback -->
+        <section id="hero" class="relative h-[60vh] md:h-[80vh] bg-cover bg-center" style="background-image: url('images/high-res-mountain-hotel.jpg'); background-position: center bottom;">
             <div class="absolute inset-0 bg-black opacity-40"></div>
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full relative z-10">
                 <div class="text-white max-w-xl">
@@ -85,53 +85,53 @@
                     <!-- Сам слайдер -->
                     <div id="rooms-slider" class="flex space-x-6 overflow-x-auto scrollbar-hide py-4 px-2 scroll-smooth snap-x">
                         
-                        <!-- Картки Номерів (Усі 12 варіантів) -->
+                        <!-- Картки Номерів (Усі 12 варіантів) - Змінено посилання на локальні шляхи -->
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/xCPzX4X/economy-room.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Економ';" class="w-full h-48 object-cover">
+                            <img src="10room_economy.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Економ';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Економ Одномісний</h3><p class="text-gray-600 text-sm mb-4">Затишний номер для соло-мандрівників.</p><p class="text-amber-600 font-bold text-lg">900 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/60a5fa/double-room.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Стандарт';" class="w-full h-48 object-cover">
+                            <img src="10room_standard.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Стандарт';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Стандарт Двомісний</h3><p class="text-gray-600 text-sm mb-4">Класичний вибір для пар.</p><p class="text-amber-600 font-bold text-lg">1500 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/L5w12k5/suite-with-fireplace.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Люкс';" class="w-full h-48 object-cover">
+                            <img src="10room_suite_fireplace.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Люкс';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Люкс з Каміном</h3><p class="text-gray-600 text-sm mb-4">Простір та романтика.</p><p class="text-amber-600 font-bold text-lg">3200 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/93c5fd/family-room.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Сімейний';" class="w-full h-48 object-cover">
+                            <img src="10room_family.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Сімейний';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Сімейний Апартамент</h3><p class="text-gray-600 text-sm mb-4">Дві кімнати для комфорту всієї родини.</p><p class="text-amber-600 font-bold text-lg">3800 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/P44n7L1/mountain-restaurant.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Президентський';" class="w-full h-48 object-cover">
+                            <img src="10room_presidential.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Президентський';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Президентський Номер</h3><p class="text-gray-600 text-sm mb-4">Максимальна розкіш та панорамні вікна.</p><p class="text-amber-600 font-bold text-lg">6500 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/KyR0g6m/bar.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Студіо';" class="w-full h-48 object-cover">
+                            <img src="10room_studio.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Студіо';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Студіо з видом на гори</h3><p class="text-gray-600 text-sm mb-4">Відкритий простір, міні-кухня.</p><p class="text-amber-600 font-bold text-lg">2100 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/30zT28S/carpathian-vat.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Двокімнатний';" class="w-full h-48 object-cover">
+                            <img src="10room_two_room_suite.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Двокімнатний';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Двокімнатний Люкс</h3><p class="text-gray-600 text-sm mb-4">Окрема вітальня та спальня.</p><p class="text-amber-600 font-bold text-lg">4500 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/Jqvz8x9/chef-dish.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Хостел';" class="w-full h-48 object-cover">
+                            <img src="10room_hostel.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Хостел';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Ліжко в Хостел-Кімнаті</h3><p class="text-gray-600 text-sm mb-4">Економний варіант для груп.</p><p class="text-amber-600 font-bold text-lg">550 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/68nL04J/mountain-hotel-banner.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Котедж';" class="w-full h-48 object-cover">
+                            <img src="10cottage.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Котедж';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Окремий Котедж</h3><p class="text-gray-600 text-sm mb-4">Приватний будинок на 4-6 осіб.</p><p class="text-amber-600 font-bold text-lg">7000 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/xf0Xg9z/lounge-area.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Супер+Люкс';" class="w-full h-48 object-cover">
+                            <img src="10room_super_vip.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Супер+Люкс';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Супер Люкс VIP</h3><p class="text-gray-600 text-sm mb-4">Власна тераса та джакузі.</p><p class="text-amber-600 font-bold text-lg">8500 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/Vtq5N8S/lobby.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=3+Спальні';" class="w-full h-48 object-cover">
+                            <img src="10room_three_bed_apt.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=3+Спальні';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Апартаменти (3 спальні)</h3><p class="text-gray-600 text-sm mb-4">Ідеально для великої компанії.</p><p class="text-amber-600 font-bold text-lg">5500 грн/ніч</p></div>
                         </div>
                         <div class="min-w-[300px] md:min-w-[350px] bg-white rounded-xl shadow-lg overflow-hidden snap-center card-hover border border-gray-100">
-                            <img src="https://i.ibb.co/0jZ1yqB/hallway.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Балкон';" class="w-full h-48 object-cover">
+                            <img src="10room_standard_balcony.jpg" onerror="this.src='https://placehold.co/600x400/fff3e0/a3a3a3?text=Балкон';" class="w-full h-48 object-cover">
                             <div class="p-6"><h3 class="font-bold text-xl mb-2">Стандарт з балконом</h3><p class="text-gray-600 text-sm mb-4">Свіже повітря та краєвид.</p><p class="text-amber-600 font-bold text-lg">1800 грн/ніч</p></div>
                         </div>
                         
@@ -325,15 +325,16 @@
                     <h5 class="text-lg font-semibold mb-4 text-amber-300">Навігація</h5>
                     <ul class="space-y-2">
                         <li><a href="#booking" class="text-gray-400 hover:text-amber-400">Бронювання</a></li>
-                        <li><a href="gallery.html" class="text-gray-400 hover:text-amber-400">Галерея</a></li>
+                        <!-- ВИПРАВЛЕНО: Посилання на окремий файл gallery.html -->
+                        <li><a href="gallery.html" class="text-gray-400 hover:text-amber-400">Галерея</a></li> 
                     </ul>
                 </div>
                 <div>
                     <h5 class="text-lg font-semibold mb-4 text-amber-300">Інфо</h5>
                     <ul class="space-y-2">
-                        <li><a href="Lab10.html" class="text-gray-400 hover:text-amber-400">Конфіденційність</a></li>
-                        <li><a href="Lab10.html" class="text-gray-400 hover:text-amber-400">Умови</a></li>
-                        <li><a href="Lab10.html" class="text-gray-400 hover:text-amber-400">Повернення</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400">Конфіденційність</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400">Умови</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-amber-400">Повернення</a></li>
                     </ul>
                 </div>
                 <div><h5 class="text-lg font-semibold mb-4 text-amber-300">Контакти</h5><p class="text-gray-400 text-sm">info@cozy-hotel.com</p></div>
@@ -541,7 +542,7 @@
             "2025-12-02": { temp: "+7°C", condition: "Сонячно", icon: "☀️" },
             "2025-12-03": { temp: "+3°C", condition: "Сніг", icon: "❄️" },
             "2025-12-04": { temp: "+4°C", condition: "Хмарно", icon: "☁️" },
-            "2025-12-05": { temp: "+6°C", condition: "Вітряно", icon: "🌬️" },
+            "2025-12-05": { temp: "+6°C", condition: "Вітряно", icon: "💨" },
             "2025-12-06": { temp: "+8°C", condition: "Ясно", icon: "☀️" },
             "2025-12-07": { temp: "+5°C", condition: "Мінлива хмарність", icon: "🌤️" },
         };
@@ -560,7 +561,7 @@
                 { temp: "+7°C", condition: "Дощ", icon: "🌧️" },
                 { temp: "+12°C", condition: "Ясно", icon: "☀️" },
                 { temp: "+4°C", condition: "Туман", icon: "🌫️" },
-                { temp: "+9°C", condition: "Вітряно", icon: "🌬️" },
+                { temp: "+9°C", condition: "Вітряно", icon: "💨" },
             ];
             return conditions[day % 7];
         }

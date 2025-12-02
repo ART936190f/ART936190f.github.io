@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Стилі для плавної анімації галереї */
         body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; }
         .gallery-img {
             transition: transform 0.3s ease;
@@ -25,21 +26,22 @@
     <!-- Хедер -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
         <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <a href="Lab10.html#hero" class="text-2xl font-bold text-amber-600 hover:text-amber-800 transition duration-300">
+            <a href="main.html#hero" class="text-2xl font-bold text-amber-600 hover:text-amber-800 transition duration-300">
                 Затишний Куточок
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="Lab10.html#rooms-slider-section" class="text-gray-600 hover:text-amber-600 font-medium">Номери</a>
-                <!-- Посилання на окрему сторінку галереї -->
-                <a href="gallery.html" class="text-gray-600 hover:text-amber-600 font-medium">Галерея</a> 
-                <a href="Lab10.html#location-map" class="text-gray-600 hover:text-amber-600 font-medium">Локація</a>
-                <a href="Lab10.html#planning-section" class="text-gray-600 hover:text-amber-600 font-medium">Планування</a>
-                <a href="Lab10.html#services-select" class="text-gray-600 hover:text-amber-600 font-medium">Послуги</a>
-                <a href="Lab10.html#my-plans" class="text-gray-600 hover:text-amber-600 font-medium">Ваше Замовлення</a>
+                <a href="main.html#rooms-slider-section" class="text-gray-600 hover:text-amber-600 font-medium">Номери</a>
+                <!-- Активне посилання на окрему сторінку галереї -->
+                <a href="gallery.html" class="text-amber-600 hover:text-amber-800 font-medium border-b-2 border-amber-600">Галерея</a> 
+                <a href="main.html#location-map" class="text-gray-600 hover:text-amber-600 font-medium">Локація</a>
+                <a href="main.html#planning-section" class="text-gray-600 hover:text-amber-600 font-medium">Планування</a>
+                <a href="main.html#services-select" class="text-gray-600 hover:text-amber-600 font-medium">Послуги</a>
+                <a href="main.html#my-plans" class="text-gray-600 hover:text-amber-600 font-medium">Ваше Замовлення</a>
             </div>
-            <a href="Lab10.html#booking" class="hidden md:block bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-105">
+            <a href="main.html#booking" class="hidden md:block bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-105">
                 Забронювати
             </a>
+            <!-- Тут мав би бути мобільний бургер-меню, але для спрощення залишаю desktop-версію -->
         </nav>
     </header>
 
@@ -52,14 +54,17 @@
             <section class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-amber-500 pl-4">Інтер'єри та Коридори</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Замінено на локальний плейсхолдер -->
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/0jZ1yqB/hallway.jpg" onerror="this.src='https://placehold.co/600x400/e5e7eb/a3a3a3?text=Коридор+1';" alt="Коридор" class="gallery-img">
+                        <img src="10Hall.jpg" onerror="this.src='https://placehold.co/600x400/e5e7eb/a3a3a3?text=Коридор';" alt="Коридор" class="gallery-img">
                     </div>
+                    <!-- Замінено на локальний плейсхолдер -->
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/Vtq5N8S/lobby.jpg" onerror="this.src='https://placehold.co/600x400/e5e7eb/a3a3a3?text=Лобі';" alt="Лобі" class="gallery-img">
+                        <img src="10Hallway.jpg" onerror="this.src='https://placehold.co/600x400/e5e7eb/a3a3a3?text=Лобі';" alt="Лобі" class="gallery-img">
                     </div>
+                    <!-- Замінено на локальний плейсхолдер -->
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/xf0Xg9z/lounge-area.jpg" onerror="this.src='https://placehold.co/600x400/e5e7eb/a3a3a3?text=Зона+Відпочинку';" alt="Зона відпочинку" class="gallery-img">
+                        <img src="10Path.jpg" onerror="this.src='https://placehold.co/600x400/e5e7eb/a3a3a3?text=Зона+Відпочинку';" alt="Зона відпочинку" class="gallery-img">
                     </div>
                 </div>
             </section>
@@ -68,20 +73,23 @@
             <section class="mb-16">
                 <h2 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-amber-500 pl-4">Наша Кухня</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Замінено на локальний плейсхолдер -->
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg md:col-span-2 md:row-span-2">
-                        <img src="https://i.ibb.co/P44n7L1/mountain-restaurant.jpg" onerror="this.src='https://placehold.co/800x600/fcd34d/a3a3a3?text=Основний+Зал';" alt="Ресторан Зал" class="gallery-img" style="height: 100%; min-height: 500px;">
+                        <img src="10Fancy.jpg" onerror="this.src='https://placehold.co/800x600/fcd34d/a3a3a3?text=Основний+Зал';" alt="Ресторан Зал" class="gallery-img" style="height: 100%; min-height: 500px;">
+                    </div>
+                    <!-- Замінено на локальний плейсхолдер -->
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
+                        <img src="10Restorraunt.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Страва+1';" alt="Страва" class="gallery-img" style="height: 100%; min-height: 300px;">
+                    </div>
+                    <!-- Замінено на локальний плейсхолдер -->
+                    <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
+                        <img src="10Caffe.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Сніданок';" alt="Сніданок" class="gallery-img" style="height: 100%; min-height: 300px;">
                     </div>
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/Jqvz8x9/chef-dish.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Страва+1';" alt="Страва" class="gallery-img">
+                        <img src="10Eat.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Бар';" alt="Бар" class="gallery-img" style="height: 100%; min-height: 300px;">
                     </div>
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/5Kw9q1h/breakfast.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Сніданок';" alt="Сніданок" class="gallery-img">
-                    </div>
-                    <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/KyR0g6m/bar.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Бар';" alt="Бар" class="gallery-img">
-                    </div>
-                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/TwVqL9z/dessert.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Десерт';" alt="Десерт" class="gallery-img">
+                        <img src="10Food.jpg" onerror="this.src='https://placehold.co/400x300/fcd34d/a3a3a3?text=Десерт';" alt="Десерт" class="gallery-img" style="height: 100%; min-height: 300px;">
                     </div>
                 </div>
             </section>
@@ -91,10 +99,10 @@
                 <h2 class="text-2xl font-bold mb-6 text-gray-800 border-l-4 border-amber-500 pl-4">Територія та Краєвиди</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/68nL04J/mountain-hotel-banner.jpg" onerror="this.src='https://placehold.co/600x400/4ade80/a3a3a3?text=Вид+на+готель';" alt="Загальний вид" class="gallery-img" style="height: 400px;">
+                        <img src="10territory-view.jpg" onerror="this.src='https://placehold.co/600x400/4ade80/a3a3a3?text=Вид+на+готель';" alt="Загальний вид" class="gallery-img" style="height: 400px;">
                     </div>
                     <div class="gallery-item rounded-xl overflow-hidden shadow-lg">
-                        <img src="https://i.ibb.co/30zT28S/carpathian-vat.jpg" onerror="this.src='https://placehold.co/600x400/4ade80/a3a3a3?text=Зона+Чана';" alt="Чан" class="gallery-img" style="height: 400px;">
+                        <img src="10territory-vat.jpg" onerror="this.src='https://placehold.co/600x400/4ade80/a3a3a3?text=Зона+Чана';" alt="Чан" class="gallery-img" style="height: 400px;">
                     </div>
                 </div>
             </section>
@@ -102,7 +110,7 @@
         </div>
     </main>
 
- <!-- Футер -->
+    <!-- Футер -->
     <footer class="bg-gray-900 text-white pt-12 pb-6 border-t border-amber-700">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-10 mb-8">
@@ -115,7 +123,7 @@
                     <ul class="space-y-2">
                         <li><a href="#booking" class="text-gray-400 hover:text-amber-400 transition">Бронювання</a></li>
                         <li><a href="gallery.html" class="text-gray-400 hover:text-amber-400 transition">Галерея</a></li>
-                        <li><a href="#my-plans" class="text-gray-400 hover:text-amber-400 transition">Замовлення</a></li>
+                        <li><a href="main.html#my-plans" class="text-gray-400 hover:text-amber-400 transition">Замовлення</a></li>
                     </ul>
                 </div>
                 <div>
@@ -130,10 +138,11 @@
                 <div>
                     <h5 class="text-lg font-semibold mb-4 text-amber-300">Контакти</h5>
                     <p class="text-gray-400 text-sm">hotel@cozy.com</p>
+                    <p class="text-gray-400 text-sm">+380 (54) 123-45-67</p>
                 </div>
             </div>
             <div class="text-center text-sm text-gray-500">
-                &copy; 2024 Готель "Затишний Куточок".
+                &copy; 2025 Готель "Затишний Куточок".
             </div>
         </div>
     </footer>

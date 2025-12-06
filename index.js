@@ -238,7 +238,7 @@ function openRoomModal(card){
   const name = card.getAttribute('data-room-name') || card.querySelector('h3')?.textContent || 'Номер';
   const price = card.getAttribute('data-room-price') || '—';
   const body = document.getElementById('room-modal-body');
-  if(body) body.innerHTML = `<h4 class="font-bold text-lg mb-1">${name}</h4><p class="text-gray-600 mb-2">Ціна: <strong>${price} грн/ніч</strong></p><p class="text-sm text-gray-700">Опис: чудовий номер...</p><div class="mt-3"><button class="w-full bg-amber-600 text-white py-2 rounded" onclick="prefillBooking('${name}', ${price})">Забронювати цей номер</button></div>`;
+  if(body) body.innerHTML = `<h4 class="font-bold text-lg mb-1">${name}</h4><p class="text-gray-600 mb-2">Ціна: <strong>${price} грн/ніч</strong></p><p class="text-sm text-gray-700">Опис: найчудовіший номер...</p><div class="mt-3"></div>`;
   const quick = document.getElementById('quick-room'); if(quick) quick.value = name;
   const overlay = document.getElementById('room-modal-overlay'); if(overlay) { overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); }
 }

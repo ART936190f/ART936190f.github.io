@@ -108,10 +108,12 @@
   <h1>Контрольна №2 — Робота з масивами та рядками</h1>
   <p class="lead">Виконання завдань через діалогові вікна (prompt).</p>
 
-  <div class="controls">
-    <button id="btnStart">Запустити алгоритм</button>
-    <button id="btnClear" class="secondary">Очистити</button>
-  </div>
+<div class="controls">
+  <button id="btnStart">Запустити алгоритм</button>
+  <button id="btnBg">Змінити фон</button>
+  <button id="btnClear" class="secondary">Очистити</button>
+</div>
+
 
   <div id="result">
     <p class="small">Натисніть «Запустити алгоритм» для початку.</p>
@@ -131,34 +133,74 @@ function show(html){
   result.innerHTML = html;
 }
 
+//------------------------------------------
+// ОЧИСТКА
+//------------------------------------------
 document.getElementById("btnClear").addEventListener("click",()=>{
-  show('<p class="small">Дані очищено.</p>');
+  document.body.style.background = '';
+  show('<p class="small">Дані очищено. Фон повернуто.</p>');
 });
 
+//------------------------------------------
+// ЗМІНА ФОНУ
+//------------------------------------------
+document.getElementById("btnBg").addEventListener("click",()=>{
+  const useImage = confirm("Хочете встановити власне зображення фону?");
+
+  if(useImage){
+    const url = prompt("Вставте адресу картинки:");
+    if(url){
+      document.body.style.background = `url(${url}) center/cover no-repeat fixed`;
+    }
+  }
+  else{
+    // випадковий ніжний градієнт
+    const r = Math.floor(Math.random()*100 + 130);
+    const g = Math.floor(Math.random()*100 + 130);
+    const b = Math.floor(Math.random()*100 + 130);
+
+    document.body.style.background = 
+        `linear-gradient(135deg,
+          rgb(${r},${g},${b}),
+          rgb(${b},${r},${g}))`;
+  }
+
+  show("<strong>Фон успішно змінено.</strong>");
+});
+
+//------------------------------------------
+// ЗАПУСК ГОЛОВНОГО АЛГОРИТМУ
+//------------------------------------------
 document.getElementById("btnStart").addEventListener("click", runAlgorithm);
 
-// ГОЛОВНИЙ АЛГОРИТМ
+
+//-----------------------------------------------------------
+// ОСНОВНИЙ АЛГОРИТМ КОНТРОЛЬНОЇ
+//-----------------------------------------------------------
 function runAlgorithm(){
 
   let output = "";
 
-  // 1. Отримання списку страв
+  // 1. Отримання масиву
   let input = prompt("Введіть назви страв через кому:");
+
   if(!input){
     show("Ввід скасовано.");
     return;
   }
 
-  let dishes = input.split(",").map(x => x.trim()).filter(x => x !== "");
+  let dishes = input.split(",")
+    .map(x => x.trim())
+    .filter(x => x !== "");
 
-  // Сортування по довжині слів (у зворотному порядку)
   dishes.sort((a,b)=> b.length - a.length);
 
-  output += `<strong>1) Початковий масив:</strong><br>`;
-  output += `Кількість елементів: ${dishes.length}<br>`;
+  output += `<strong>1) Впорядкований масив:</strong><br>`;
+  output += `Кількість: ${dishes.length}<br>`;
   output += `[ ${dishes.join(", ")} ]<hr>`;
 
-  // 2. Додавання нової страви
+
+  // 2. Додавання
   let newDish = prompt("Введіть нову страву:");
 
   if(newDish){
@@ -169,67 +211,89 @@ function runAlgorithm(){
   output += `[ ${dishes.join(", ")} ]<hr>`;
 
 
-  // 3. Видалення елемента
-  let indexToDelete = prompt(
-      `Введіть номер елемента для видалення (1–${dishes.length}):`
+  // 3. Видалення
+  let indexDelete = parseInt(
+    prompt(`Який елемент видалити? (1–${dishes.length})`)
   );
 
-  indexToDelete = parseInt(indexToDelete);
-
-  if(Number.isInteger(indexToDelete) &&
-        indexToDelete >= 1 &&
-        indexToDelete <= dishes.length){
-    dishes.splice(indexToDelete-1,1);
+  if(indexDelete >= 1 && indexDelete <= dishes.length){
+    dishes.splice(indexDelete - 1, 1);
   }
 
   output += `<strong>3) Після видалення:</strong><br>`;
   output += `[ ${dishes.join(", ")} ]<hr>`;
 
 
-  // 4. ШИФРУВАННЯ ЕЛЕМЕНТА
-  let indexToEncrypt = prompt(
-      `Який елемент зашифрувати (1–${dishes.length})?`
+  // 4. Шифрування (з підтримкою 🇺🇦)
+  let indexEncrypt = parseInt(
+    prompt(`Який елемент зашифрувати? (1–${dishes.length})`)
   );
 
-  indexToEncrypt = parseInt(indexToEncrypt);
+  if(indexEncrypt >= 1 && indexEncrypt <= dishes.length){
 
-  let encryptedText = "";
+    let word = dishes[indexEncrypt-1];
+    let encrypted = encryptUA(word);
 
-  if(Number.isInteger(indexToEncrypt) &&
-     indexToEncrypt >= 1 &&
-     indexToEncrypt <= dishes.length){
-
-    let word = dishes[indexToEncrypt-1];
-    encryptedText = encrypt(word);
-
-    output += `<strong>4) Зашифрований елемент:</strong><br><br>
+    output += `
+      <strong>4) Зашифрований рядок:</strong><br><br>
       <div class="centerBlock">
-        <span class="red">${encryptedText}</span>
+        <span class="red">${encrypted}</span>
       </div>
       <hr>`;
   }
 
 
-  // 5. Вивід ПІБ студента
-  output += `<strong>5) Автор роботи:</strong><br>`;
-  output += `<div class="centerBlock">
-      Голяницький Артем
-    </div>`;
+  // 5. ПІБ
+  output += `<strong>5) Автор роботи:</strong><br>
+      <div class="centerBlock">
+        Голяницький Артем
+      </div>`;
 
   show(output);
 }
 
 
-// ФУНКЦІЯ ШИФРУВАННЯ (+2 до символу)
-function encrypt(text){
+
+//-----------------------------------------------------------
+// 🔐 ШИФРУВАННЯ З ПІДТРИМКОЮ УКРАЇНСЬКОЇ МОВИ
+//-----------------------------------------------------------
+function encryptUA(text){
+
+  const uaLower = "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя";
+  const uaUpper = uaLower.toUpperCase();
+
+  const enLower = "abcdefghijklmnopqrstuvwxyz";
+  const enUpper = enLower.toUpperCase();
+
   let result = "";
-  for(let ch of text){
-    result += String.fromCharCode(ch.charCodeAt(0) + 2);
+
+  for (let ch of text){
+
+    if(uaLower.includes(ch)){
+      let i = uaLower.indexOf(ch);
+      result += uaLower[(i + 2) % uaLower.length];
+    }
+
+    else if(uaUpper.includes(ch)){
+      let i = uaUpper.indexOf(ch);
+      result += uaUpper[(i + 2) % uaUpper.length];
+    }
+
+    else if(enLower.includes(ch)){
+      let i = enLower.indexOf(ch);
+      result += enLower[(i + 2) % enLower.length];
+    }
+
+    else if(enUpper.includes(ch)){
+      let i = enUpper.indexOf(ch);
+      result += enUpper[(i + 2) % enUpper.length];
+    }
+
+    else{
+      result += ch;
+    }
   }
+
   return result;
 }
-
 </script>
-
-</body>
-</html>

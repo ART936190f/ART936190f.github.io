@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Про нас | Готель "Затишний Куточок"</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.jpg" type="image/x-icon">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; }
+        .hero-about {
+            background-image: url('https://placehold.co/1920x600/bde0fe/4a4e69?text=Вид+на+Карпати'); /* Замініть на реальне фото готелю або Карпат */
+            background-size: cover;
+            background-position: center;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Хедер -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <a href="#hero" class="logo-link flex items-center space-x-2 hover:text-amber-800 transition duration-300">
+            <img src="favicon.jpg" alt="Логотип Затишний куточок" class="h-8 w-8" /> 
+            <span class="site-logo text-2xl font-bold text-amber-600">Затишний куточок</span>
+        </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#rooms-slider-section" class="text-gray-600 hover:text-amber-600 font-medium">Номери</a>
+                <a href="gallery.html" class="text-gray-600 hover:text-amber-600 font-medium">Галерея</a> 
+                <a href="#location-map" class="text-gray-600 hover:text-amber-600 font-medium">Локація</a>
+                <a href="#planning-section" class="text-gray-600 hover:text-amber-600 font-medium">Планування</a>
+                <a href="#services-select" class="text-gray-600 hover:text-amber-600 font-medium">Послуги</a>
+                <a href="#my-plans" class="text-gray-600 hover:text-amber-600 font-medium">Ваше Замовлення</a>
+                <a href="about.html" class="nav-link">Про нас</a>
+            </div>
+            <a href="#booking" class="hidden md:block bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition transform hover:scale-105">
+                Забронювати
+            </a>
+        </nav>
+    </header>
+n>
+        <section class="hero-about h-[40vh] flex items-center justify-center relative">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            <div class="text-center relative z-10">
+                <h1 class="text-5xl font-extrabold text-white mb-3">Наша Історія</h1>
+                <p class="text-xl text-amber-100">Де серце Карпат зустрічається з вашим відпочинком.</p>
+            </div>
+        </section>
+
+        <section id="mission-values" class="py-16 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <h2 class="text-4xl font-bold text-amber-700 mb-6 text-center">Наша Місія</h2>
+                <p class="text-lg text-gray-600 mb-10 text-center">
+                    Створити для кожного гостя не просто місце для ночівлі, а справжній "Затишний Куточок" — дім далеко від дому, де панує спокій, тепло та бездоганний сервіс.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6 bg-amber-50 rounded-lg card-shadow">
+                        <div class="text-amber-600 text-4xl mb-3">🏡</div>
+                        <h3 class="font-bold text-xl mb-2">Затишок</h3>
+                        <p class="text-gray-600 text-sm">Ми будували цей готель, як власний дім, вкладаючи душу в кожну деталь інтер'єру та обслуговування.</p>
+                    </div>
+                    <div class="p-6 bg-amber-50 rounded-lg card-shadow">
+                        <div class="text-amber-600 text-4xl mb-3">🏔️</div>
+                        <h3 class="font-bold text-xl mb-2">Природа</h3>
+                        <p class="text-gray-600 text-sm">Ми максимально інтегрували природні матеріали та намагаємося мінімізувати вплив на навколишнє середовище Карпат.</p>
+                    </div>
+                    <div class="p-6 bg-amber-50 rounded-lg card-shadow">
+                        <div class="text-amber-600 text-4xl mb-3">🤝</div>
+                        <h3 class="font-bold text-xl mb-2">Сервіс</h3>
+                        <p class="text-gray-600 text-sm">Наші співробітники — це сім'я, яка гарантує, що всі ваші потреби будуть задоволені 24 години на добу.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-700 mb-12">Хто піклується про ваш відпочинок</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+                    
+                    <div class="text-center bg-white p-6 rounded-lg card-shadow">
+                        <img src="https://placehold.co/150x150/f0e68c/6b46c1?text=Іван" alt="Іван, Директор" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-amber-300">
+                        <h4 class="text-xl font-semibold text-amber-700">Іван Ковальчук</h4>
+                        <p class="text-sm text-gray-500 mb-3">Директор і Засновник</p>
+                        <p class="text-gray-600 text-sm">"Моя мета — щоб кожен гість почувався, як у гостях у найкращих друзів."</p>
+                    </div>
+
+                    <div class="text-center bg-white p-6 rounded-lg card-shadow">
+                        <img src="https://placehold.co/150x150/f0e68c/6b46c1?text=Олена" alt="Олена, Головний кухар" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-amber-300">
+                        <h4 class="text-xl font-semibold text-amber-700">Олена Мороз</h4>
+                        <p class="text-sm text-gray-500 mb-3">Керівник Кухні</p>
+                        <p class="text-gray-600 text-sm">"Наше меню поєднує автентичні карпатські страви та світову класику, зроблену з любов'ю."</p>
+                    </div>
+
+                    <div class="text-center bg-white p-6 rounded-lg card-shadow">
+                        <img src="https://placehold.co/150x150/f0e68c/6b46c1?text=Марія" alt="Марія, Менеджер" class="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-amber-300">
+                        <h4 class="text-xl font-semibold text-amber-700">Марія Заєць</h4>
+                        <p class="text-sm text-gray-500 mb-3">Менеджер з Бронювання</p>
+                        <p class="text-gray-600 text-sm">"Я тут, щоб ваше планування було максимально простим і приємним. Звертайтеся!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-amber-600 text-white text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold mb-4">Готові відчути затишок?</h2>
+                <p class="text-xl mb-8 opacity-90">Ми з нетерпінням чекаємо на вас у нашому Затишному Куточку.</p>
+                <a href="main.html#booking" class="bg-white text-amber-600 hover:bg-amber-100 font-bold py-3 px-10 rounded-full shadow-xl transition transform hover:scale-105 inline-block">
+                    Забронювати свою пригоду
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Готель "Затишний Куточок". Усі права захищені.</p>
+            <div class="mt-2 text-sm text-gray-400">
+                <a href="main.html#contact" class="hover:text-amber-500 mx-2">Контакти</a> | 
+                <a href="#" class="hover:text-amber-500 mx-2">Політика конфіденційності</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

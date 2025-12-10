@@ -133,13 +133,13 @@ function show(html){
   result.innerHTML = html;
 }
 
-// ОЧИСТКА
+// Зачистка
 document.getElementById("btnClear").addEventListener("click",()=>{
   document.body.style.background = '';
   show('<p class="small">Дані очищено. Фон повернуто.</p>');
 });
 
-// ЗМІНА ФОНУ
+// Заміна фону
 document.getElementById("btnBg").addEventListener("click",()=>{
   const useImage = confirm("Хочете встановити власне зображення фону?");
 
@@ -164,10 +164,10 @@ document.getElementById("btnBg").addEventListener("click",()=>{
   show("<strong>Фон успішно змінено.</strong>");
 });
 
-// ЗАПУСК ГОЛОВНОГО АЛГОРИТМУ
+// Старт головного алгоритму
 document.getElementById("btnStart").addEventListener("click", runAlgorithm);
 
-// ОСНОВНИЙ АЛГОРИТМ КОНТРОЛЬНОЇ
+// Основний алгоритмик
 function runAlgorithm(){
 
   let output = "";
@@ -215,7 +215,7 @@ function runAlgorithm(){
   output += `[ ${dishes.join(", ")} ]<hr>`;
 
 
-  // 4. Шифрування (з підтримкою 🇺🇦)
+  // 4. Шифрувалка 
   let indexEncrypt = parseInt(
     prompt(`Який елемент зашифрувати? (1–${dishes.length})`)
   );
@@ -234,7 +234,7 @@ function runAlgorithm(){
   }
 
 
-  // 5. ПІБ
+  // 5. ПІ (не Б)
   output += `<strong>5) Автор роботи:</strong><br>
       <div class="centerBlock">
         Голяницький Артем
@@ -243,7 +243,7 @@ function runAlgorithm(){
   show(output);
 }
 
-// 🔐 ШИФРУВАННЯ З ПІДТРИМКОЮ УКРАЇНСЬКОЇ МОВИ
+// Шифрування і для укру теж
 function encryptUA(text){
 
   const uaLower = "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя";

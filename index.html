@@ -540,105 +540,130 @@
 
         // --- ЛОГІКА КАЛЕНДАРЯ ТА ПОГОДИ ---
 
-        let currentDate = new Date();
-        const monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
+let currentDate = new Date();
+const monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
 
-        // Умовні дані для прогнозу погоди
-        const MOCK_WEATHER = {
-            // Додано кілька конкретних дат для тестування
-            "2025-12-01": { temp: "+5°C", condition: "Хмарно, можливий дощ", icon: "🌧️" },
-            "2025-12-02": { temp: "+7°C", condition: "Сонячно", icon: "☀️" },
-            "2025-12-03": { temp: "+3°C", condition: "Сніг", icon: "❄️" },
-            "2025-12-04": { temp: "+4°C", condition: "Хмарно", icon: "☁️" },
-            "2025-12-05": { temp: "+6°C", condition: "Вітряно", icon: "💨" },
-            "2025-12-06": { temp: "+8°C", condition: "Ясно", icon: "☀️" },
-            "2025-12-07": { temp: "+5°C", condition: "Мінлива хмарність", icon: "🌤️" },
-        };
+// НОВА ДОПОМІЖНА ФУНКЦІЯ
+// Гарантує, що дата завжди повертається у форматі YYYY-MM-DD для ЛОКАЛЬНОГО ЧАСУ.
+function getLocalISODate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
-        function getWeatherForDate(dateStr) {
-            if (MOCK_WEATHER[dateStr]) {
-                return MOCK_WEATHER[dateStr];
-            }
-            // Проста логіка для майбутніх дат на основі дня місяця
-            const date = new Date(dateStr);
-            const day = date.getDate();
-            const conditions = [
-                { temp: "+5°C", condition: "Хмарно", icon: "☁️" },
-                { temp: "+10°C", condition: "Сонячно", icon: "☀️" },
-                { temp: "+2°C", condition: "Сніг", icon: "❄️" },
-                { temp: "+7°C", condition: "Дощ", icon: "🌧️" },
-                { temp: "+12°C", condition: "Ясно", icon: "☀️" },
-                { temp: "+4°C", condition: "Туман", icon: "🌫️" },
-                { temp: "+9°C", condition: "Вітряно", icon: "💨" },
-            ];
-            return conditions[day % 7];
+const MOCK_WEATHER = {
+    // Додано кілька конкретних дат для тестування
+    "2025-12-01": { temp: "+5°C", condition: "Хмарно, можливий дощ", icon: "🌧️" },
+    "2025-12-02": { temp: "+7°C", condition: "Сонячно", icon: "☀️" },
+    "2025-12-03": { temp: "+3°C", condition: "Сніг", icon: "❄️" },
+    "2025-12-04": { temp: "+4°C", condition: "Хмарно", icon: "☁️" },
+    "2025-12-05": { temp: "+6°C", condition: "Вітряно", icon: "💨" },
+    "2025-12-06": { temp: "+8°C", condition: "Ясно", icon: "☀️" },
+    "2025-12-07": { temp: "+5°C", condition: "Мінлива хмарність", icon: "🌤️" },
+};
+
+function getWeatherForDate(dateStr) {
+    if (MOCK_WEATHER[dateStr]) {
+        return MOCK_WEATHER[dateStr];
+    }
+    // Проста логіка для майбутніх дат на основі дня місяця
+    const date = new Date(dateStr);
+    const day = date.getDate();
+    const conditions = [
+        { temp: "+5°C", condition: "Хмарно", icon: "☁️" },
+        { temp: "+10°C", condition: "Сонячно", icon: "☀️" },
+        { temp: "+2°C", condition: "Сніг", icon: "❄️" },
+        { temp: "+7°C", condition: "Дощ", icon: "🌧️" },
+        { temp: "+12°C", condition: "Ясно", icon: "☀️" },
+        { temp: "+4°C", condition: "Туман", icon: "🌫️" },
+        { temp: "+9°C", condition: "Вітряно", icon: "💨" },
+    ];
+    return conditions[day % 7];
+}
+
+function updateWeatherDisplay(dateStr) {
+    const weather = getWeatherForDate(dateStr);
+    const displayDate = new Date(dateStr).toLocaleDateString('uk-UA', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }); // Додано timeZone: 'UTC' для правильного відображення
+    
+    document.getElementById('weather-icon').textContent = weather.icon;
+    document.getElementById('weather-temp').textContent = weather.temp;
+    document.getElementById('weather-day').textContent = displayDate;
+    document.getElementById('weather-condition').textContent = weather.condition;
+}
+
+function renderCalendar(year, month) {
+    const calendarGrid = document.getElementById('calendar-grid');
+    calendarGrid.innerHTML = '';
+    document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay(); // 0 = Нд, 1 = Пн, ...
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+    
+    // ВИКОРИСТАННЯ ХЕЛПЕРА
+    const todayStr = getLocalISODate(today); 
+    
+    // Зсув для початку з понеділка (0=Нд, має стати 6. 1=Пн, має стати 0)
+    const startDayIndex = (firstDay === 0) ? 6 : firstDay - 1; 
+
+    // Пусті клітинки для зсуву
+    for (let i = 0; i < startDayIndex; i++) {
+        calendarGrid.innerHTML += '<span class="calendar-day text-gray-300"></span>';
+    }
+
+    // Дні місяця
+    for (let day = 1; day <= daysInMonth; day++) {
+        // Створення дати як ЛОКАЛЬНОЇ
+        const dayDate = new Date(year, month, day); 
+        
+        // *** ВИКОРИСТАННЯ ХЕЛПЕРА ***
+        const dayDateStr = getLocalISODate(dayDate); 
+        
+        const isToday = dayDateStr === todayStr;
+        
+        let classes = 'calendar-day';
+        if (isToday) {
+            classes += ' calendar-day-current';
         }
 
-        function updateWeatherDisplay(dateStr) {
-            const weather = getWeatherForDate(dateStr);
-            const displayDate = new Date(dateStr).toLocaleDateString('uk-UA', { weekday: 'long', day: 'numeric', month: 'long' });
+        calendarGrid.innerHTML += `<span 
+            class="${classes}" 
+            data-date="${dayDateStr}" 
+            onclick="selectCalendarDay(this)">${day}</span>`;
+    }
+}
 
-            document.getElementById('weather-icon').textContent = weather.icon;
-            document.getElementById('weather-temp').textContent = weather.temp;
-            document.getElementById('weather-day').textContent = displayDate;
-            document.getElementById('weather-condition').textContent = weather.condition;
-        }
+function changeMonth(delta) {
+    currentDate.setMonth(currentDate.getMonth() + delta);
+    renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+}
 
-        function renderCalendar(year, month) {
-            const calendarGrid = document.getElementById('calendar-grid');
-            calendarGrid.innerHTML = '';
-            document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
+function selectCalendarDay(element) {
+    const selectedDateStr = element.getAttribute('data-date');
+    
+    // Знімаємо виділення з усіх днів
+    document.querySelectorAll('.calendar-day').forEach(day => {
+        day.classList.remove('calendar-day-selected');
+    });
+    
+    // Виділяємо обраний день
+    element.classList.add('calendar-day-selected');
+    
+    // Оновлюємо прогноз погоди
+    updateWeatherDisplay(selectedDateStr);
+}
 
-            const firstDay = new Date(year, month, 1).getDay(); // 0 = Нд, 1 = Пн, ...
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            
-            // Зсув для початку з понеділка (0=Нд, має стати 6. 1=Пн, має стати 0)
-            const startDayIndex = (firstDay === 0) ? 6 : firstDay - 1; 
-
-            // Пусті клітинки для зсуву
-            for (let i = 0; i < startDayIndex; i++) {
-                calendarGrid.innerHTML += '<span class="calendar-day text-gray-300"></span>';
-            }
-
-            // Дні місяця
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayDate = new Date(year, month, day);
-                const dayDateStr = dayDate.toISOString().split('T')[0];
-                const isToday = dayDateStr === todayStr;
-                
-                let classes = 'calendar-day';
-                if (isToday) {
-                    classes += ' calendar-day-current';
-                }
-
-                calendarGrid.innerHTML += `<span 
-                    class="${classes}" 
-                    data-date="${dayDateStr}" 
-                    onclick="selectCalendarDay(this)">${day}</span>`;
-            }
-        }
-
-        function changeMonth(delta) {
-            currentDate.setMonth(currentDate.getMonth() + delta);
-            renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
-        }
-
-        function selectCalendarDay(element) {
-            const selectedDateStr = element.getAttribute('data-date');
-            
-            // Знімаємо виділення з усіх днів
-            document.querySelectorAll('.calendar-day').forEach(day => {
-                day.classList.remove('calendar-day-selected');
-            });
-            
-            // Виділяємо обраний день
-            element.classList.add('calendar-day-selected');
-            
-            // Оновлюємо прогноз погоди
-            updateWeatherDisplay(selectedDateStr);
-        }
+// Виклик при DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Тут ми також використовуємо getLocalISODate для коректної дати
+    const today = getLocalISODate(new Date()); 
+    checkInInput.setAttribute('min', today);
+    checkOutInput.setAttribute('min', today);
+    generateServiceCards();
+    renderCalendar(currentDate.getFullYear(), currentDate.getMonth()); 
+    updateWeatherDisplay(today); 
+});
 
     </script>
 </body>

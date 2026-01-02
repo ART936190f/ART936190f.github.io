@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <link rel="icon" href="cat.png" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="cat.png" type="image/x-icon"> 
+  <title>Зібрані приклади — натисни кнопку</title>
+  <style>
+    :root{
+      --bg:#f6f9fc;
+      --panel:#ffffff;
+      --accent:#2b82ff;
+      --muted:#666;
+    }
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      background: linear-gradient(180deg,var(--bg),#e9f2ff 60%);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+    .container{
+      width:100%;
+      max-width:980px;
+      background:var(--panel);
+      border-radius:14px;
+      box-shadow:0 10px 30px rgba(20,40,80,0.08);
+      padding:22px;
+    }
+    h1{margin:0 0 8px 0;font-size:20px}
+    p.lead{margin:0 0 18px 0;color:var(--muted)}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    button{
+      background:var(--accent);
+      color:white;
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(43,130,255,0.18);
+      font-weight:600;
+    }
+    button.second{
+      background:transparent;
+      color:var(--accent);
+      border:1px solid rgba(43,130,255,0.16);
+      box-shadow:none;
+      font-weight:600;
+    }
+    #result{
+      background:linear-gradient(180deg,#fff,#fbfadf);
+      border-radius:10px;
+      padding:16px;
+      min-height:140px;
+      color:#123;
+      box-shadow:inset 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .row{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap}
+    footer{margin-top:14px;color:var(--muted);font-size:13px}
+    .small{font-size:13px;color:var(--muted)}
+    input[type="number"]{width:110px;padding:6px;border-radius:8px;border:1px solid #ddd}
+    label{font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <h1>Повний ReCap 1 семестру 2 курсу робіт</h1>
+    <p class="lead">Всього лиш клік на кнопку, і з'явиться результатик :3</p>
+
+    <div class="controls" aria-hidden="false"> 
+      <button id="btnlab1" onclick="location.href='https://ourartworld.tilda.ws/'" class="button-link">1. Конструктори сайтів</button>
+      <button id="btnlab2" onclick="location.href='https://illisionedworl.xo.je/'" class="button-link">2. Базовий інструментарій</button>
+      <button id="btnlab3" onclick="location.href='https://art936190f.github.io/project.html'" class="button-link">3. Створення простої сторінки</button>
+      <button id="btnlab4" onclick="location.href='https://art936190f.github.io/undertale.html'" class="button-link">4. Робота з графікою</button>
+      <button id="btnlab5" onclick="location.href='https://art936190f.github.io/lab5.html'" class="button-link">5. Шрифти для Веб</button>
+      <button id="btnlab6" onclick="location.href='https://art936190f.github.io/stone.html'" class="button-link">6. Уставляння зовнішніх сервісів</button>
+      <button id="btnlab7" onclick="location.href='https://art936190f.github.io/A_Letter'" class="button-link">7. JavaScript, jQuery та плагіни</button>
+      <button id="btnlab8" onclick="location.href='https://art936190f.github.io/lab8.html#'" class="button-link">8. Бібліотека Bootstrap</button>
+      <button id="btnlab9" onclick="location.href='https://art936190f.github.io/lab9.html#'" class="button-link">9. Тестування та відлагодження коду</button>
+      <button id="btnlab10" onclick="location.href='https://artemholianytskyipp2024-zqltr.wordpress.com/'" class="button-link">10. Системи керування контентом</button>
+    </div>
+    -----------------------------------------------------------------------------------------------------
+    <div class="controls" aria-hidden="false">
+      <button id="btnlab11" class="second" onclick="location.href='https://art936190f.github.io/lab11_5.html?'" class="button-link">1. Знайомство з JavaScript</button>
+      <button id="btnlab12" class="second" onclick="location.href='https://art936190f.github.io/lab12_7.html'" class="button-link">2. Основні конструкції мови JavaScript</button>
+      <button id="btnlab13" class="second" onclick="location.href='https://art936190f.github.io/lab13.html'" class="button-link">3. Використання функцій JavaScript</button>
+      <button id="btnlab14" class="second" onclick="location.href='https://art936190f.github.io/lab14.html?'" class="button-link">4. Робота з масивами JavaScript</button>
+      <button id="btnlab15" class="second" onclick="location.href='https://art936190f.github.io/lab15.html?'" class="button-link">5. Робота з рядками у JavaScriptt</button>
+      </div>
+    -----------------------------------------------------------------------------------------------------
+    <div class="controls" aria-hidden="false">
+      <button id="btnCGW" onclick="location.href='https://art936190f.github.io/index.html'" class="button-link">Розрахункова робота</button>
+      <button id="btnChek1" onclick="location.href='https://art936190f.github.io/examination_p.html'" class="button-link">1. Контрольна робота</button>
+      <button id="btnChek2" onclick="location.href='https://art936190f.github.io/Golyanytsky.html'" class="button-link">2. Контрольна робота</button>
+      <button id="btnDialogs" class="second">Весела кнопка</button>
+      </div>
+ 
+    <footer>
+      <span class="small">© Голяницький — 1 семестр 2 курсу</span>
+    </footer>
+  </div>
+
+  <script>
+    "use strict";
+
+    // 1) Функція для зміни заднього фону (для веселої кнопки). 
+    function demoDialogsColor() {
+      alert("Привіт! Зараз запропонуємо змінити колір фону.");
+      const answer = confirm("Хочете вибрати колір фону вручну?");
+      let color;
+      if (answer) {
+        const name = prompt("Введіть колір або hex-код (наприклад: lightblue або #ffd700):", "#e0f7ff");
+        color = name && name.trim() ? name.trim() : null;
+      } else {
+        // випадковий м'який колір
+        const r = Math.floor(Math.random()*140) + 80;
+        const g = Math.floor(Math.random()*140) + 80;
+        const b = Math.floor(Math.random()*140) + 80;
+        color = `rgb(${r}, ${g}, ${b})`;
+      }
+      document.body.style.background = color;
+      show(`<strong>Фон змінено на:</strong> <code>${color}</code><br><span class="small">Щоб повернути стандарт, оновіть сторінку (F5).</span>`);
+    }
+
+    // Прив'язка веселої кнопки
+    document.getElementById('btnDialogs').addEventListener('click', demoDialogsColor);
+
+  </script>
+</body>
+</html>
